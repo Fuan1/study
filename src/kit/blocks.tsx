@@ -134,13 +134,17 @@ export function Source({ n, children }: { n: number; children: ReactNode }) {
 export function Related({ children }: { children: ReactNode }) {
   return <ul className="related">{children}</ul>;
 }
-export function Rel({ to, note }: { to: string; note?: string }) {
-  const { slug = '' } = useParams();
-  const unit = getCourse(slug)?.units.find((u) => u.id === to);
-  if (!unit) return null;
+export function Rel({ to, note, course }: { to: string; note?: string; course?: string }) {
+  const { slug: here = '' } = useParams();
+  const slug = course ?? here;
+  const target = getCourse(slug);
+  const unit = target?.units.find((u) => u.id === to);
+  if (!target || !unit) return null;
+  // 다른 과정의 글이면 과정 이름을 앞에 붙인다.
+  const label = course && course !== here ? `${target.title} · ${unit.title}` : unit.title;
   return (
     <li>
-      <Link to={`/${slug}/${to}`}>{unit.title}{unit.lessonKey ? '' : ' (준비 중)'}</Link>
+      <Link to={`/${slug}/${to}`}>{label}{unit.lessonKey ? '' : ' (준비 중)'}</Link>
       {note && <span className="muted"> — {note}</span>}
     </li>
   );

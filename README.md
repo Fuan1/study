@@ -6,7 +6,7 @@
 |---|---|
 | 01-ux | UX / UI 리서치·디자인 |
 | 02-data-analysis | 데이터 분석 실무 (문제 정의, SQL, 통계, 시각화, 보고) |
-| 03-business-marketing | 비즈니스·마케팅 |
+| 03-business-marketing | 비즈니스·마케팅 실무 (시장·고객, 가격·단위 경제성, 채널·광고, 측정, 법규) |
 
 각 분야 폴더 구성: `course.json`(글 목록), `lessons/`(글 MDX), `notes/`(정리 노트), `resources/`(자료·링크), `practice/`(실습·예제). 노트 양식은 `_templates/note.md`, 글 양식은 `_templates/lesson.mdx`.
 
