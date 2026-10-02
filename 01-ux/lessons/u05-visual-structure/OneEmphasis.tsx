@@ -24,7 +24,7 @@ function List({ x, marked }: { x: number; marked: number[] }) {
   );
 }
 
-export default function VonRestorff() {
+export default function OneEmphasis() {
   return (
     <svg viewBox="0 0 360 232" role="img" aria-label="네 항목 목록에서 모두에 NEW 표시를 달면 어느 것도 눈에 띄지 않고, 하나에만 달면 그 항목이 바로 눈에 띈다.">
       <text className="t-strong" x="8" y="22">Before · 넷 모두 강조</text>

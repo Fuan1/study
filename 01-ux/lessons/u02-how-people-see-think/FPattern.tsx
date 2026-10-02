@@ -1,4 +1,4 @@
-/** 개념도. 실제 시선 데이터가 아니라 NN/g가 설명한 F자 모양을 단순화해 그린 것이다. */
+/** 핵심을 둘 위치를 보이는 도식. 실제 시선 데이터가 아니라 NN/g가 설명한 F자 모양을 단순화해 그린 것이다. */
 export default function FPattern() {
   const x0 = 24;
   const w = 312;
@@ -17,8 +17,8 @@ export default function FPattern() {
       <rect x={x0 - 6} y={y0 - 6} width={w + 12} height="22" rx="5" style={accent} />
       <rect x={x0 - 6} y={y0 + 4 * dy - 6} width={w * 0.62} height="22" rx="5" style={accent} />
       <rect x={x0 - 6} y={y0 - 6} width="54" height={rows * dy - 4} rx="5" style={accent} />
-      <text className="t-accent" x={x0 + 2} y={y0 + rows * dy + 32} >① 첫 줄 · ② 짧은 두 번째 가로 · ③ 왼쪽 세로</text>
-      <text className="t-sub" x={x0 + 2} y={y0 + rows * dy + 50}>서식 없는 긴 글에서 나타나는 거친 경향</text>
+      <text className="t-accent" x={x0 + 2} y={y0 + rows * dy + 32} >핵심은 첫 줄 · 줄 앞 단어 · 왼쪽 가장자리에</text>
+      <text className="t-sub" x={x0 + 2} y={y0 + rows * dy + 50}>서식 없는 긴 글 기준의 거친 경향</text>
     </svg>
   );
 }

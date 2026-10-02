@@ -13,10 +13,10 @@ const ZONES = [
 ];
 
 const ROWS = [
-  { title: '0.1초 이하: 즉각적이라고 느낀다', body: '결과만 바로 보이면 된다', fill: 'var(--good)' },
-  { title: '1초 이하: 생각의 흐름이 이어진다', body: '지연은 느끼지만 별도 표시는 보통 불필요', fill: 'var(--accent)' },
-  { title: '1초에서 10초: 흐름이 끊긴다', body: '스피너나 스켈레톤으로 진행 중임을 알린다', fill: 'var(--warm)' },
-  { title: '10초 초과: 주의가 떠난다', body: '진행률과 취소 수단을 준다', fill: 'var(--bad)' },
+  { title: '0.1초 이하: 즉각적이다', body: '처방: 결과만 바로 보여준다', fill: 'var(--good)' },
+  { title: '1초 이하: 흐름은 이어진다', body: '처방: 로딩 표시는 필요 없다', fill: 'var(--accent)' },
+  { title: '1초에서 10초: 흐름이 끊긴다', body: '처방: 스피너나 스켈레톤을 띄운다', fill: 'var(--warm)' },
+  { title: '10초 초과: 주의가 떠난다', body: '처방: 진행률과 취소를 준다', fill: 'var(--bad)' },
 ];
 
 export default function ResponseLimits() {

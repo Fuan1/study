@@ -29,9 +29,9 @@ export function A({ href = '', children }: { href?: string; children?: ReactNode
   return <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{children}</a>;
 }
 
-/** 글머리 요약. 글 맨 위에 둔다. */
-export function Overview({ children }: { children: ReactNode }) {
-  return <section className="overview" aria-label="개요"><div className="label">개요</div>{children}</section>;
+/** 글 맨 위의 핵심 규칙 요약(명령형 3~5개). */
+export function Overview({ label = '핵심 규칙', children }: { label?: string; children: ReactNode }) {
+  return <section className="overview" aria-label={label}><div className="label">{label}</div>{children}</section>;
 }
 
 /** 본문의 h2/h3 로 목차를 자동 생성한다. 개요 바로 아래에 `<Toc />` 를 둔다. */

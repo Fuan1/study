@@ -4,14 +4,7 @@ type Row = { name: string; v: number; optOut: boolean };
 const ROWS: Row[] = [
   { name: '덴마크', v: 4.25, optOut: false },
   { name: '독일', v: 12, optOut: false },
-  { name: '영국', v: 17.17, optOut: false },
-  { name: '네덜란드', v: 27.5, optOut: false },
   { name: '스웨덴', v: 85.9, optOut: true },
-  { name: '벨기에', v: 98, optOut: true },
-  { name: '폴란드', v: 99.5, optOut: true },
-  { name: '포르투갈', v: 99.64, optOut: true },
-  { name: '프랑스', v: 99.91, optOut: true },
-  { name: '헝가리', v: 99.97, optOut: true },
   { name: '오스트리아', v: 99.98, optOut: true },
 ];
 
@@ -21,7 +14,7 @@ export default function DefaultEffect() {
   const dy = 24;
   const top = 40;
   return (
-    <svg viewBox="0 0 360 322" role="img" aria-label="유럽 11개 나라의 효과적 장기 기증 동의율. 기본값이 비기증인 나라(덴마크, 독일, 영국, 네덜란드)는 4퍼센트에서 28퍼센트, 기본값이 기증인 나라는 86퍼센트에서 99.98퍼센트다.">
+    <svg viewBox="0 0 360 150" role="img" aria-label="유럽 4개 나라의 효과적 장기 기증 동의율. 기본값이 비기증인 덴마크는 4.25퍼센트, 독일은 12퍼센트이고, 기본값이 기증인 스웨덴은 85.9퍼센트, 오스트리아는 99.98퍼센트다.">
       <rect x="8" y="6" width="12" height="12" rx="2" style={{ fill: 'var(--warm-soft)', stroke: 'var(--warm)' }} />
       <text className="t-sub" x="26" y="17">기본값: 기증하지 않음(옵트인)</text>
       {ROWS.map((r, i) => {
