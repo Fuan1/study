@@ -1,0 +1,362 @@
+import ProximitySimilarity from './ProximitySimilarity';
+import RegionConnectPragnanz from './RegionConnectPragnanz';
+import VonRestorff from './VonRestorff';
+import Hierarchy from './Hierarchy';
+import FittsCurve from './FittsCurve';
+import TargetSizes from './TargetSizes';
+
+<Overview>
+
+**시각 구조**는 화면의 요소를 어떻게 묶고(근접, 유사, 영역, 연결), 어떤 순서로 보이게 하고(강조, 위계), 손가락으로 얼마나 정확히 누르게 할지(크기, 거리) 정하는 일이다. U1의 5개 층에서 표면과 골격에 해당한다.
+
+- 사람은 요소를 하나씩 읽지 않고 묶음으로 본다. 간격, 모양, 테두리, 선이 곧 "무엇과 무엇이 한 팀인가"를 말한다.
+- 강조는 하나일 때만 효과가 있다. 다 강조하면 아무것도 강조되지 않는다.
+- 조작 크기에는 기준 수치가 있다(24 CSS px 최소, 44, 48 권장). 다만 크기만 맞추고 간격과 위치를 놓치면 오조작이 난다.
+
+</Overview>
+
+<Toc />
+
+## 정의와 범위
+
+### 시각 구조가 정하는 것
+
+U1에서 UX를 전략, 범위, 구조, 골격, 표면의 5개 층으로 나눴다. 이 글은 위쪽 두 층의 일을 다룬다. 두 층은 수치와 법칙으로 검증할 수 있는 영역이다.
+
+| 층 | 이 글에서 다루는 것 | 나오는 기준 |
+|---|---|---|
+| 표면 | 강조, 대비, 글꼴 크기, 줄 길이와 줄간격 | Von Restorff 효과, 위계, WCAG 텍스트 기준 |
+| 골격 | 묶음, 간격, 배치, 조작 크기와 거리 | 게슈탈트 법칙, Fitts의 법칙, 터치 영역 기준 |
+
+### 게슈탈트 계열 법칙 한눈에
+
+게슈탈트 심리학은 사람이 낱개의 점이 아니라 전체 패턴을 먼저 지각한다고 본다. 아래 법칙은 그 지각의 규칙을 화면 설계에 옮긴 것이다.
+
+| 법칙 | 한 줄 정의 | 만드는 수단 | 원 연구 |
+|---|---|---|---|
+| 근접 | 가까운 요소는 한 묶음으로 보인다<Ref n={4} /> | 간격, 여백 | Wertheimer(1923)<Ref n={1} /> |
+| 유사 | 모양이 비슷한 요소는 관련 있어 보인다<Ref n={4} /> | 색, 모양, 크기, 방향 | Wertheimer(1923)<Ref n={1} /> |
+| 공통 영역 | 같은 경계 안의 요소는 한 묶음으로 보인다<Ref n={4} /> | 테두리, 배경 면 | Palmer(1992)<Ref n={2} /> |
+| 균일 연결 | 선이나 면으로 이어진 요소는 더 관련 있어 보인다<Ref n={4} /> | 선, 화살표, 프레임 | Palmer와 Rock(1994)<Ref n={3} /> |
+| 프래그난츠 | 복잡하거나 모호한 모양은 가장 단순한 형태로 해석된다<Ref n={4} /> | 단순한 형태, 정돈된 구성 | Wertheimer의 Prägnanz 법칙<Ref n={1} /> |
+
+<Callout kind="warn">
+Laws of UX 항목의 정의는 디자인 실무용 요약이다. 공통 영역과 균일 연결 항목은 Palmer의 논문을 출처로 달지 않는다. 원 연구의 서지는 논문 쪽에서 따로 확인했다. 균일 연결의 원 연구 쪽 정의는 "밝기, 색, 질감 등이 같은 닫힌 영역이 처음부터 하나의 단위로 지각된다"에 가깝다.<Ref n={3} />
+</Callout>
+
+## 묶음을 만드는 법칙
+
+### 근접과 유사
+
+<Figure caption="간격이 모두 같으면 짝이 보이지 않고, 모양이 모두 같으면 눌리는 것을 구분하지 못한다. 짝 안은 좁히고 사이는 벌리며, 같은 역할만 같은 모양으로 쓴다. 가정한 예시이며 특정 서비스의 실제 화면이 아니다.">
+  <ProximitySimilarity />
+</Figure>
+
+**근접**: 가까운 요소를 묶음으로 읽는다. 여백은 장식이 아니라 구분선 역할을 한다.<Ref n={4} />
+
+- Nielsen Norman Group(NN/g)은 필드 12개가 한 덩어리로 있으면 부담스럽고, 의미 있는 구역 세 개로 나누면 낫다고 예를 든다.<Ref n={5} />
+- 근접은 색이나 모양의 유사를 덮을 수 있다.<Ref n={5} />
+- 주의: 반응형 화면에서 요소가 세로로 쌓이면 근접 관계가 깨질 수 있다. 간격으로 떨어진 요소는 목적 하나에 집중한 사용자가 놓치기 쉽다.<Ref n={5} />
+
+**유사**: 모양, 색, 크기가 비슷한 요소를 관련 있다고 읽는다.<Ref n={4} />
+
+- 링크 색은 링크에만 쓴다. 눌리는 것과 아닌 것이 같은 모양이면 사용자는 구분하지 못한다.<Ref n={6} />
+- 주의: 같은 모양은 같은 것으로 읽혀 차이를 가린다. NN/g는 본문 콘텐츠의 크기와 색이 오른쪽 광고와 닮아 간과된 사례를 든다. 이 현상을 배너 맹시라고 부른다.<Ref n={6} />
+
+### 공통 영역, 균일 연결, 프래그난츠
+
+<Figure caption="간격이 같아도 테두리를 두르면 묶이고, 선으로 이으면 한 덩어리로 읽히며, 장식을 덜면 형태가 빨리 읽힌다. 가정한 예시이며 특정 서비스의 실제 화면이 아니다.">
+  <RegionConnectPragnanz />
+</Figure>
+
+**공통 영역**: Palmer(1992)가 제안한 원리다. 같은 공간 영역 안에 있는 요소는 한 묶음으로 지각된다. 논문 초록은 이 효과가 강력하며 기존의 다른 묶음 요인으로 환원되지 않는다고 설명한다.<Ref n={2} />
+
+- UI에서는 카드, 헤더와 푸터의 배경 면, 아코디언, 탭이 대표적인 예다.<Ref n={7} />
+- NN/g는 테두리를 늘리기 전에 세 가지를 묻는다. 경계가 정말 필요한가, 여백만으로 되지 않는가, 화면 폭 전체를 가르는 선이 "여기가 바닥"이라는 착각을 주지 않는가.<Ref n={7} />
+
+**균일 연결**: Palmer와 Rock(1994)은 밝기, 색, 질감 같은 성질이 같고 이어진 영역이 지각의 첫 단위가 된다고 제안했다.<Ref n={3} /> UI에서는 선, 화살표, 프레임으로 요소를 잇는 방식으로 쓴다.<Ref n={4} />
+
+**프래그난츠**: Wertheimer의 법칙은 지각이 주어진 조건에서 가장 단순하고 포괄적인 구조를 취한다는 것이다.<Ref n={1} /> Laws of UX는 단순한 형태가 처리와 기억에서 유리하다고 소개한다. 해당 연구의 구체적 서지는 그 항목에서 확인하지 못했다(확인 필요).<Ref n={4} />
+
+### 단서가 충돌할 때
+
+| 상황 | 결과 | 근거 |
+|---|---|---|
+| 공통 영역 대 근접, 유사 | 테두리 묶음이 간격과 모양의 묶음을 이길 수 있다 | NN/g<Ref n={7} /> |
+| 근접 대 유사 | 가까움이 색과 모양의 같음을 이길 수 있다 | NN/g<Ref n={5} /> |
+| 유사 대 근접, 공통 영역 | 유사는 두 단서에 밀릴 수 있다 | NN/g<Ref n={6} /> |
+
+세 설명을 종합하면 강한 쪽부터 공통 영역, 근접, 유사 순이다. 이는 NN/g 설명을 이어 붙인 정리이지 측정한 서열은 아니다. 단서가 서로 반대를 가리키면 강한 쪽이 이기므로, 묶음을 의도할 때는 여러 단서를 같은 방향으로 맞춘다.
+
+## 강조와 위계
+
+### Von Restorff 효과
+
+<Figure caption="항목 넷에 모두 NEW를 달면 어느 것도 눈에 띄지 않는다. 하나에만 달면 그 항목이 먼저 보인다. 가정한 목록 예시이며 특정 서비스의 실제 화면이 아니다.">
+  <VonRestorff />
+</Figure>
+
+- **정의**: 비슷한 것이 여럿 있을 때 다른 하나가 가장 잘 기억된다.<Ref n={9} />
+- **연구**: Hedwig von Restorff가 1933년에 발표했다. 비슷한 항목 목록에 눈에 띄는 항목 하나를 섞으면 그 항목의 기억이 좋아졌다.<Ref n={9} /> 2차 자료에 따르면 차이만으로는 충분하지 않고, 같은 종류가 모인 배경 속에서 달라야 효과가 난다.<Ref n={8} />
+- **적용**: 화면에서 가장 중요한 행동 하나만 다르게 만든다. 강조가 여럿이면 서로 경쟁해 효과가 사라진다.<Ref n={9} />
+- **한계**: 원 연구는 목록 기억 실험이다. 버튼을 더 누르게 한다는 직접 증거가 아니라, 같은 원리를 화면에 옮긴 해석이다.
+- **접근성**: 색에만 의존하지 않는다. 움직임으로 강조할 때는 움직임에 민감한 사용자를 고려한다.<Ref n={9} />
+
+### 시각 위계의 수단
+
+<Figure caption="같은 내용도 크기, 대비, 간격, 정렬을 중요도 순으로 차등하면 읽는 순서가 생긴다. 가정한 카드 예시이며 특정 서비스의 실제 화면이 아니다.">
+  <Hierarchy />
+</Figure>
+
+NN/g는 시각 위계를 중요도 순서대로 눈이 가도록 요소를 조직하는 것으로 정의한다.<Ref n={10} />
+
+| 수단 | 쓰는 법 | 권고와 주의 |
+|---|---|---|
+| 크기 | 가장 중요한 요소를 가장 크게 | 크기는 3단계(작게, 중간, 크게) 이하, 큰 요소는 최대 2개<Ref n={10} /> |
+| 대비 | 명도와 채도의 차이로 위계를 만든다 | 주색 2개, 보조색 2개, 대비 변주 3개 이하 권고. 색에만 의존하지 않는다<Ref n={10} /> |
+| 간격 | 그룹 안은 좁게, 그룹 사이는 넓게 | 근접의 원리와 같다. 테두리는 아껴서 쓴다<Ref n={10} /> |
+| 정렬 | 같은 선에 맞춰 묶음과 순서를 만든다 | 이 글의 출처에는 수치 근거가 없다. 일반 디자인 원칙으로 쓴다 |
+
+<Callout kind="warn">
+템플릿만 보고 위계를 정하면 안 된다. NN/g는 실제 콘텐츠를 넣어 보라고 한다. 예를 들어 색이 강한 사진은 부차적인 내용인데도 화면을 지배할 수 있다. 의도한 순서대로 읽히는지 대상 사용자로 확인한다.<Ref n={10} />
+</Callout>
+
+### Krug의 빌보드 디자인
+
+Steve Krug는 사용자가 화면을 읽지 않고 훑는다는 전제에서 "빌보드처럼 지나가며 읽히게" 설계하라고 한다. 이 내용은 Don't Make Me Think, Revisited(3판) 3장 "Billboard Design 101"에 있다. 목차는 2차 자료로 확인했으므로 판본별 챕터 번호는 확인 필요다.<Ref n={11} />
+
+| Krug의 다섯 가지 | 뜻 | 이 글의 연결 |
+|---|---|---|
+| 명확한 시각 위계 | 중요할수록 눈에 띄고, 논리적으로 관련된 것은 시각적으로도 관련 짓는다 | 크기, 대비, 근접, 유사 |
+| 관습 활용 | 사용자가 이미 아는 모양과 위치를 쓴다 | 유사, 시그니파이어(U3) |
+| 영역 나누기 | 화면을 뚜렷한 영역으로 나눈다 | 공통 영역 |
+| 눌리는 것을 분명히 | 클릭 가능한 것이 드러나게 한다 | 유사, 시그니파이어(U3) |
+| 소음 줄이기 | 모든 요소를 시각적 소음으로 가정하고 줄인다 | 프래그난츠, Von Restorff |
+
+위 표의 앞 두 열은 Krug의 요약이고, 마지막 열은 이 글이 붙인 연결이다.<Ref n={11} />
+
+## 조작 크기: Fitts의 법칙
+
+### 정의와 공식
+
+Fitts의 법칙은 목표물에 손을 뻗어 닿는 시간이 목표까지의 거리와 목표의 크기로 정해진다는 법칙이다. Paul Fitts가 1954년 논문에서 제안했다.<Ref n={12} /> 그의 논문은 운동 시스템의 정보 용량을 다뤘고, 난이도를 비트(bit)로 나타냈다.<Ref n={12} />
+
+- **Fitts(1954)의 난이도**: ID = log2(2D/W). D는 거리, W는 목표의 너비(이동 방향 기준)다.<Ref n={13} />
+- **Shannon 형식**(MacKenzie, 1992): ID = log2(D/W + 1). Shannon-Hartley 정리와 닮아 붙은 이름이며, 실험 데이터와의 상관이 더 좋고 ID가 음수로 내려가지 않는다.<Ref n={13} />
+- **이동 시간**: MT = a + b · ID. a는 초 단위의 절편, b는 초/bit 단위의 기울기이며, 장치와 사람에 따라 실험으로 구하는 상수다.<Ref n={13} />
+- Laws of UX도 같은 흐름으로 정리한다. 터치 타깃은 충분히 크고 간격이 있어야 하며, 빠른 움직임과 작은 타깃은 오류를 늘린다.<Ref n={25} />
+- 1954년 원 실험은 네 가지 과제(스타일러스 두드리기 둘, 원판 옮기기, 핀 옮기기)에서 난이도 1에서 7 bit 범위를 다뤘다.<Ref n={13} />
+
+| D/W 비율 | 원래 식 log2(2D/W) | Shannon 식 log2(D/W+1) |
+|---|---|---|
+| 0.25 | -1.00 bit | 0.32 bit |
+| 1 | 1.00 bit | 1.00 bit |
+| 4 | 3.00 bit | 2.32 bit |
+| 16 | 5.00 bit | 4.09 bit |
+
+<Callout kind="warn">
+표의 값은 두 식에 직접 대입해 계산한 것이다. 원래 식은 D/W가 0.5 미만이면 난이도가 음수가 된다. 자료마다 어느 식을 쓰는지 다르다. NN/g 문서는 2D/W 형식으로 소개하고, MacKenzie는 Shannon 형식의 데이터 적합이 더 좋다고 정리한다.<Ref n={13} /><Ref n={14} /> 글을 읽을 때 식의 형태를 먼저 확인한다.
+</Callout>
+
+<Figure caption="거리를 늘리면 이동 시간은 완만하게 늘고, 너비를 키우면 곡선 전체가 내려간다. Shannon 형식으로 계산했고 a와 b는 가정한 값이므로 시간의 절대값이 아니라 곡선의 모양을 본다.">
+  <FittsCurve />
+</Figure>
+
+대수 관계라 거리를 두 배로 늘려도 시간이 두 배가 되지 않는다.<Ref n={14} /> 반대로 같은 거리에서 너비를 두 배로 키우면 난이도가 대략 1 bit 줄고, 줄어드는 시간은 b 정도다(그림의 가정값에서는 400px 거리 기준 약 0.14초).
+
+### UI 적용 기준
+
+| 요인 | 효과 | 적용 | 한계 |
+|---|---|---|---|
+| 타깃 크기 | 클수록 시간과 오류가 준다 | 아이콘에 라벨을 붙이거나 여백으로 눌리는 영역을 넓힌다<Ref n={14} /> | 눌리는 영역이 있다는 걸 사용자가 알아야 한다 |
+| 거리 | 멀수록 느리다. 증가는 로그 형태 | 관련 컨트롤은 가까이 둔다<Ref n={14} /> | 너무 붙이면 오조작이 난다 |
+| 가장자리(마우스) | 커서가 가장자리에서 멈춰 사실상 무한한 폭이 된다 | 화면 가장자리의 메뉴가 빠르다<Ref n={14} /> | 특정 제품 사례는 확인 필요 |
+| 가장자리(터치) | 이점이 없다. 오히려 가장자리 타깃이 더 오래 걸렸다 | 터치에서는 모서리 타깃을 키운다 | Avrahami(CHI 2015) 연구를 NN/g가 인용한 것<Ref n={14} /> |
+| 직사각형 타깃 | 두 변 중 작은 쪽을 W로 본다 | 가로로만 긴 버튼도 세로가 짧으면 작은 타깃이다 | MacKenzie와 Buxton(1992)을 NN/g가 인용<Ref n={14} /> |
+| 속도와 정확도 | 빠르게, 작은 타깃일수록 오류가 늘어난다<Ref n={25} /> | 위험한 동작은 크기를 키우되 간격도 확보한다<Ref n={25} /> | 모델은 이동 시간만 예측한다 |
+
+<Callout>
+Fitts의 법칙은 손이 목표까지 가는 시간만 다룬다. 무엇을 눌러야 할지 파악하는 시간과 읽는 시간은 포함하지 않는다. 그 부분은 위계와 묶음, 이름 짓기가 맡는다.
+</Callout>
+
+## 터치 조작
+
+### 터치 영역 수치
+
+<Figure caption="기준마다 단위가 다르다(CSS px, pt, dp). 위는 숫자를 같은 비율로 그린 것이고, 아래는 24px 원 규칙으로 간격 예외를 계산한 예시다.">
+  <TargetSizes />
+</Figure>
+
+| 기준 | 수치 | 성격 |
+|---|---|---|
+| WCAG 2.5.8 목표 크기(최소) | 24 x 24 CSS px 이상 | AA 필수. 예외 5가지<Ref n={15} /> |
+| WCAG 2.5.5 목표 크기(강화) | 44 x 44 CSS px 이상 | AAA. 예외 4가지<Ref n={15} /> |
+| Apple | 44 x 44 pt 이상 | 권고. "손가락으로 정확히 누를 수 있게"<Ref n={16} /> |
+| Android, Material | 48 x 48 dp 이상 | 권고. 아이콘이 24dp여도 패딩으로 48을 채운다<Ref n={17} /> |
+| NN/g | 1cm x 1cm 이상 | 연구 기반 권고. Parhi, Karlson, Bederson 연구 인용<Ref n={18} /> |
+
+- **2.5.8의 예외**: 간격, 동등한 대체 컨트롤, 문장 속 인라인, 사용자 에이전트가 정한 크기, 필수 표현이다.<Ref n={15} />
+- **간격 예외의 의미**: 24px 미만 타깃이라도, 각 타깃의 중심에 24px 지름의 원을 그렸을 때 다른 타깃이나 그 원과 겹치지 않으면 통과한다.<Ref n={15} /> 16px 아이콘 둘이면 계산상 간격 8px 이상이면 원이 겹치지 않는다(그림 예시).
+- **2.5.5의 예외**: 동등한 대체, 문장이나 문단 안의 인라인, 사용자 에이전트가 정한 크기, 필수 표현이다.<Ref n={15} />
+
+<Callout kind="warn">
+크기만 맞췄다고 끝나지 않는다. NN/g는 닫기 버튼이 2mm 크기에 이웃과 간격이 2mm 있어도 여전히 누르기 어려웠던 사례를 든다. 크기와 간격을 함께 본다.<Ref n={18} /> 또 눈에 보이는 크기와 터치 영역은 별개이므로, 작은 아이콘도 패딩으로 터치 영역을 채운다.<Ref n={17} />
+</Callout>
+
+### 엄지 영역
+
+한 손 사용, 엄지 도달 범위 이야기는 대부분 Steven Hoober의 관찰 연구에서 출발한다. 수치는 아래 조건에서 나온 것이다.
+
+| 연구 | 관찰된 것 | 알아둘 한계 |
+|---|---|---|
+| Hoober(2013) | 2013년 1월 8일까지 두 달간 거리, 공항, 버스 정류장, 카페, 기차 등에서 1,333건을 관찰. 그중 화면을 만지던 780명은 한 손 49%, 받침 36%, 두 손 15%<Ref n={19} /> | 공공장소 관찰. 인구통계 정보와 태블릿 데이터가 없다. 당시 기기 기준<Ref n={19} /> |
+| Hoober(2017) | 한 엄지로만 누르는 사람 75%, 한 손으로 쥐는 사람은 50% 미만, 받침 쥐기 36%, 한 손으로 쥐고 다른 손 손가락으로 누르기 10%<Ref n={20} /> | 같은 저자의 후속 정리. 쥐는 방식은 자주 바뀐다고 저자가 강조한다<Ref n={20} /> |
+| Hoober(2017) 타깃 | 화면 중앙 7mm, 모서리 12mm 정도면 관찰된 탭의 95%를 담는다<Ref n={20} /> | 95%를 담는 크기이지 100%가 아니다. mm를 px로 바꾸는 방법은 이 글에서 확인하지 못했다 |
+
+- 한 손 사용은 절반 안팎이다. 모든 사용자가 한 손으로 쓴다고 가정하면 안 된다.<Ref n={19} />
+- Hoober는 하단 엄지 도달 지도에 모든 조작을 몰아넣는 접근이 실제 쥐는 방식과 맞지 않는다고 지적한다. 사람들은 화면 중앙을 보고 누르는 것을 선호한다고 말한다.<Ref n={20} />
+- 실용 기준은 이렇다. 자주 쓰는 컨트롤은 크게 만들고, 모서리의 작은 타깃은 피하고, 하단에 몰려 있어도 크기와 간격은 지킨다.
+
+<Callout kind="warn">
+2013년과 2017년 수치는 당시 기기와 관찰 환경의 결과다. 이후 큰 화면 기기에 같은 비율이 성립하는지는 이 글에서 확인하지 못했다(확인 필요). 구체 수치를 인용할 때는 연도와 조건을 함께 쓴다.
+</Callout>
+
+## 가독성과 간격 기준
+
+### 글 한 줄 길이
+
+| 출처 | 수치 | 성격 |
+|---|---|---|
+| Bringhurst, The Elements of Typographic Style | 45자에서 75자, 66자가 이상적(한 단 구성) | 인쇄 타이포그래피 권고. 2차 자료로 확인, 절 번호는 확인 필요<Ref n={21} /> |
+| Baymard Institute | 본문 50자에서 75자, 최대 80자 | 자체 관찰과 기존 권고의 종합<Ref n={22} /> |
+| WCAG 1.4.8 | 80자 이하. CJK 문자는 40자 이하 | AAA. 사용자가 조절할 수단이 있으면 된다<Ref n={23} /> |
+
+위 수치는 영문 기준이다. WCAG는 CJK(중국어, 일본어, 한국어) 문자가 두 배쯤 넓다는 이유로 40자를 따로 둔다.<Ref n={23} /> 한글만을 대상으로 한 권고 수치는 확인하지 못했다(확인 필요). 구현은 글자 수 단위인 ch나 em으로 최대 폭을 제한하는 방식이 쓰인다.<Ref n={22} />
+
+### 줄간격과 문단 간격
+
+| 기준 | 수치 | 해석 |
+|---|---|---|
+| WCAG 1.4.12 텍스트 간격(AA) | 줄 높이 글자 크기의 1.5배, 문단 간격 2배, 자간 0.12배, 어간 0.16배 | 이 값으로 바꿔도 내용이 잘리거나 겹치지 않아야 한다<Ref n={23} /> |
+| WCAG 1.4.8(AAA) | 줄 간격 1.5배 이상, 문단 간격은 줄 간격의 1.5배 이상, 양쪽 정렬 금지 | 읽기 편한 표현 기준<Ref n={23} /> |
+
+<Callout kind="warn">
+1.4.12는 "이 값으로 CSS를 설정하라"는 규칙이 아니다. 콘텐츠가 이 값을 쓸 필요는 없고, 사용자가 이 값으로 늘려도 깨지지 않아야 한다는 시험 기준이다.<Ref n={23} />
+</Callout>
+
+### 글자 크기
+
+- WCAG에는 최소 글자 크기 수치가 없다. 대신 1.4.4가 보조 기술 없이 200%까지 확대해도 내용과 기능이 유지될 것을 요구한다.<Ref n={23} />
+- Apple은 확대하지 않고 보통의 시청 거리에서 읽히려면 글자를 11pt 이상으로 하라고 안내한다.<Ref n={16} />
+- 글자와 배경의 대비 기준(4.5:1 등)은 U1의 표를 따른다.
+- 웹 본문을 16px 안팎에서 시작하는 것은 브라우저 기본값에서 출발한 업계 관행이다. 표준 조항이 아니다.
+
+### 간격 체계(8pt 격자)
+
+간격과 크기를 8의 배수(필요하면 4)로 맞추는 8pt 격자는 업계 관행이다. Material Design 2가 8dp 기준 격자를 채택했고, 아이콘과 글자 기준선에는 4dp를 쓴다.<Ref n={24} /> WCAG나 ISO 같은 표준이 요구하는 규칙이 아니다. 목적은 일관된 리듬이며, 터치 영역 기준과는 별개로 판단한다.
+
+## 흔한 오해와 주의점
+
+| 오해 | 실제 | 주의할 점 |
+|---|---|---|
+| 여백은 많을수록 좋다 | 간격은 관계를 말한다 | 모든 간격을 늘리면 묶음 신호가 사라진다<Ref n={5} /> |
+| 테두리로 감싸면 정돈된다 | 테두리는 강한 묶음 신호다 | 남발하면 어수선하다. 여백으로 되는지 먼저 본다<Ref n={7} /> |
+| 중요한 건 다 강조한다 | 강조는 대비로 작동한다 | 다 강조하면 서로 경쟁해 효과가 사라진다<Ref n={9} /> |
+| 눈에 띄면 클릭이 늘어난다 | 원 연구는 기억 실험이다 | 클릭 증가는 별도로 시험해야 한다 |
+| 색으로 강조하면 충분하다 | 색을 구분 못 하는 사용자가 있다 | 모양이나 라벨을 함께 쓴다<Ref n={9} /> |
+| 44px만 맞추면 된다 | 크기, 간격, 위치가 함께 결정한다 | 이웃 타깃과의 간격을 본다. 단위가 CSS px, pt, dp로 다르다<Ref n={15} /> |
+| 버튼은 클수록 좋다 | 크기는 시간과 오류를 줄인다 | 위험한 동작을 너무 쉽게 누르게 만들 수 있다. 간격을 확보한다 |
+| 가장자리 배치는 항상 빠르다 | 마우스에서만 이점이 있다 | 터치에서는 가장자리 타깃이 더 오래 걸렸다<Ref n={14} /> |
+| 한 손 엄지 영역에 다 몰자 | 한 손 사용은 절반 안팎이다 | Hoober는 하단 지도 방식이 실제와 맞지 않는다고 본다<Ref n={19} /><Ref n={20} /> |
+| 45에서 75자는 한글에도 맞다 | 영문 기준 수치다 | WCAG는 CJK를 40자로 따로 본다. 한글 전용 수치는 확인 필요<Ref n={23} /> |
+| 8pt 격자는 규칙이다 | 업계 관행이다 | 표준이 요구하지 않는다<Ref n={24} /> |
+
+## 시각 구조 진단표
+
+| 증상 | 의심할 법칙 | 대응 |
+|---|---|---|
+| 라벨이 어느 입력칸 것인지 헷갈린다 | 근접 | 라벨과 칸의 간격을 짝 사이 간격보다 좁힌다 |
+| 눌리는 글자와 안 눌리는 글자가 구분되지 않는다 | 유사 | 링크의 색과 밑줄을 링크에만 쓴다 |
+| 서로 다른 기능이 한 덩어리로 보인다 | 근접, 공통 영역 | 그룹 사이 간격을 늘리거나 컨테이너를 둔다 |
+| 화면이 상자투성이로 답답하다 | 공통 영역 과용 | 여백만으로 되는지 확인하고 테두리를 줄인다<Ref n={7} /> |
+| 단계나 항목의 짝이 따로 논다 | 균일 연결 | 선이나 화살표로 잇는다 |
+| 어디가 중요한지 모르겠다 | 위계 | 크기 단계를 줄이고 가장 중요한 하나를 키운다<Ref n={10} /> |
+| 강조가 많아서 아무것도 안 보인다 | Von Restorff | 강조를 하나로 줄이고 나머지는 낮춘다 |
+| 중요한 콘텐츠를 지나친다 | 유사, 배너 맹시 | 광고 같은 크기와 색을 피하고 모양을 구분한다<Ref n={6} /> |
+| 버튼을 놓치거나 옆 버튼을 누른다 | Fitts, 터치 영역 | 44 또는 48 기준으로 키우고 간격을 둔다 |
+| 모서리의 작은 버튼이 잘 안 눌린다 | Fitts, 모서리 | 모서리 타깃을 키운다<Ref n={20} /> |
+| 아이콘 뜻이 안 읽힌다 | 프래그난츠 | 장식을 줄이고 핵심 형태만 남긴다 |
+| 긴 본문이 읽기 힘들다 | 줄 길이, 줄간격 | 최대 폭을 제한하고 줄간격을 1.5 안팎으로 둔다<Ref n={23} /> |
+
+## 실전 점검 기준표
+
+| 점검 항목 | 기준 | 근거 |
+|---|---|---|
+| 묶음 간격 | 짝 안 간격이 짝 사이 간격보다 좁다 | 근접<Ref n={5} /> |
+| 역할과 모양 | 같은 역할은 같은 모양, 다른 역할은 다른 모양 | 유사<Ref n={6} /> |
+| 테두리 | 여백으로 안 될 때만 쓴다 | 공통 영역<Ref n={7} /> |
+| 화면당 강조 | 가장 중요한 하나. 크기는 3단계 이하 | Von Restorff, NN/g<Ref n={9} /><Ref n={10} /> |
+| 색 의존 | 강조를 색에만 맡기지 않는다 | 접근성<Ref n={9} /> |
+| 터치 영역 최소 | 24 x 24 CSS px 이상 또는 간격 예외 충족 | WCAG 2.5.8<Ref n={15} /> |
+| 터치 영역 권장 | 44pt(iOS), 48dp(Android), 44 CSS px(AAA) | Apple, Material, WCAG 2.5.5<Ref n={15} /><Ref n={16} /><Ref n={17} /> |
+| 모서리 타깃 | 중앙보다 크게 잡는다 | Hoober<Ref n={20} /> |
+| 본문 줄 길이 | 영문 45에서 75자(WCAG 상한 80). 한글은 확인 필요 | Bringhurst, WCAG 1.4.8<Ref n={21} /><Ref n={23} /> |
+| 텍스트 간격 변경 | 줄 높이 1.5배 등으로 늘려도 안 깨진다 | WCAG 1.4.12<Ref n={23} /> |
+| 확대 | 200%까지 내용과 기능이 유지된다 | WCAG 1.4.4<Ref n={23} /> |
+| 간격 단위 | 일관된 단위(예: 8pt 격자) | 업계 관행<Ref n={24} /> |
+
+<Callout kind="warn">
+기준을 채워도 구조가 막히면 사용자는 막힌다. 이 표는 표면과 골격을 점검하는 용도이며, 흐름과 범위 문제는 U1처럼 더 아래 층에서 찾는다.
+</Callout>
+
+## 사례
+
+| 사례 | 법칙 | 핵심 |
+|---|---|---|
+| NN/g의 폼 분할 예 | 근접 | 필드 12개를 의미 있는 세 구역으로 나누면 덜 부담스럽다<Ref n={5} /> |
+| NN/g의 동영상 튜토리얼 | 유사, 배너 맹시 | 콘텐츠가 오른쪽 광고와 닮은 크기여서 간과됐다<Ref n={6} /> |
+| NN/g의 닫기 버튼 | 크기, 간격 | 2mm 버튼은 간격 2mm가 있어도 누르기 어려웠다<Ref n={18} /> |
+| Avrahami(2015) | Fitts, 터치 | 터치에서는 가장자리 타깃이 더 오래 걸렸다. NN/g가 인용<Ref n={14} /> |
+| Hoober의 관찰 연구 | 엄지 영역 | 한 손 사용 49%, 한 엄지 75% 등. 연도와 조건에 유의<Ref n={19} /><Ref n={20} /> |
+| 글쓰기 목록의 NEW 예 | Von Restorff | 가정한 예시(그림 3). 실제 서비스가 아니다 |
+
+## 관련 글
+
+<Related>
+  <Rel to="u01" note="5개 층과 UI 기준값. 이 글의 표면과 골격이 그 안에 있다" />
+  <Rel to="u04" note="선택지 수, 묶기, 배치 순서" />
+  <Rel to="u06" note="강조와 크기 조작이 오용될 때, 다크패턴의 경계" />
+  <Rel to="u07" note="휴리스틱으로 화면을 점검할 때 이 글의 기준표 활용" />
+</Related>
+
+외부 자료: [Laws of UX](https://lawsofux.com/)의 근접, 유사, 공통 영역, 균일 연결, 프래그난츠, Von Restorff 항목.
+
+## 출처
+
+<Sources>
+  <Source n={1}>Johan Wagemans 외 (2012), "A Century of Gestalt Psychology in Visual Perception I. Perceptual Grouping and Figure-Ground Organization", Psychological Bulletin 138(6), 1172-1217. Wertheimer(1923)의 묶음 원리, Prägnanz, 공통 영역과 균일 연결의 위치를 정리한 리뷰. 원전 Wertheimer(1923)는 직접 확인하지 못함.</Source>
+  <Source n={2}>Stephen E. Palmer (1992), "Common Region: A New Principle of Perceptual Grouping", Cognitive Psychology 24(3), 436-447. 초록(ERIC 기록)으로 확인.</Source>
+  <Source n={3}>Stephen Palmer, Irvin Rock (1994), "Rethinking perceptual organization: The role of uniform connectedness", Psychonomic Bulletin and Review 1(1), 29-55. doi 10.3758/BF03200760. 초록 수준으로 확인.</Source>
+  <Source n={4}>Laws of UX, Law of Proximity, Law of Similarity, Law of Common Region, Law of Uniform Connectedness, Law of Prägnanz. lawsofux.com</Source>
+  <Source n={5}>Nielsen Norman Group, "Proximity Principle in Visual Design". nngroup.com/articles/gestalt-proximity</Source>
+  <Source n={6}>Nielsen Norman Group, "Similarity Principle in Visual Design". nngroup.com/articles/gestalt-similarity</Source>
+  <Source n={7}>Nielsen Norman Group, "The Principle of Common Region: Containers Create Groupings". nngroup.com/articles/common-region</Source>
+  <Source n={8}>Hedwig von Restorff (1933), Psychologische Forschung 게재 논문(독일어). 원문은 확인하지 못했고 Wikipedia와 2차 자료의 설명으로 확인. 쪽수와 권호는 확인 필요.</Source>
+  <Source n={9}>Laws of UX, "Von Restorff Effect". lawsofux.com/von-restorff-effect</Source>
+  <Source n={10}>Nielsen Norman Group, "Visual Hierarchy in UX: Definition". nngroup.com/articles/visual-hierarchy-ux-definition</Source>
+  <Source n={11}>Steve Krug, Don't Make Me Think, Revisited (3판), 3장 "Billboard Design 101". 목차는 2차 자료로 확인했고 판본별 챕터 번호는 확인 필요. 다섯 가지 요약은 2차 자료 기준.</Source>
+  <Source n={12}>Paul M. Fitts (1954), "The information capacity of the human motor system in controlling the amplitude of movement", Journal of Experimental Psychology 47(6), 381-391. 서지와 ID 정의는 검색 결과로 확인. 논문 본문은 직접 읽지 못함.</Source>
+  <Source n={13}>I. Scott MacKenzie (1992), "Fitts' law as a research and design tool in human-computer interaction", Human-Computer Interaction 7, 91-139. 및 같은 저자의 Fitts' Law 정리(yorku.ca/mack/hhci2018.html). Shannon 형식, a와 b의 단위, 1954 실험 구성 확인.</Source>
+  <Source n={14}>Raluca Budiu (2022), "Fitts's Law and Its Applications in UX", Nielsen Norman Group. nngroup.com/articles/fitts-law. Avrahami (2015), CHI 2015, 및 MacKenzie와 Buxton(1992)을 인용.</Source>
+  <Source n={15}>W3C, WCAG 2.2 Understanding: 2.5.8 Target Size (Minimum), 2.5.5 Target Size (Enhanced). w3.org/WAI/WCAG22/Understanding/target-size-minimum.html</Source>
+  <Source n={16}>Apple, "UI Design Dos and Don'ts" (developer.apple.com/design/tips). 44 x 44pt와 11pt 문구를 이 페이지에서 확인. 최신 Human Interface Guidelines 문구는 별도 확인 필요.</Source>
+  <Source n={17}>Android Developers, "Make apps more accessible" (48 x 48dp). 아이콘 24dp에 패딩으로 48dp를 채운다는 설명은 Material Design 접근성 문서와 검색 결과로 확인. Material 쪽 원문은 직접 확인 필요.</Source>
+  <Source n={18}>Nielsen Norman Group, "Touch Target Size". nngroup.com/articles/touch-target-size. Parhi, Karlson, Bederson 연구와 MIT Touch Lab 손가락 폭 인용.</Source>
+  <Source n={19}>Steven Hoober (2013), "How Do Users Really Hold Mobile Devices?", UXmatters. uxmatters.com/mt/archives/2013/02/how-do-users-really-hold-mobile-devices.php</Source>
+  <Source n={20}>Steven Hoober (2017), "Design for Fingers, Touch, and People, Part 1", UXmatters. uxmatters.com/mt/archives/2017/03/design-for-fingers-touch-and-people-part-1.php</Source>
+  <Source n={21}>Robert Bringhurst, The Elements of Typographic Style. 45에서 75자(66자 이상적) 수치는 Wikipedia "Line length"와 서평류 2차 자료로 확인. 판본과 절 번호는 확인 필요.</Source>
+  <Source n={22}>Baymard Institute, "Readability: The Optimal Line Length". baymard.com/blog/line-length-readability</Source>
+  <Source n={23}>W3C, WCAG 2.2 Understanding: 1.4.8 Visual Presentation, 1.4.12 Text Spacing, 1.4.4 Resize Text. w3.org/WAI/WCAG22/Understanding/</Source>
+  <Source n={24}>Material Design 2, Layout 간격 방식과 격자(8dp 기준 격자, 4dp 아이콘과 글자). m2.material.io/design/layout/spacing-methods.html. 검색 결과 요약으로 확인.</Source>
+  <Source n={25}>Laws of UX, "Fitts's Law". lawsofux.com/fittss-law. 정의, 1954년 기원, 속도와 정확도의 상충 설명 확인(항목에 공식은 없음).</Source>
+</Sources>

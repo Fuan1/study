@@ -1,0 +1,335 @@
+import HypothesisLoop from './HypothesisLoop';
+import DoubleDiamond from './DoubleDiamond';
+import ThinkingModels from './ThinkingModels';
+import FidelityLadder from './FidelityLadder';
+import SprintWeek from './SprintWeek';
+import DecisionStack from './DecisionStack';
+
+<Overview>
+
+**가설 기반 설계(hypothesis-driven design)** 는 설계 결정을 확정된 정답이 아니라 검증할 가설로 다루고, 가장 싼 방법으로 확인하면서 고쳐 나가는 방식이다.
+
+- 설계안은 "이게 맞다"가 아니라 "이 기준을 넘으면 맞다고 본다"로 쓴다. 가정, 가설, 최소 실험, 학습을 작게 자주 돈다.
+- 프로토타입의 충실도(종이, 와이어프레임, 클릭 가능 프로토타입)는 확인할 질문의 크기에 맞춘다. 높다고 좋은 것이 아니다.
+- 더블 다이아몬드, 디자인 씽킹, 디자인 스프린트는 이름과 단계 수가 달라도 넓히기와 좁히기를 번갈아 하는 같은 골격이다.
+
+</Overview>
+
+<Toc />
+
+## 가설 기반 설계
+
+### 가정에서 학습까지
+
+Lean UX를 쓴 Jeff Gothelf와 Josh Seiden은 설계 결정을 사실이 아니라 가정으로 본다.<Ref n={1} /> 가정을 가설로 바꾸고, 가장 작은 실험으로 확인하고, 결과를 다음 결정에 쓴다. Gothelf의 Lean UX Canvas는 이 흐름을 8칸으로 나눈다.<Ref n={2} />
+
+- 사업 문제, 사업 결과, 사용자, 사용자 결과, 해법 아이디어를 먼저 적는다.
+- 그 칸들을 잇는 문장이 가설이다.
+- "가장 먼저 배워야 할 것"은 틀렸을 때 피해가 가장 큰 가정이다.
+- 마지막 칸은 MVP 또는 실험이다. 가설에 대해 배우는 데 필요한 가장 작은 일을 적는다.
+
+실험 결과에 따라 확신이 커지면 다음 위험으로 넘어가고, 틀렸으면 가설을 접거나 고치고, 앞 칸의 가정이 틀렸다면 캔버스를 다시 쓴다.<Ref n={2} />
+
+<Figure caption="한 바퀴가 한 번의 학습이다. 순환이 짧을수록 틀린 가정을 일찍, 싸게 버린다.">
+  <HypothesisLoop />
+</Figure>
+
+### 가설 문장의 틀
+
+Lean UX Canvas의 가설 문장은 대략 이렇게 읽힌다. "이 사용자가 이 해법으로 이 혜택을 얻으면, 이 사업 결과가 달성될 것이라고 믿는다."<Ref n={2} /> 칸마다 빈칸 하나씩이 대응한다.
+
+| 구성 | 쓰는 내용 | 비어 있으면 |
+|---|---|---|
+| 사업 결과 | 측정 가능한 행동 변화(재방문, 완료율 등) | 성공 여부를 판정할 수 없다 |
+| 사용자 | 특정한 사람들 | 모두를 위한 가설이 되어 아무것도 못 가린다 |
+| 사용자 혜택 | 그 사람이 얻는 것 | 왜 효과가 나는지 설명이 없다 |
+| 해법 | 만들거나 바꿀 것 | 무엇을 실험할지 정해지지 않는다 |
+| 확인 기준 | 지지, 반증으로 판단할 신호와 기준 | 결과를 보고 나서 해석을 끼워 맞추게 된다 |
+
+마지막 줄은 이 글이 덧붙이는 권장이다. 기준은 실험 전에 정해 둬야 결과를 내 편으로 읽지 않는다.
+
+<Callout>
+문구는 판본마다 다르다. 초판 계열의 틀(하는 일, 대상, 결과, 성공 신호의 순서)은 2차 자료로만 확인했고 원문 문장은 확인 필요다. 2판 이후와 Canvas의 틀은 위 형태로 소개된다.
+</Callout>
+
+### 좋은 가설과 나쁜 가설
+
+아래는 모두 가정한 예시다(재주문이 잦은 음식 주문 앱이라고 가정). 기준 숫자는 팀이 정하는 값이며 업계 표준이 아니다.
+
+| 나쁜 가설 | 무엇이 문제인가 | 고친 가설 |
+|---|---|---|
+| 새 홈 화면이 더 낫다 | 낫다의 기준과 대상이 없다. 어떤 결과가 나와도 반박되지 않는다 | 지난 주문 다시 담기를 홈 상단에 두면, 월 2회 이상 주문하는 사용자의 재주문 시간이 줄 것이다. 과업 테스트 5명 중 4명이 30초 안에 끝내면 지지로 본다 |
+| 사용자는 간편결제를 좋아한다 | 의견이지 행동이 아니다. 확인할 신호가 없다 | 결제 단계 이탈 원인이 카드 입력이라면, 간편결제 버튼이 결제 완료율을 올릴 것이다. 현재 완료율과 비교한다 |
+| 버튼을 빨강으로 바꾸면 전환이 오른다 | 해법만 있고 이유와 대상이 없다. 틀려도 무엇을 배웠는지 모른다 | 첫 화면에서 가입 버튼을 못 찾아 이탈한다면, 대비를 높인 버튼이 버튼을 찾는 시간을 줄일 것이다 |
+
+<Callout kind="warn">
+좋은 가설은 틀릴 수 있어야 한다. 어떻게 나와도 맞다고 할 수 있는 가설은 학습을 만들지 못한다.
+</Callout>
+
+### MVP
+
+Eric Ries는 Lean Startup에서 MVP를, 팀이 가장 적은 노력으로 고객에 대해 검증된 학습을 최대한 얻을 수 있는 제품 버전이라고 정의한다.<Ref n={3} /><Ref n={4} /> 기준은 크기가 아니라 학습이다. Ries는 이름과 달리 최소한의 제품을 만드는 일이 아니라고 직접 설명한다. 무엇이 적정한 MVP인지는 정해진 공식이 아니라 상황에 따른 판단이다.<Ref n={4} />
+
+UX 현장에서 자주 어긋나는 쓰임은 다음과 같다.
+
+| 오용 | 실제 | 주의할 점 |
+|---|---|---|
+| 기능을 줄인 첫 출시다 | 가설을 확인하려는 도구다 | 출시하지 않아도 된다(영상, 수작업 대행 등). 사례 절 참조 |
+| 허술해도 MVP니까 괜찮다 | 학습이 되려면 가설에 필요한 품질은 갖춰야 한다 | 사용성이 나빠서 실패했는지 아이디어가 나빠서 실패했는지 구분되지 않는다(이 글의 해석) |
+| 한 번 내면 끝이다 | 결과에 따라 다음 MVP를 만든다<Ref n={4} /> | 학습 계획 없이 낸 MVP는 그냥 작은 제품이다 |
+| 시안이 곧 MVP다 | 시안은 확인 수단의 하나일 뿐이다 | 확인할 가설이 없는 시안은 MVP가 아니다(이 글의 정리) |
+| 모든 프로젝트에 필요하다 | 고객 대화와 측정에 드는 비용이 있다 | Ries도 단순한 프로젝트에는 오버헤드라고 말한다<Ref n={4} /> |
+
+## 과정 모델: 넓히고 좁히기
+
+### 더블 다이아몬드
+
+영국 Design Council의 모델이다. 네 단계가 두 개의 다이아몬드로 그려진다. 첫 다이아몬드는 문제를 넓게 이해한 뒤 정의하고, 둘째는 해법을 넓게 낸 뒤 시험해 좁힌다.<Ref n={5} />
+
+<Figure caption="다이아몬드가 두 개인 이유는 문제를 맞게 잡는 일과 해법을 맞게 만드는 일을 따로 하라는 뜻이다. 각 다이아몬드 안에서는 먼저 넓히고 나서 좁힌다.">
+  <DoubleDiamond />
+</Figure>
+
+| 단계 | 하는 일 | 방향 |
+|---|---|---|
+| Discover | 문제를 가정하지 않고 영향을 받는 사람들과 만나 이해한다<Ref n={5} /> | 발산 |
+| Define | 발견한 통찰로 풀어야 할 과제를 다시 규정한다 | 수렴 |
+| Develop | 정의된 문제에 여러 해법을 낸다 | 발산 |
+| Deliver | 해법을 작은 규모로 시험하고 실패는 버리고 성공은 다듬는다 | 수렴 |
+
+연도는 확인 필요다. Design Council 자체 설명이 한 곳에서는 2003년 개발, 다른 곳에서는 2004년이라고 적고,<Ref n={5} /><Ref n={7} /> 2005년으로 소개하는 자료도 흔하다. 이 글은 연도를 단정하지 않는다.
+
+2019년에는 모델이 **Framework for Innovation**으로 확장됐다.<Ref n={5} /> 현재 공식 설명이 밝히는 내용은 다음과 같다.<Ref n={6} />
+
+| 요소 | 내용 |
+|---|---|
+| 네 단계 | Discover, Define, Develop, Deliver 그대로 유지 |
+| 설계 원칙 4가지 | 사람을 먼저 둔다, 시각적이고 포용적으로 소통한다, 협력하고 함께 만든다, 반복하고 또 반복한다 |
+| 방법 모음 | 탐색, 형태 잡기, 만들기의 세 갈래로 분류 |
+| 일하는 문화 | 리더십(혁신과 실험을 허용)과 관계 맺기(팀과 외부 파트너) |
+
+<Callout kind="warn">
+이 모델은 한 번 지나가는 직선 공정표가 아니다. 공식 설명도 반복하며 되돌아가는 과정이라고 하고, 아주 초기 단계의 아이디어를 만들어 시험하는 일도 발견의 일부가 될 수 있다고 본다.<Ref n={5} />
+</Callout>
+
+### 디자인 씽킹의 단계
+
+Stanford d.school(Hasso Plattner Institute of Design)의 Design Thinking Bootleg는 다섯 가지 모드를 든다. Empathize, Define, Ideate, Prototype, Test다.<Ref n={8} /> 이들을 순서가 정해진 단계가 아니라 모드라 부르며, 어디서 시작해도 된다고 안내한다.<Ref n={8} /> Nielsen Norman Group는 여기에 Implement를 더한 6단계로 정리하고, 전체 흐름을 이해, 탐색, 구현의 세 덩어리로 묶는다.<Ref n={9} /> IDEO의 Tim Brown은 2008년 HBR 글에서 영감, 발상, 실행의 세 공간으로 설명했다.<Ref n={10} />
+
+<Figure caption="단계의 이름과 개수는 출처마다 다르다. Define은 세 모델에 모두 있지만 앞뒤 단계와 범위가 같지는 않다.">
+  <ThinkingModels />
+</Figure>
+
+아래 대응은 이 글의 대략적인 정리이며 공식 대응표가 아니다.
+
+| 더블 다이아몬드 | d.school | 하는 일 |
+|---|---|---|
+| Discover | Empathize | 사용자를 관찰하고 이해한다(U8) |
+| Define | Define | 문제를 한 문장으로 규정한다(U8) |
+| Develop | Ideate | 해법 아이디어를 넓게 낸다 |
+| Deliver | Prototype, Test | 만들어서 사용자와 확인한다(U10) |
+
+## 충실도 사다리
+
+프로토타입의 충실도는 얼마나 실제와 닮았는가다. NN/g는 세 축으로 나눈다. 시각(위계, 화면 크기), 내용(실제 문구와 데이터), 상호작용(링크가 자동으로 반응하는가)이다.<Ref n={11} />
+
+<Figure caption="충실도가 올라갈수록 비용도 오른다. 종이 단계에서 답할 수 있는 질문을 코드로 확인하면 비싸게 같은 것을 배우게 된다.">
+  <FidelityLadder />
+</Figure>
+
+NN/g가 정리한 낮은 충실도의 장점은 빨리 만들어 수정이 쉽고, 사용자가 부담 없이 솔직하게 말하고, 만든 사람이 덜 집착한다는 것이다. 높은 충실도의 장점은 시스템 반응이 빨라 흐름이 끊기지 않고, 개별 UI 요소와 시각 요소를 시험할 수 있고, 실제처럼 보여 사용자가 실제처럼 행동한다는 것이다.<Ref n={11} />
+
+| 단계 | 여기서 확인할 질문 | 확인하지 못하는 것 |
+|---|---|---|
+| 종이 스케치 | 개념이 이해되는가, 흐름의 순서가 맞는가, 이 기능이 필요한가 | 시각 위계, 실제 터치감 |
+| 와이어프레임 | 배치와 우선순위가 맞는가, 메뉴 이름과 분류를 이해하는가 | 색과 글꼴의 영향, 반응 속도 |
+| 클릭 가능 프로토타입 | 과업을 끝까지 하는가, 문구를 이해하는가, 눌러야 할 곳이 보이는가 | 실제 데이터, 성능 |
+| 실제 코드와 데이터 | 속도, 실제 내용, 대규모 행동 지표 | 비용이 커서 왜 막혔는지보다 얼마나 막혔는지를 보게 된다 |
+
+이 표는 NN/g의 세 축을 바탕으로 한 이 글의 정리다.
+
+<Callout kind="warn">
+먼저 다듬어진 화면을 만들면 정리된 인상 때문에 시안에 대한 호감이 사용성 평가를 가린다(U1의 심미적 사용성 효과). 개념과 구조를 묻는 단계에서는 일부러 거칠게 둔다.
+</Callout>
+
+## 정보 구조를 설계하는 도구
+
+메뉴 이름과 분류 같은 정보 구조는 설계자 머릿속이 아니라 사용자의 기대에 맞아야 한다. 두 도구를 짝지어 쓴다.
+
+| 항목 | 카드 소팅 | 트리 테스트 |
+|---|---|---|
+| 정의 | 참가자가 라벨이 붙은 카드를 자기 기준대로 묶는다<Ref n={12} /> | 계층 구조(트리)에서 특정 항목이 있을 만한 곳을 찾게 해서 구조를 평가한다<Ref n={14} /> |
+| 성격 | 발견용. 사용자의 분류 방식을 알아낸다 | 평가용. 만든 구조를 검증한다 |
+| 종류 | 열린(범주를 참가자가 만듦, 가장 권장), 닫힌(범주 제공, 검증용), 혼합(편향 우려로 비권장)<Ref n={12} /> | 메뉴 이름과 계층만으로 구성한 텍스트 트리 |
+| 보는 지표 | 어떤 카드가 자주 같이 묶이는가 | 성공률, 직접성(바로 갔는가), 소요 시간, 클릭 경로<Ref n={14} /> |
+| 인원 | 질적 15명 이상, 정량 30에서 50명 권장<Ref n={12} /> | 질적은 5명 안팎으로 시작. 정량은 더 많이 필요(수치는 확인 필요)<Ref n={14} /> |
+| 카드 수 | 30에서 50장 권장. 더 많으면 기타 묶음이 생긴다<Ref n={12} /> | 해당 없음 |
+
+카드 소팅의 인원이 사용성 테스트의 5명보다 많은 이유는 사람마다 분류 방식이 크게 다르기 때문이다. Tullis와 Wood(2004)의 분석을 인용한 Nielsen에 따르면 5명은 상관 0.75, 15명은 0.90, 60명은 0.98 수준이다.<Ref n={13} />
+
+순서는 카드 소팅으로 초안을 만들고 트리 테스트로 확인하는 것이다. 카드 소팅 결과만으로는 해석이 모호해 트리 테스트로 검증하라는 것이 NN/g의 설명이다.<Ref n={14} />
+
+## 아이디어 발산과 수렴
+
+많이 내는 일과 고르는 일을 같은 시간에 섞으면 둘 다 약해진다. d.school도 아이디어를 낼 때와 평가할 때를 구분하라고 안내한다.<Ref n={8} /> 모델마다 이 구분을 시간표로 만든 것이 디자인 스프린트다.
+
+### 디자인 스프린트의 5일
+
+Jake Knapp, John Zeratsky, Braden Kowitz의 Sprint(2016)가 소개한 Google Ventures 방식이다.<Ref n={16} /> 한 주에 문제 이해부터 사용자 검증까지 한다.
+
+<Figure caption="화요일은 넓히고 수요일은 좁힌다. 목요일에는 겉만 진짜처럼 만들고, 금요일에 실제 사용자 반응으로 가설을 확인한다.">
+  <SprintWeek />
+</Figure>
+
+- 일정의 요일별 내용은 GV의 공식 설명으로 확인했다.<Ref n={16} />
+- 금요일 인터뷰가 대상 고객 5명이라는 것은 2차 요약으로만 확인했다. 책 해당 쪽은 확인 필요다. 5명이라는 숫자의 근거는 Nielsen의 논리다. 사용자 5명이면 사용성 문제의 약 85%를 찾는다는 평균적 추정이며, 사용자 한 명이 새 문제를 찾는 비율을 31%로 둔 계산이다.<Ref n={15} /> 사용자 집단이 뚜렷이 다르면 더 필요하다.<Ref n={15} />
+
+### Crazy 8s
+
+종이를 접어 8칸을 만들고, 칸마다 같은 아이디어의 변형이나 다른 아이디어 하나씩을 빠르게 스케치한다.<Ref n={17} /> 첫 아이디어에서 멈추지 않게 하려는 장치다. 시간은 자료에 따라 8분(칸당 1분)이라고도 5분이라고도 적혀 있어 확인 필요다.<Ref n={17} />
+
+## 우선순위
+
+아이디어는 늘 일할 수 있는 양보다 많다. 순서를 정하는 대표적인 방법은 다음과 같다.
+
+| 방법 | 무엇인가 | 주의할 점 |
+|---|---|---|
+| 파레토 원칙 | 결과의 약 80%가 원인의 20%에서 나온다는 쏠림 관찰. Vilfredo Pareto의 토지 소유 관찰에서 유래<Ref n={19} /> | 80 대 20이 정확히 맞는다는 법칙이 아니다. 우리 제품의 쏠림은 데이터로 확인한다 |
+| 영향-노력 매트릭스 | 영향과 노력 두 축으로 나눠 영향이 크고 노력이 작은 것부터 한다 | 널리 쓰이는 기법이지만 원전은 확인 필요. 두 축 모두 추정이다 |
+| RICE | 도달, 영향, 확신, 노력으로 점수를 낸다. Intercom의 Sean McBride가 2018년 1월에 소개했다<Ref n={18} /> | 점수는 판단 보조이지 규칙이 아니다. 의존 관계나 전략 때문에 순서를 바꿀 수 있다<Ref n={18} /> |
+
+RICE의 구성은 다음과 같다.<Ref n={18} />
+
+| 요소 | 의미 | 값 |
+|---|---|---|
+| Reach | 정해진 기간에 영향받는 사람 수 | 분기당 고객 수 등 |
+| Impact | 한 사람에게 미치는 효과 | 3 매우 큼, 2 큼, 1 보통, 0.5 작음, 0.25 최소 |
+| Confidence | 추정에 대한 확신 | 100% 높음, 80% 중간, 50% 낮음 |
+| Effort | 필요한 총 작업량 | 사람-월 |
+
+점수는 Reach 곱하기 Impact 곱하기 Confidence를 Effort로 나눈 값이다. 아래는 계산을 보이기 위한 가정 예시다.
+
+| 후보(가정) | Reach | Impact | Confidence | Effort | 점수 |
+|---|---|---|---|---|---|
+| A. 재주문 버튼 | 2000 | 1 | 80% | 2 | 800 |
+| B. 새 온보딩 | 500 | 3 | 50% | 1 | 750 |
+
+A가 근소하게 높다. 다만 B의 Confidence가 낮다는 것은 점수를 올리기 전에 가설을 검증할 실험이 먼저라는 신호로 읽을 수 있다(이 글의 해석).
+
+<Callout kind="warn">
+RICE의 입력값은 모두 팀의 추정이다. 높은 점수가 사용자 문제를 검증했다는 뜻은 아니다.
+</Callout>
+
+## 설계 결정에 법칙 연결하기
+
+U1의 5개 층에서 아래층의 결정은 위층의 선택지를 정한다.<Ref n={24} /> 설계 도구도 층마다 다르다. 이 대응은 이 글의 정리다.
+
+<Figure caption="전략에서 정한 것이 범위, 구조, 골격, 표면의 선택지를 차례로 좁힌다. 도구와 층의 대응은 이 글의 정리다.">
+  <DecisionStack />
+</Figure>
+
+그 결정이 맞는지는 U2에서 U6까지의 법칙이 가설의 근거가 되고, 수치로 확인한다.
+
+| 문제 유형 | 쓸 법칙 | 확인할 수치와 기준 |
+|---|---|---|
+| 선택지가 많아 결정이 느리다 | Hick의 법칙. 선택지가 늘고 복잡할수록 결정 시간이 늘어난다<Ref n={22} /> | 정해진 최대 개수는 없다. 선택지 수를 줄이거나 나누고 과업 시간을 전후 비교한다(U4) |
+| 한 화면에 외울 것이 많다 | Miller의 법칙과 묶기. 평균 7(±2)개라는 서술이 흔하다<Ref n={22} /> | 7은 평균적 서술이지 설계 한도가 아니다. 의미 단위로 묶는다(U4) |
+| 눌러야 할 곳을 놓치거나 잘못 누른다 | Fitts의 법칙. 목표가 작고 멀수록 오래 걸린다<Ref n={22} /> | 터치 영역 최소 24×24 CSS px(WCAG 2.5.8), 권장 iOS 44pt, Android 48dp(U1, 수치는 확인 필요)(U5) |
+| 관련 항목이 따로 놀아 보인다 | 근접의 법칙. 가까운 것을 같은 묶음으로 본다<Ref n={22} /> | 수치 기준은 없다. 묶음 안 간격이 묶음 사이 간격보다 작게 한다(U5) |
+| 눌렀는데 반응이 없는 것 같다 | Doherty 임계값 400ms, Nielsen의 응답 시간 한계<Ref n={22} /><Ref n={23} /> | 0.1초는 즉각, 1초는 흐름 유지, 10초는 주의 유지의 한계이며 진행 표시가 필요하다(U3) |
+| 새 화면이 낯설어 막힌다 | Jakob의 법칙. 사용자는 이미 아는 사이트처럼 동작하길 기대한다<Ref n={22} /> | 익숙한 패턴을 쓰고 첫 과업 완수율을 본다 |
+| 글자가 안 읽힌다 | WCAG 대비 기준 | 본문 4.5 대 1 이상, 큰 글자 3 대 1 이상(U1) |
+
+<Callout kind="warn">
+법칙은 가설을 세울 근거이지 증명이 아니다. 맥락이 다르면 수치도 달라지므로 법칙에서 가설을 만들고 우리 사용자로 확인한다.
+</Callout>
+
+## 접근성의 기본 원칙
+
+W3C의 접근성 원칙은 네 가지이며 앞 글자를 따 POUR라고 부른다. WCAG는 이 네 원칙 아래 지침과 성공 기준을 두고 A, AA, AAA 세 등급으로 나눈다.<Ref n={20} />
+
+| 원칙 | 뜻 | 설계에서 확인할 성공 기준(WCAG 2.2) |
+|---|---|---|
+| Perceivable(인식 가능) | 정보와 UI를 사용자가 감각으로 받아들일 수 있다<Ref n={20} /> | 1.1.1 대체 텍스트(A), 1.3.1 정보와 관계(A), 1.4.3 대비(AA)<Ref n={21} /> |
+| Operable(조작 가능) | UI와 내비게이션을 다양한 방식으로 조작할 수 있다 | 2.1.1 키보드(A), 2.4.7 포커스 표시(AA), 2.5.8 터치 영역 최소(AA)<Ref n={21} /> |
+| Understandable(이해 가능) | 내용과 조작이 이해된다 | 3.3.1 오류 식별(A), 3.3.2 라벨 또는 안내(A)<Ref n={21} /> |
+| Robust(견고) | 현재와 미래의 사용자 도구, 보조 기술에서 동작한다 | 4.1.2 이름, 역할, 값(A)<Ref n={21} /> |
+
+와이어프레임 단계에서 포커스 순서, 라벨, 터치 영역을 정해 두면 뒤에서 고칠 일이 줄어든다(이 글의 권장). 기준을 채웠다고 좋은 UX가 되는 것은 아니라는 U1의 주의는 여기서도 같다.
+
+## 흔한 오해와 주의점
+
+| 오해 | 실제 | 주의할 점 |
+|---|---|---|
+| 가설은 맞는지 확인하는 것이다 | 틀릴 수 있어야 가설이다 | 기준을 실험 전에 정한다. 결과를 본 뒤 기준을 바꾸면 확증 편향이 된다 |
+| 프로토타입은 예쁠수록 좋다 | 질문에 필요한 만큼만 만든다 | 높은 충실도는 비용이 크고 개념 수준의 피드백을 막을 수 있다 |
+| 더블 다이아몬드는 한 번 지나가면 끝이다 | 반복하며 되돌아간다 | 해법 단계에서 문제 정의가 틀렸음을 알게 되면 첫 다이아몬드로 돌아간다 |
+| 단계 이름이 다르면 다른 방법이다 | 출처마다 이름과 개수가 다르다 | 이름보다 어떤 질문에 답하는 단계인지를 본다 |
+| 5명이면 충분하다 | 한 사용자 집단의 문제 발견에는 그렇다 | 집단이 다르면 더 필요하다. 정량 지표에는 부족하다<Ref n={15} /> |
+| 카드 소팅 결과가 곧 메뉴 구조다 | 결과는 해석이 필요한 재료다 | 트리 테스트로 확인한다<Ref n={14} /> |
+| RICE 점수가 높으면 하면 된다 | 점수는 추정값이다 | 확신이 낮으면 먼저 실험한다<Ref n={18} /> |
+| 접근성은 마지막에 챙긴다 | 구조와 라벨은 초기에 정한다 | 와이어프레임 단계부터 점검한다 |
+
+## 실전 점검 기준표
+
+| 단계 | 확인할 것 | 통과 기준 |
+|---|---|---|
+| 가설 | 대상, 해법, 혜택, 결과가 문장에 있는가 | 확인 기준이 숫자 또는 관찰 가능한 행동으로 적혀 있다 |
+| 실험 | 가장 싼 방법인가 | 실험 전에 지지와 반증 기준을 정했다 |
+| 충실도 | 질문에 맞는 충실도인가 | 개념은 종이, 배치는 와이어프레임, 과업은 클릭 프로토타입 |
+| 정보 구조 | 사용자의 분류와 맞는가 | 카드 소팅으로 초안, 트리 테스트로 검증 |
+| 발산과 수렴 | 내는 시간과 고르는 시간을 나눴는가 | 평가는 아이디어를 다 낸 뒤 한다 |
+| 우선순위 | 점수의 근거가 있는가 | Confidence가 낮으면 실험부터 한다 |
+| 법칙 | 결정마다 근거가 있는가 | 문제 유형에 해당하는 법칙과 수치를 적었다 |
+| 접근성 | POUR 네 가지를 점검했는가 | 대비, 키보드 조작, 라벨, 터치 영역 확인 |
+
+## 사례
+
+| 사례 | 단계 | 핵심 |
+|---|---|---|
+| Dropbox 소개 영상(2007) | MVP | 제품이 완성되기 전에 영상으로 수요를 확인한 사례로 Lean Startup 계열 자료에서 자주 소개된다. 대기자 수 같은 수치는 자료마다 달라 인용하지 않는다(확인 필요)<Ref n={25} /> |
+| Zappos 초기 | MVP | 신발을 온라인으로 사는지 확인하려고 매장 신발 사진을 올리고 주문이 들어오면 사서 보냈다는 이야기로 알려져 있다. 가설 검증에 재고도 사이트도 필요 없었다는 점이 요지다(세부는 확인 필요)<Ref n={25} /> |
+| IMVU의 첫 MVP | MVP | Ries가 직접 설명한 사례다. 첫 MVP를 만드는 데 6개월이 걸렸다는 것이 MVP는 작다는 뜻이 아님을 보여준다<Ref n={4} /> |
+| 재주문 앱 가설 | 가설 | 가정 예시다. 실제 서비스가 아니다 |
+
+## 관련 글
+
+<Related>
+  <Rel to="u01" note="5개 층과 사용성의 구성요소, 이 글이 이어받는 기준" />
+  <Rel to="u04" note="Hick의 법칙, Miller의 법칙, 묶기와 선택지 수" />
+  <Rel to="u05" note="간격과 묶음, 터치 영역 크기" />
+  <Rel to="u08" note="더블 다이아몬드의 앞쪽: 사용자 이해와 문제 정의" />
+  <Rel to="u10" note="프로토타입을 실제로 시험하고 해석하는 방법" />
+</Related>
+
+외부 자료: [Laws of UX](https://lawsofux.com/), [Design Council의 Framework for Innovation](https://www.designcouncil.org.uk/our-resources/framework-for-innovation/), [Stanford d.school의 Design Thinking Bootleg](https://dschool.stanford.edu/tools/design-thinking-bootleg).
+
+## 출처
+
+<Sources>
+  <Source n={1}>Jeff Gothelf, Josh Seiden, Lean UX (2013 초판, 2016 2판, 3판 이후 있음). 가설 문구는 판본별로 다르며 원문 쪽수는 확인 필요.</Source>
+  <Source n={2}>Jeff Gothelf, "How to Use the Lean UX Canvas". jeffgothelf.com/blog/how-to-use-the-lean-ux-canvas</Source>
+  <Source n={3}>Eric Ries, The Lean Startup (2011).</Source>
+  <Source n={4}>Lean Startup Co., "What Is an MVP? Eric Ries Explains". leanstartup.co/resources/articles/what-is-an-mvp</Source>
+  <Source n={5}>Design Council, "The Double Diamond". designcouncil.org.uk/our-resources/the-double-diamond</Source>
+  <Source n={6}>Design Council, "Framework for Innovation". designcouncil.org.uk/our-resources/framework-for-innovation</Source>
+  <Source n={7}>Design Council, "History of the Double Diamond". 연도가 5번과 다르게 적혀 있다.</Source>
+  <Source n={8}>Stanford d.school, "Design Thinking Bootleg". dschool.stanford.edu/tools/design-thinking-bootleg</Source>
+  <Source n={9}>Nielsen Norman Group, "Design Thinking 101". nngroup.com/articles/design-thinking</Source>
+  <Source n={10}>Tim Brown, "Design Thinking", Harvard Business Review, 2008년 6월. hbr.org/2008/06/design-thinking</Source>
+  <Source n={11}>Nielsen Norman Group, "UX Prototypes: Low Fidelity vs. High Fidelity". nngroup.com/articles/ux-prototype-hi-lo-fidelity</Source>
+  <Source n={12}>Nielsen Norman Group, "Card Sorting: Uncover Users' Mental Models for Better Information Architecture". nngroup.com/articles/card-sorting-definition</Source>
+  <Source n={13}>Jakob Nielsen, "How Many Test Users in a Card Sorting Study?", Nielsen Norman Group. Tullis & Wood (2004)의 분석을 인용. nngroup.com/articles/card-sorting-how-many-users-to-test</Source>
+  <Source n={14}>Nielsen Norman Group, "Tree Testing: Fast, Cheap Way to Evaluate IA". nngroup.com/articles/tree-testing</Source>
+  <Source n={15}>Jakob Nielsen, "Why You Only Need to Test with 5 Users", Nielsen Norman Group. nngroup.com/articles/why-you-only-need-to-test-with-5-users</Source>
+  <Source n={16}>Jake Knapp, John Zeratsky, Braden Kowitz, Sprint (Simon & Schuster, 2016). 요일별 구성은 GV, "The Design Sprint". gv.com/sprint. 금요일 5명은 2차 요약, 확인 필요.</Source>
+  <Source n={17}>GV Library와 Google Design Sprint Kit의 Crazy 8s 설명. 소요 시간 표기가 자료마다 달라 확인 필요.</Source>
+  <Source n={18}>Sean McBride, "RICE: Simple prioritization for product managers", Intercom 블로그, 2018년 1월 5일. intercom.com/blog/rice-simple-prioritization-for-product-managers</Source>
+  <Source n={19}>Laws of UX, "Pareto Principle". lawsofux.com/pareto-principle</Source>
+  <Source n={20}>W3C WAI, "The Four Principles of Accessibility". w3.org/WAI/fundamentals/accessibility-principles. W3C, WCAG 2.2. w3.org/TR/WCAG22</Source>
+  <Source n={21}>W3C, "How to Meet WCAG 2.2 (Quick Reference)"의 성공 기준 번호, 이름, 등급. w3.org/WAI/WCAG22/quickref</Source>
+  <Source n={22}>Laws of UX: Hick's Law, Miller's Law, Fitts's Law, Law of Proximity, Doherty Threshold, Jakob's Law. lawsofux.com</Source>
+  <Source n={23}>Jakob Nielsen, "Response Times: The 3 Important Limits", Nielsen Norman Group. nngroup.com/articles/response-times-3-important-limits</Source>
+  <Source n={24}>Jesse James Garrett, The Elements of User Experience (2002, 2판 2010). 5개 층의 정리는 U1 참조. 터치 영역 수치의 출처(WCAG 2.5.8, Apple HIG 44pt, Material 48dp)도 U1 출처 11, 12를 따르며 HIG와 Material의 현재 수치는 확인 필요.</Source>
+  <Source n={25}>Dropbox와 Zappos 사례: Eric Ries, The Lean Startup(2011) 및 theleanstartup.com 사례 페이지에서 다뤄진 것으로 알려져 있다. 책 내 위치와 세부 수치는 확인 필요.</Source>
+</Sources>

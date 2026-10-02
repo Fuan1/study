@@ -1,0 +1,319 @@
+import HickCurve from './HickCurve';
+import JamStudy from './JamStudy';
+import Chunking from './Chunking';
+import SerialPosition from './SerialPosition';
+import DepthBreadth from './DepthBreadth';
+import Disclosure from './Disclosure';
+
+<Overview>
+
+**선택·기억·정보량의 법칙**은 한 화면에 얼마나 많은 선택지와 정보를 두어야 사람이 막히지 않는지를 다루는 연구와 경험칙의 묶음이다. Hick의 법칙, 선택 과부하, Miller의 법칙과 청킹, 서열 위치 효과, 파레토 원칙이 여기에 속한다.
+
+- 선택지가 늘면 고르는 시간은 늘지만 정비례가 아니라 로그로 늘어난다. 이 식은 조건이 좁아서 "적을수록 좋다"의 근거로 쓰면 틀린다.
+- "7±2"는 메뉴 항목 수의 규칙이 아니다. 핵심은 의미 있는 덩어리로 묶는 것이고, 하단 탭은 공식 가이드가 3개에서 5개 안팎을 권한다.
+- 선택 과부하와 서열 위치 효과는 결과가 조건에 따라 달라진다. 숫자를 단정하지 말고 우리 화면에서 확인해야 한다.
+
+</Overview>
+
+<Toc />
+
+## 선택지가 늘면 생기는 일
+
+### Hick의 법칙
+
+**Hick-Hyman 법칙**은 선택지가 n개일 때 반응 시간이 선택지 수의 로그에 따라 늘어난다는 법칙이다. William Hick이 1952년에 실험으로 보였고,<Ref n={1} /> Ray Hyman이 1953년에 선택지의 확률이 다른 경우로 일반화했다.<Ref n={2} /> 흔히 쓰는 식은 다음과 같다.<Ref n={3} />
+
+`RT = a + b × log2(n + 1)`
+
+- RT는 반응 시간, n은 동등하게 일어날 선택지의 수다. a와 b는 과제마다 실험으로 구하는 상수다.
+- `+1`은 아무것도 고르지 않을 가능성까지 센 것이라고 설명된다. `log2(n)` 형태로 쓰는 자료도 많다.<Ref n={4} />
+- 로그라서 선택지가 두 배가 되어도 시간이 두 배가 되지 않는다. 두 배가 될 때마다 일정한 시간이 더해지는 모양이다.
+- b는 비트당 약 150ms로 자주 인용된다(확인 필요: 1차 문헌에서 직접 확인하지 못했다). 이 수치를 화면 설계의 계산에 그대로 쓰지 않는다.
+
+<Figure caption="선택지가 두 배가 될 때마다 log2(n+1)은 1 안쪽으로만 늘어난다. 식으로 계산한 모양이며 사람을 측정한 값이 아니다.">
+  <HickCurve />
+</Figure>
+
+### 적용 조건과 한계
+
+식이 맞는 조건은 좁다. 이 표를 확인하지 않고 "선택지를 줄이면 빨라진다"로 옮기면 틀리는 경우가 많다.<Ref n={4} />
+
+| 조건 | 의미 | 어긋나면 |
+|---|---|---|
+| 동등한 확률 | 식의 n은 같은 확률로 나올 대안의 수다 | 확률이 다르면 Hyman의 정보량(엔트로피)으로 계산한다. 자주 쓰는 항목은 더 빨리 고른다 |
+| 정해진 자극과 반응 | 신호를 보고 정해진 키를 누르는 과제에서 확립됐다 | 보이는 대상을 직접 가리키는 식으로 자극과 반응이 자연스럽게 맞으면 증가가 거의 사라질 수 있다 |
+| 연습 | 연습하면 b가 줄어든다 | 익숙한 사용자와 처음 쓰는 사용자의 시간이 다르다 |
+| 정렬된 목록 | 알파벳순 같은 익숙한 순서는 반으로 나누며 찾기 때문에 로그에 가깝다 | 순서가 없는 목록은 하나씩 훑을 수 있다. 일반적 설명이며 원문 확인 필요 |
+| 측정 대상 | 식은 고르는 데 드는 반응 시간만 설명한다 | 읽기, 훑어보기, 이해하는 시간은 별개다 |
+
+<Callout kind="warn">
+Hick의 법칙을 HCI에 적용하는 것을 비판적으로 검토한 연구가 있다. 이 연구는 Hick의 법칙이 "적을수록 좋다"를 지지하지 않고 오히려 반대쪽이라고 주장하고, 화면의 로그형 증가를 곧바로 이 법칙으로 해석할 수 없다고 본다.<Ref n={5} /> 정렬된 메뉴에서는 항목이 많아도 로그로만 늘기 때문에, 단계를 늘려 항목 수를 줄이는 쪽이 오히려 느릴 수 있다.<Ref n={6} />
+</Callout>
+
+### 선택 과부하
+
+**선택 과부하(choice overload)** 는 선택지가 많을수록 결정을 미루거나, 포기하거나, 선택에 덜 만족하게 되는 현상이다. 근거로 가장 많이 인용되는 것이 Iyengar와 Lepper(2000)의 잼 실험이다.<Ref n={7} />
+
+- 미국 캘리포니아의 고급 식료품점에서 시식대를 열고 잼을 24종 또는 6종 진열했다. 시기는 1990년대 중반으로 정리되는 자료가 많다.
+- 24종 앞에는 약 60퍼센트가 멈췄고 6종 앞에는 약 40퍼센트가 멈췄다.
+- 멈춘 사람 중 쿠폰으로 실제로 산 사람은 24종이 약 3퍼센트, 6종이 약 30퍼센트였다.
+- 논문은 실험 세 건을 보고한다. 잼은 그중 하나다.
+
+<Figure caption="더 많은 종류는 더 많은 관심을 끌었지만 구매는 더 적었다. 보고된 대략값이며 구매 비율의 분모는 멈춘 사람이다.">
+  <JamStudy />
+</Figure>
+
+이후의 종합 연구는 이 효과가 일정하지 않다고 보고한다.
+
+| 연구 | 보고된 것 | 해석할 때 주의 |
+|---|---|---|
+| Iyengar & Lepper (2000)<Ref n={7} /> | 잼 24종 대 6종에서 구매가 크게 갈렸다 | 한 장소, 한 상품군의 현장 실험이다 |
+| Scheibehenne 외 (2010)<Ref n={8} /> | 50개 실험(63개 조건), 참가자 5,036명을 합친 메타분석. 평균 효과는 거의 0이고 연구 간 편차가 컸다. 효과가 반드시 나타나는 충분조건은 찾지 못했다 | 평균이 0이라는 것은 효과가 없다는 뜻이 아니라, 나타나는 연구와 안 나타나는 연구가 섞여 있다는 뜻이다 |
+| Chernev 외 (2015)<Ref n={9} /> | 99개 관찰(N=7,202)을 합친 메타분석. 선택지 구성의 복잡성, 결정 과제의 난이도, 선호의 불확실성, 결정 목표 네 요인이 효과를 좌우한다고 정리했다 | 선택지가 많다고 항상 문제가 아니라, 위 요인이 겹칠 때 문제가 커진다는 조건부 결론이다 |
+
+<Callout kind="warn">
+"선택지가 많으면 구매가 10분의 1로 줄어든다"를 일반 법칙으로 인용하지 않는다. 잼 실험은 유명한 사례이고, 메타분석은 평균 효과가 거의 없다고 본다. 우리 화면에서 선택지를 줄일 때는 전후를 비교해 확인한다.
+</Callout>
+
+## 기억의 한계와 묶기
+
+### Miller의 법칙과 7±2의 오해
+
+George Miller(1956)는 사람의 정보 처리 한계를 다룬 논문에서 두 가지를 별개로 논했다. 하나는 한 번에 구별할 수 있는 대안의 수(절대 판단)이고, 다른 하나는 바로 따라 말할 수 있는 항목의 수(기억 폭)다. 두 값이 비슷하게 일곱 안팎이어서 제목이 "7±2"가 됐고, 그 일치가 우연이라고 스스로 덧붙였다.<Ref n={10} /> 기억 폭은 낱개의 수가 아니라 의미 있는 덩어리(chunk)의 수로 센다.<Ref n={10} />
+
+이후 Cowan(2001)은 덩어리로 묶는 효과를 통제하면 한계가 평균 약 4덩어리라고 보았다.<Ref n={11} /> Laws of UX는 7±2를 설계 제한의 근거로 쓰지 말라고 안내한다.<Ref n={12} />
+
+| 오해 | 실제 | 주의할 점 |
+|---|---|---|
+| 메뉴나 탭은 7개 이하여야 한다 | 7±2는 기억 폭의 이야기다 | 화면에 보이는 항목은 기억에 의존하지 않는다. 항목 수는 다른 근거로 정한다<Ref n={6} /> |
+| 사람의 기억은 정확히 7개다 | Miller 본인이 마법의 숫자가 아니라고 했다 | 후속 연구는 더 작은 값(약 4덩어리)을 제시한다 |
+| 덩어리는 글자 수다 | 덩어리는 사용자에게 의미 있는 단위다 | 같은 숫자열도 아는 사람에게는 한 덩어리다 |
+
+### 청킹
+
+**청킹(chunking)** 은 낱개 정보를 의미 있는 묶음으로 묶어 기억할 단위를 줄이는 것이다. 숫자열은 묶음 단위로 끊어 보여 주는 것이 대표 예다.<Ref n={13} />
+
+<Figure caption="같은 숫자라도 묶으면 기억하고 확인할 단위가 줄어든다. 숫자는 모두 가정한 예시다.">
+  <Chunking />
+</Figure>
+
+| 대상 | 묶는 방식 | 근거 |
+|---|---|---|
+| 카드 번호 | 실물 카드처럼 4자리 블록으로 띄어 쓴다 | Baymard의 결제 사용성 테스트에서 사용자는 4자리 블록 단위로 입력하고 확인한다. 자동 띄어쓰기를 지원하는 것을 권한다<Ref n={14} /> |
+| 전화번호 | 3-4-4 같은 관례 단위로 끊는다 | 관례에 의한 분할이다. 번호 체계는 나라와 회선에 따라 다르다 |
+| 긴 목록과 메뉴 | 의미가 같은 항목끼리 이름 붙인 그룹으로 묶는다 | 묶음의 이름이 사용자가 아는 말이어야 한다 |
+| 긴 입력 양식 | 관련 필드를 구역으로 나눈다 | 임의로 쪼개면 덩어리가 아니라 단계만 늘어난다 |
+
+<Callout>
+묶는 기준은 개수가 아니라 뜻이다. 4개씩 자르는 것보다 사용자가 하나로 이해하는 단위로 자르는 것이 먼저다.
+</Callout>
+
+## 순서와 배치
+
+### 서열 위치 효과
+
+**서열 위치 효과(serial position effect)** 는 목록을 외울 때 처음 항목과 마지막 항목이 가운데보다 잘 기억되는 현상이다. 앞쪽이 잘 남는 것을 초두 효과, 뒤쪽이 잘 남는 것을 최신 효과라고 한다.
+
+- Murdock(1962)은 10개에서 40개의 단어 목록을 하나씩 보여 주고 자유롭게 회상하게 했다. 처음 서너 개와 마지막 여덟 개 안팎에서 회상률이 높은 곡선이 나왔고, 최신 효과는 긴 목록에서도 나타났다.<Ref n={15} />
+- Glanzer와 Cunitz(1966)는 목록을 본 뒤 다른 활동을 끼워 넣으면 최신 효과는 줄거나 사라지고 초두 효과는 거의 그대로임을 보였다. 두 효과가 서로 다른 기억 저장에서 나온다는 해석의 근거가 됐다. 지연은 약 30초로 정리된다(원문 확인 필요).<Ref n={16} />
+
+<Callout kind="warn">
+서열 위치 효과는 단어 목록의 회상 실험에서 확인된 현상이다. 하단 탭의 첫째와 마지막 칸이 더 많이 눌린다는 것을 직접 보인 연구가 아니다. 양 끝에 중요한 항목을 두는 것은 이 효과에서 끌어낸 설계 경험칙이다.<Ref n={17} />
+</Callout>
+
+### 하단 탭과 내비게이션 항목의 수
+
+공식 가이드와 NN/g 자료가 말하는 항목 수는 다음과 같다.
+
+| 출처 | 항목 수 | 핵심 내용 |
+|---|---|---|
+| Material Design 3 (Navigation bar) | 3개에서 5개 | 하단 바는 아이콘과 라벨로 된 목적지를 3개에서 5개 둔다. Android 구현의 기본 라벨 모드는 3개 이하면 모든 라벨을 보이고 4개 이상이면 선택된 항목만 보인다<Ref n={18} /> |
+| Apple HIG (Tab bars) | 최대 수치 없음 | 현재 문서는 필요한 만큼의 탭을 쓰되 적을수록 이동이 쉽다고 한다. 공간이 모자라면 마지막 탭이 More로 바뀌고 그 안의 항목은 찾기 어려워진다. 사용자가 탭을 고르게 할 때 기본 목록은 5개 이하를 권한다. 탭마다 기호와 라벨을 둔다<Ref n={19} /> |
+| NN/g 모바일 내비게이션 | 5개 이하 | 탭 바는 5개 이하일 때 적합하고 아이콘에는 가능하면 라벨을 붙인다<Ref n={20} /> |
+| NN/g 숨김 내비게이션 연구 | 4개 이하는 노출 | 모바일에서 최상위 항목이 4개 이하이면 링크를 보이게 두고, 그보다 많을 때 숨김을 고려한다<Ref n={21} /> |
+
+숨김 내비게이션(햄버거 메뉴)의 비용도 수치로 보고되어 있다. 같은 연구에서 모바일 사용자는 숨긴 내비게이션을 약 57퍼센트의 경우에 썼고, 보이는 메뉴를 곁들인 경우는 약 86퍼센트였다. 과업 시간은 숨긴 쪽이 약 15퍼센트 느렸다.<Ref n={21} />
+
+Material 문서는 5개를 넘으면 하단 바 대신 다른 패턴을 권한다고 정리되지만, 원문 문구는 재확인이 필요하다.
+
+| 배치 규칙 | 근거와 한계 |
+|---|---|
+| 가장 중요한 목적지를 맨 앞과 맨 끝 칸에 둔다 | 서열 위치 효과에서 끌어낸 경험칙이다. 클릭률 근거는 아니다 |
+| 자주 쓰지만 덜 중요한 항목은 가운데에 둔다 | 같은 경험칙이다. 사용 빈도와 작업 흐름이 우선이다 |
+| 모든 칸에 아이콘과 라벨을 함께 둔다 | Apple, Material, NN/g가 공통으로 권한다 |
+| 항목이 많아 넘치면 묶어서 줄이거나 다른 패턴을 쓴다 | 숨기면 발견 가능성이 떨어진다. 위의 수치 참고 |
+
+<Figure caption="하단 바가 5칸이면 양 끝 칸에 핵심 목적지를 두고 가운데에 보조 항목을 두는 배치. 서열 위치 곡선은 개념도이고 가정한 칸 구성이다.">
+  <SerialPosition />
+</Figure>
+
+## 메뉴의 깊이와 넓이
+
+같은 수의 목적지를 한 화면에 늘어놓을지(넓게), 여러 단계로 나눌지(깊게)는 연구에서 오래 비교됐다.
+
+| 연구 | 보고된 것 | 주의 |
+|---|---|---|
+| D. Miller (1981)<Ref n={22} /> | 깊이 1단계에서 6단계, 단계당 선택지 2개에서 64개까지 네 구성을 비교했다. 목표에 도달하는 시간은 U자형이었고 가장 빨랐던 것은 2단계, 단계당 8개였다. 오류도 같은 방향이었다 | 당시 컴퓨터 메뉴 실험이다. 모든 구성이 목적지 64개를 나눈 것으로 이해되지만 설계 세부는 원문 확인 필요 |
+| Landauer & Nachbar (1985)<Ref n={6} /> | 알파벳순 미국 50개 주를 모두 보여 주는 쪽이 약 15개씩 3묶음으로 나눈 것보다 빨랐다 | 정렬되고 익숙한 항목에 한정된 결과다. 교과서의 정리를 따랐다 |
+| Larson & Czerwinski (1998)<Ref n={23} /> | 웹 사이트 구조에서 깊이가 늘수록 탐색 성능이 나빠졌다 | 최적 넓이에 대한 서술이 2차 자료마다 달라 원문 확인 필요 |
+
+<Figure caption="같은 64개를 나눌 때 한 단계에 몰거나 여섯 단계로 쪼개는 양 극단보다 중간 구성이 빨랐다는 1981년 연구의 결과. 구성은 단계 수와 단계당 개수를 계산해 그렸다.">
+  <DepthBreadth />
+</Figure>
+
+- 깊이가 늘수록 단계마다 현재 위치와 이름 해석의 부담이 쌓인다. 깊이는 줄이는 쪽이 대체로 유리하다.
+- 넓게 만들 수 있는 조건은 항목이 정렬되어 있고 이름이 겹치지 않을 때다. 이름이 모호하면 넓은 목록이 훑기 어려워진다.
+- 모바일은 한 화면에 보이는 폭이 좁아 위 결과를 그대로 옮기기 어렵다. 이 연구들은 모두 모바일 이전의 환경이거나 데스크톱 환경이다.
+
+## 줄이고 감추기
+
+### 고민 없는 선택과 불필요한 문구
+
+Steve Krug는 『Don't Make Me Think』에서 클릭 수보다 클릭마다 드는 고민을 따진다.<Ref n={24} />
+
+| 개념 | 요지 | 적용 |
+|---|---|---|
+| 고민 없는 선택(mindless choice) | 클릭이 여러 번이어도 각 단계가 고민 없이 명확하면 괜찮다는 둘째 법칙이다 | 단계 수를 줄이는 데만 매달리지 말고 각 단계의 선택지가 구별되는지 본다 |
+| 불필요한 말 덜기 | 셋째 법칙은 쪽마다 단어의 절반을 덜어내고 남은 것의 절반을 다시 덜라는 것이다 | 환영 문구, 길게 늘어진 설명을 먼저 지운다. 설명이 필요한 곳은 화면을 설명이 필요 없게 고친다 |
+
+3판 기준으로 고민 없는 선택은 4장, 불필요한 말 덜기는 5장의 주제로 목차에서 확인된다. 다른 판본의 장 번호는 확인 필요.
+
+### 점진적 공개
+
+**점진적 공개(progressive disclosure)** 는 자주 쓰거나 필수인 것만 먼저 보이고, 고급 기능이나 드문 기능은 요청했을 때 보이는 전략이다. Jakob Nielsen이 2006년 12월에 NN/g에서 정의했다.<Ref n={25} />
+
+- 얻는 것: 처음 쓰는 사람은 필요한 기능에 집중해 쉽게 배우고, 숙련자는 쓸데없는 선택지를 훑지 않아 빨라지며, 숨겨진 복잡함이 오류를 줄인다.<Ref n={25} />
+- 조건 1: 자주 쓰는 기능과 드문 기능을 올바르게 나눠야 한다. 사용 데이터와 관찰로 정한다.
+- 조건 2: 더 보기 같은 단서가 눈에 보이고 무엇이 나올지 알려 줘야 한다.
+- 단계는 두 단계까지를 권한다. 세 단계 이상이면 길을 잃기 쉽다.<Ref n={25} />
+
+<Figure caption="기본 화면에는 자주 쓰는 것만 두고 나머지는 한 번 눌러 연다. 가정한 설정 화면이며 특정 서비스의 실제 화면이 아니다.">
+  <Disclosure />
+</Figure>
+
+<Callout kind="warn">
+점진적 공개는 감추는 것과 다르다. 자주 쓰는 항목까지 숨기면 앞의 숨김 내비게이션 수치처럼 발견 가능성과 속도가 떨어진다.
+</Callout>
+
+## 파레토 원칙
+
+**파레토 원칙(Pareto principle)** 은 결과의 대부분이 원인의 일부에서 나온다는 경험칙이다. 흔히 결과의 80퍼센트가 원인의 20퍼센트에서 나온다고 말한다.<Ref n={26} />
+
+- 경제학자 Vilfredo Pareto가 이탈리아 토지의 약 80퍼센트를 인구의 약 20퍼센트가 소유한다고 관찰한 데서 출발한다고 설명된다. 품질 관리에 옮긴 Joseph Juran(1941)은 이를 소수의 중요한 것과 다수의 사소한 것으로 이름 붙였다.<Ref n={26} />
+- 80과 20은 정확한 상수가 아니다. 90 대 10이나 70 대 30일 수도 있고, 두 수의 합이 100일 필요도 없다.<Ref n={26} />
+- UX에서는 가장 자주 쓰이는 소수의 기능과 화면에 개선을 모으는 근거로 쓴다.<Ref n={26} />
+- Microsoft가 가장 많이 보고된 오류의 상위 20퍼센트를 고치면 관련 오류의 80퍼센트가 사라진다고 보고했다는 설명이 있다. 2차 자료에서 확인한 것이어서 원문 확인 필요.
+
+<Callout kind="warn">
+파레토는 법칙이 아니라 우선순위를 정하는 가설이다. 기능의 80퍼센트가 쓸모없다는 뜻이 아니고, 드물게 쓰이는 기능(결제 오류 복구 등)이 치명적일 수 있다. 실제 사용 데이터로 확인해야 한다.
+</Callout>
+
+## 5개 층과의 연결
+
+U1의 5개 층에서 이 글의 내용은 구조, 범위, 골격에 걸친다.<Ref n={27} />
+
+| 층 | 이 글에서 다룬 것 | 어긋나면 |
+|---|---|---|
+| 범위 | 기능과 선택지의 수, 파레토로 정하는 우선순위 | 안 쓰는 기능이 가득하고 핵심이 묻힌다 |
+| 구조 | 메뉴의 깊이와 넓이, 그룹과 이름, 점진적 공개 | 원하는 곳으로 가지 못하고 되돌아온다 |
+| 골격 | 하단 탭의 항목 수와 배치, 숫자 입력의 묶기 | 메뉴를 못 찾고 입력을 틀린다 |
+
+## 법칙 한눈에 비교
+
+| 법칙 | 다루는 한계 | 핵심 | 근거의 성격 |
+|---|---|---|---|
+| Hick-Hyman | 고르는 시간 | 선택지 수의 로그에 비례 | 실험으로 확립됐지만 조건이 좁다 |
+| 선택 과부하 | 결정과 만족 | 선택지가 많으면 구매가 줄 수 있다 | 현장 실험 하나와 평균 효과가 거의 0인 메타분석이 공존한다 |
+| Miller와 청킹 | 기억의 용량 | 의미 있는 덩어리 단위로 센다 | 7±2는 대략값이고 후속 연구는 약 4덩어리를 제시한다 |
+| 서열 위치 | 목록 기억 | 처음과 끝이 잘 남는다 | 회상 실험은 견고하지만 UI 클릭률은 별개다 |
+| 파레토 | 우선순위 | 소수가 결과 대부분을 만든다 | 경험칙이며 비율은 상황마다 다르다 |
+
+## 흔한 오해와 주의점
+
+| 오해 | 실제 | 주의할 점 |
+|---|---|---|
+| 선택지는 적을수록 빠르다 | Hick의 법칙은 로그 증가만 말한다 | 정렬된 익숙한 목록은 많아도 빠르다. 단계를 늘리면 오히려 느릴 수 있다 |
+| 선택지가 많으면 구매가 항상 준다 | 메타분석의 평균 효과는 거의 0이다 | 선택지가 복잡하고 선호가 불확실할 때 커진다 |
+| 메뉴는 7개 이하로 | 7±2는 기억 폭이다 | 보이는 항목은 기억에 의존하지 않는다 |
+| 양 끝에 두면 더 많이 눌린다 | 단어 회상 실험의 결과다 | 클릭률은 따로 측정한다 |
+| 클릭 수만 줄이면 쉬워진다 | Krug는 고민 없는 선택을 기준으로 삼는다 | 클릭 하나에 고민이 많으면 오히려 더 막힌다 |
+| 숨기면 화면이 깔끔해진다 | 숨김 내비게이션은 사용률과 속도가 떨어졌다 | 자주 쓰는 항목은 보이게 둔다 |
+| 20퍼센트 기능만 만들면 된다 | 파레토는 경험칙이다 | 드문 기능이 치명적일 수 있다 |
+
+## 실전 점검 기준표
+
+| 점검 | 기준 | 근거 |
+|---|---|---|
+| 하단 탭 항목 수 | 3개에서 5개 | Material, NN/g, Apple<Ref n={18} /><Ref n={19} /><Ref n={20} /> |
+| 하단 탭 라벨 | 모든 칸에 아이콘과 라벨 | Apple, NN/g<Ref n={19} /><Ref n={20} /> |
+| 핵심 목적지 | 양 끝 칸에 배치하고 사용 데이터로 검증 | 서열 위치 효과의 경험칙<Ref n={17} /> |
+| 모바일 최상위 메뉴 | 4개 이하면 숨기지 않고 노출 | NN/g<Ref n={21} /> |
+| 정렬 | 항목이 많은 목록은 익숙한 순서로 정렬 | Hick-Hyman의 정렬된 목록 조건<Ref n={4} /> |
+| 메뉴 깊이 | 두 단계 안에서 목적지에 닿게 설계 | D. Miller 1981<Ref n={22} /> |
+| 숫자 입력 | 카드 번호 등은 자동 띄어쓰기로 묶음 표시 | Baymard<Ref n={14} /> |
+| 선택지 | 기본값이나 추천을 눈에 띄게 하고 나머지는 접는다 | 점진적 공개<Ref n={25} /> |
+| 문구 | 인사말과 설명을 반으로 줄여 보고 필요한 것만 남긴다 | Krug<Ref n={24} /> |
+| 과부하 검증 | 줄이기 전후를 같은 지표로 비교 | 메타분석이 일관성이 없다고 본다<Ref n={8} /> |
+
+## 실전 진단표
+
+| 증상 | 의심할 법칙 | 대응 |
+|---|---|---|
+| 선택지 화면에서 오래 머물다 이탈한다 | 선택 과부하, Hick | 추천이나 기본값을 두고 비교 기준을 보여 준다. 전후를 측정한다 |
+| 하단 탭에 항목이 6개 이상이다 | 항목 수 가이드 | 묶거나 우선순위로 줄이고 나머지는 다른 패턴으로 옮긴다 |
+| 사용자가 카드 번호나 계좌를 자주 틀린다 | 청킹 | 자동 띄어쓰기와 묶음 표시를 넣는다 |
+| 가운데 탭이나 메뉴가 기억나지 않는다고 한다 | 서열 위치 효과 | 양 끝에 핵심을 두고 이름을 사용자의 말로 바꾼다 |
+| 같은 메뉴를 열었다 닫았다 한다 | 깊이와 넓이, 고민 없는 선택 | 라벨을 구별되게 고치고 단계 수를 점검한다 |
+| 초보자가 설정 화면에서 길을 잃는다 | 점진적 공개 | 자주 쓰는 것만 먼저 두고 고급은 접는다 |
+| 안 쓰는 기능이 가득하다 | 파레토 | 사용 데이터로 상위 기능에 개선을 모은다 |
+| 메뉴를 숨겼더니 이용이 줄었다 | 숨김 내비게이션 | 핵심 항목은 항상 보이게 둔다 |
+
+## 사례
+
+| 사례 | 확인된 내용 | 의미 |
+|---|---|---|
+| 잼 실험(Draeger's) | 24종 대 6종에서 구매 비율이 약 3퍼센트 대 약 30퍼센트로 보고됐다<Ref n={7} /> | 유명하지만 후속 메타분석은 평균 효과를 거의 0으로 본다<Ref n={8} /> |
+| NN/g 숨김 내비게이션 연구 | 모바일에서 숨긴 쪽의 사용이 약 57퍼센트, 곁들인 쪽이 약 86퍼센트였다<Ref n={21} /> | 감춘 항목은 쓰이지 않는다 |
+| Baymard 카드 번호 테스트 | 카드 번호는 4자리 블록으로 입력하고 확인하며, 15퍼센트의 사이트가 자동 띄어쓰기를 하지 않았다<Ref n={14} /> | 청킹을 입력 칸에 적용한 사례 |
+| Android 내비게이션 바 | 기본 라벨 모드가 항목 수에 따라 다르게 동작한다<Ref n={18} /> | 항목 수가 UI 동작에 반영된 공식 구현 |
+| iOS 탭 바의 More 탭 | 공간이 모자라면 마지막 탭이 More로 바뀐다<Ref n={19} /> | 항목이 넘치면 일부가 숨겨진다 |
+
+## 관련 글
+
+<Related>
+  <Rel to="u01" note="5개 층에서 구조와 범위가 어디에 놓이는지" />
+  <Rel to="u02" note="사람의 주의와 기억 한계" />
+  <Rel to="u05" note="시각 구조와 조작 크기로 묶음과 강조를 만드는 법" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>W. E. Hick (1952), "On the rate of gain of information", Quarterly Journal of Experimental Psychology, 4, 11-26.</Source>
+  <Source n={2}>Ray Hyman (1953), "Stimulus information as a determinant of reaction time", Journal of Experimental Psychology, 45(3), 188-196.</Source>
+  <Source n={3}>Robert W. Proctor, Darryl W. Schneider (2018), "Hick's law for choice reaction time: A review", Quarterly Journal of Experimental Psychology, 71(6), 1281-1299. 식의 형태는 개설 자료로 교차 확인했다.</Source>
+  <Source n={4}>Hick-Hyman law 개설. en.wikipedia.org/wiki/Hick%27s_law, mathematicalpsychology.com/Hick_Hyman_Law. 적용 조건과 b 값은 2차 자료이며 확인 필요.</Source>
+  <Source n={5}>Wanyu Liu 외 (2020), "How Relevant is Hick's Law for HCI?", CHI 2020. 초록으로 확인했다.</Source>
+  <Source n={6}>Alan Dix 외, Human-Computer Interaction 교재 온라인 자료, "menu breadth and Miller's 7+/-2". hcibook.com/e3/plain/online/menu-breadth. Landauer & Nachbar(1985)는 이 정리를 통해 확인했다.</Source>
+  <Source n={7}>Sheena Iyengar, Mark Lepper (2000), "When choice is demotivating: Can one desire too much of a good thing?", Journal of Personality and Social Psychology, 79, 995-1006. 잼 실험의 비율은 초록과 2차 정리로 확인했고 원문 표의 정확한 인원은 확인하지 못했다.</Source>
+  <Source n={8}>Benjamin Scheibehenne, Rainer Greifeneder, Peter Todd (2010), "Can there ever be too many options? A meta-analytic review of choice overload", Journal of Consumer Research, 37.</Source>
+  <Source n={9}>Alexander Chernev, Ulf Böckenholt, Joseph Goodman (2015), "Choice overload: A conceptual review and meta-analysis", Journal of Consumer Psychology, 25(2), 333-358.</Source>
+  <Source n={10}>George A. Miller (1956), "The magical number seven, plus or minus two: Some limits on our capacity for processing information", Psychological Review, 63(2), 81-97.</Source>
+  <Source n={11}>Nelson Cowan (2001), "The magical number 4 in short-term memory: A reconsideration of mental storage capacity", Behavioral and Brain Sciences, 24. 초록으로 확인했다.</Source>
+  <Source n={12}>Laws of UX, "Miller's Law". lawsofux.com/millers-law</Source>
+  <Source n={13}>Chunking (psychology) 개설. en.wikipedia.org/wiki/Chunking_(psychology). 2차 자료이며 숫자 묶기 예시를 가져왔다.</Source>
+  <Source n={14}>Baymard Institute, "Credit Card Number Field: Auto-Format Spaces". baymard.com/research-articles/credit-card-field-auto-format-spaces</Source>
+  <Source n={15}>Bennet B. Murdock (1962), "The serial position effect of free recall", Journal of Experimental Psychology, 64(5), 482-488.</Source>
+  <Source n={16}>Murray Glanzer, Anita Cunitz (1966), "Two storage mechanisms in free recall", Journal of Verbal Learning and Verbal Behavior, 5, 351-360. 지연 시간은 2차 자료로 확인했다.</Source>
+  <Source n={17}>Laws of UX, "Serial Position Effect". lawsofux.com/serial-position-effect. 이 사이트의 용어 기원 설명은 확인하지 못해 인용하지 않았다.</Source>
+  <Source n={18}>Material Components Android 문서, "Navigation bar(Bottom navigation)". github.com/material-components/material-components-android 의 docs/components/BottomNavigation.md. Material 3 가이드 페이지는 본문을 직접 열지 못해 5개 초과 시 권고는 확인 필요.</Source>
+  <Source n={19}>Apple Human Interface Guidelines, "Tab bars". developer.apple.com/design/human-interface-guidelines/tab-bars</Source>
+  <Source n={20}>Nielsen Norman Group, "Basic Patterns for Mobile Navigation: A Primer". nngroup.com/articles/mobile-navigation-patterns</Source>
+  <Source n={21}>Nielsen Norman Group, "Hamburger Menus and Hidden Navigation Hurt UX Metrics". nngroup.com/articles/hamburger-menus</Source>
+  <Source n={22}>Dwight P. Miller (1981), "The depth/breadth tradeoff in hierarchical computer menus", Proceedings of the Human Factors Society. 초록과 2차 정리로 확인했다.</Source>
+  <Source n={23}>Kevin Larson, Mary Czerwinski (1998), "Web page design: Implications of memory, structure and scent for information retrieval", CHI 98. 초록의 2차 정리로 확인했고 원문 수치는 확인 필요.</Source>
+  <Source n={24}>Steve Krug, Don't Make Me Think, Revisited (3판 2014). 법칙은 2차 자료로 확인했고 장 번호는 목차로 확인했다.</Source>
+  <Source n={25}>Jakob Nielsen (2006), "Progressive Disclosure", Nielsen Norman Group. nngroup.com/articles/progressive-disclosure</Source>
+  <Source n={26}>Pareto principle 개설. en.wikipedia.org/wiki/Pareto_principle, Laws of UX, "Pareto Principle". 기원과 Juran 연도는 2차 자료이며 원문 확인 필요.</Source>
+  <Source n={27}>Jesse James Garrett, The Elements of User Experience (2002, 2판 2010). U1 참조.</Source>
+</Sources>

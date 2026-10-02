@@ -1,0 +1,22 @@
+/* 어두운 배경 고정. 모바일에서 오래 읽는 용도라 순흑(#000) 대신 약간 푸른 근흑을 쓴다.
+   본문 13.7:1, 보조 글자 7:1 이상, 강조색 9:1 이상 (WCAG 상대 휘도로 계산). */
+:root {
+  color-scheme: dark;
+  --bg: #0E1318;
+  --raise: #151C23;
+  --sunk: #0A0E12;
+  --ink: #D6DEE6;
+  --strong: #F1F5F9;
+  --muted: #9DAAB7;
+  --line: #27323C;
+  --accent: #6BD0DA;
+  --accent-soft: #10282F;
+  --warm: #F2A072;
+  --warm-soft: #2E2118;
+  --water: #101C25;
+  --good: #7ADBA6;
+  --bad: #F59A92;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-display: "Black Han Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}

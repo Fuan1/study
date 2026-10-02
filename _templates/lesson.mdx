@@ -1,0 +1,55 @@
+{/* 아티클 템플릿. <분야폴더>/lessons/<단원id>-slug/index.mdx 로 복사한다 (예: 01-ux/lessons/u02-how-people-see/index.mdx).
+    제목은 <분야폴더>/course.json 의 단원 title 이 상단에 자동으로 붙는다. 본문만 쓴다.
+    ## 와 ### 는 번호(1., 1.1)가 자동으로 붙고 <Toc /> 목차에 들어간다.
+    쓸 수 있는 컴포넌트(import 불필요): Overview, Toc, Callout, Figure, Ref/Sources/Source, Related/Rel, 마크다운 표.
+    도식은 같은 폴더에 TSX(SVG)로 만들어 아래처럼 import 한다. 도식 규칙은 CLAUDE.md 참고. */}
+
+import MyDiagram from './MyDiagram';
+
+<Overview>
+
+**용어(영문)** 는 한 문장 정의. 이어서 핵심 3줄.
+
+- 핵심 1
+- 핵심 2
+- 핵심 3
+
+</Overview>
+
+<Toc />
+
+## 정의
+
+본문. 출처가 있는 문장 끝에 <Ref n={1} /> 을 붙인다.
+
+| 구분 | 설명 | 기준·수치 |
+|---|---|---|
+| 항목 | 한 줄 설명 | 값(출처 번호) |
+
+## 원리와 기준
+
+<Figure caption="도식이 보여주는 주장 한 문장. '그림 N.' 은 자동으로 붙는다.">
+  <MyDiagram />
+</Figure>
+
+<Callout kind="warn">
+조심할 점. 흔한 오해, 수치의 한계 등.
+</Callout>
+
+## 사례
+
+| 사례 | 핵심 |
+|---|---|
+| 서비스 · 화면 | 무엇이 왜 좋은지. 확인하지 못한 것은 "확인 필요" |
+
+## 관련 글
+
+<Related>
+  <Rel to="u02" note="한 줄 설명" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>저자, 제목, 연도. 챕터·수치가 불확실하면 "확인 필요".</Source>
+</Sources>

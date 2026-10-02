@@ -1,0 +1,85 @@
+/* 아티클 본문. 모든 규칙은 .article 아래로 한정한다. 한글은 어절 단위로 줄바꿈(keep-all)해서 폰에서 덜 깨져 보이게 한다. */
+.article { max-width: 720px; margin-inline: auto; padding: 24px 16px 48px; }
+.article-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.kicker { font: 500 12px var(--font-mono); letter-spacing: .06em; color: var(--muted); }
+.article h1 { font: 400 clamp(28px, 8vw, 40px)/1.2 var(--font-display); color: var(--strong); text-wrap: balance; }
+.article-body { counter-reset: h2 fig; word-break: keep-all; overflow-wrap: break-word; }
+.article-body p { margin: 0 0 1em; }
+.article-body strong { color: var(--strong); font-weight: 700; }
+.article-body ul, .article-body ol:not(.sources):not(.toc-inline ol) { padding-left: 1.2em; margin: 0 0 1em; }
+.article-body ul { list-style: disc; }
+.article-body ul li, .article-body ol li { margin-bottom: .45em; padding-left: .2em; }
+.article-body ul li::marker { color: var(--accent); }
+
+.article-body h2 { counter-increment: h2; counter-reset: h3; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 23px; line-height: 1.4; color: var(--strong); scroll-margin-top: 68px; }
+.article-body h2::before { content: counter(h2) ". "; color: var(--accent); font-family: var(--font-mono); font-size: .85em; }
+.article-body h3 { counter-increment: h3; margin: 30px 0 10px; font-size: 18px; line-height: 1.5; color: var(--strong); scroll-margin-top: 68px; }
+.article-body h3::before { content: counter(h2) "." counter(h3) " "; color: var(--accent); font-family: var(--font-mono); font-size: .85em; }
+
+.overview, .toc-inline { background: var(--raise); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 0 0 20px; }
+.overview ul { margin-bottom: 0; }
+.overview p:last-child { margin-bottom: 0; }
+.label { font: 500 12px var(--font-mono); letter-spacing: .1em; color: var(--accent); margin-bottom: 8px; }
+.toc-inline ol { display: flex; flex-direction: column; font-size: 15px; line-height: 1.5; }
+.toc-inline li a { display: block; padding: 7px 0; color: var(--ink); text-decoration: none; }
+.toc-inline li.sub a { padding-left: 1.4em; color: var(--muted); }
+.toc-inline .num { display: inline-block; min-width: 2.4em; color: var(--accent); font-family: var(--font-mono); font-size: 13px; }
+
+.callout { margin: 0 0 1.2em; padding: 14px 16px; border-radius: 10px; background: var(--raise); border: 1px solid var(--line); border-left-width: 4px; font-size: 16px; line-height: 1.7; }
+.callout.note { border-left-color: var(--accent); }
+.callout.warn { border-left-color: var(--warm); background: var(--warm-soft); }
+.callout-title { font-weight: 700; margin-bottom: 4px; color: var(--strong); }
+.callout.warn .callout-title { color: var(--warm); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+
+.table-wrap { overflow-x: auto; margin: 0 0 1.2em; border: 1px solid var(--line); border-radius: 10px; -webkit-overflow-scrolling: touch; }
+.article table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.6; }
+.article th { text-align: left; font-weight: 700; color: var(--strong); background: var(--raise); white-space: nowrap; }
+.article th, .article td { padding: 10px 12px; vertical-align: top; border-bottom: 1px solid var(--line); }
+.article tr:last-child td { border-bottom: 0; }
+.article td:first-child { color: var(--strong); font-weight: 500; }
+
+@media (max-width: 599px) {
+  .table-wrap.stack { border: 0; border-radius: 0; overflow: visible; }
+  .stack table, .stack tbody { display: block; }
+  .stack thead { display: none; }
+  .stack tr { display: block; margin-bottom: 10px; padding: 6px 0; background: var(--raise); border: 1px solid var(--line); border-radius: 10px; }
+  .stack td { display: block; padding: 6px 14px; border: 0; }
+  .stack td::before { content: attr(data-label); display: block; font: 500 11px var(--font-mono); letter-spacing: .04em; color: var(--muted); }
+  .stack td:first-child { font-size: 16px; font-weight: 700; color: var(--strong); padding-bottom: 2px; }
+  .stack td:first-child::before { content: none; }
+}
+
+.article figure { margin: 24px 0; counter-increment: fig; }
+.fig { margin-inline: -16px; padding: 10px 0; background: var(--raise); border-block: 1px solid var(--line); }
+.fig svg { display: block; width: 100%; max-width: 460px; height: auto; margin-inline: auto; color: var(--ink); }
+.article figcaption { margin-top: 8px; font-size: 14px; line-height: 1.65; color: var(--muted); }
+.article figcaption::before { content: "그림 " counter(fig) ". "; font-weight: 700; color: var(--ink); }
+@media (min-width: 720px) { .fig { margin-inline: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; } }
+
+.article svg text { fill: currentColor; font-family: var(--font-body); }
+.article svg text.t-strong { font-size: 14px; font-weight: 700; fill: var(--strong); }
+.article svg text.t-sub { font-size: 12.5px; fill: var(--muted); }
+.article svg text.t-warm { font-size: 14px; font-weight: 700; fill: var(--warm); }
+.article svg text.t-accent { font-size: 12.5px; font-weight: 500; fill: var(--accent); }
+.article svg text.t-bad { font-size: 12.5px; font-weight: 700; fill: var(--bad); }
+.article svg text.t-good { font-size: 12.5px; font-weight: 700; fill: var(--good); }
+.svg-water { fill: var(--water); }
+.svg-waterline { stroke: var(--accent); stroke-width: 1.5; }
+.svg-tip { fill: var(--warm-soft); stroke: var(--warm); stroke-width: 1.5; }
+.svg-berg { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.svg-box { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+.svg-box-key { fill: var(--bg); stroke: var(--accent); stroke-width: 1.5; }
+.svg-box-bad { fill: var(--bg); stroke: var(--bad); stroke-width: 2; stroke-dasharray: 5 3; }
+.svg-box-good { fill: var(--bg); stroke: var(--good); stroke-width: 2; stroke-dasharray: 5 3; }
+.svg-flow { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.pl-ui { fill: var(--warm-soft); stroke: var(--warm); stroke-width: 1.2; }
+.pl-mid { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+.pl-ux { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2; }
+
+.ref { background: none; border: 0; padding: 0 1px; color: var(--accent); font: 500 12px var(--font-mono); cursor: pointer; }
+.sources { counter-reset: none; font-size: 14px; line-height: 1.7; color: var(--muted); padding-left: 0; display: flex; flex-direction: column; gap: 8px; }
+.sources li { display: list-item; list-style-position: inside; list-style-type: decimal; }
+.sources li:target { color: var(--strong); }
+.related { margin: 0 0 1em; }
+.related li { padding: 6px 0; font-size: 16px; }
