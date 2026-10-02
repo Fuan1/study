@@ -10,10 +10,10 @@ const ROWS = [
 const FILL = { plain: 'var(--line)', warm: 'var(--warm)', key: 'var(--accent)', good: 'var(--good)' } as const;
 
 export default function PeakEndPoints() {
-  const h = 54;
+  const h = 64;
   const top = 10;
   return (
-    <svg viewBox="0 0 360 290" role="img" aria-label="사용 흐름에서 공들일 지점. 오류와 막힘의 복구, 마지막 단계, 완료 화면, 해지 마무리를 먼저 점검한다.">
+    <svg viewBox="0 0 360 330" role="img" aria-label="사용 흐름에서 공들일 지점. 오류와 막힘의 복구, 마지막 단계, 완료 화면, 해지 마무리를 먼저 점검한다.">
       <line x1="24" y1={top + 14} x2="24" y2={top + (ROWS.length - 1) * h + 14} stroke="var(--line)" strokeWidth="2" />
       {ROWS.map((r, i) => {
         const y = top + i * h;
@@ -21,7 +21,7 @@ export default function PeakEndPoints() {
           <g key={r.title}>
             <circle cx="24" cy={y + 14} r="8" fill={FILL[r.tone]} />
             <text className="t-strong" x="44" y={y + 19}>{r.title}</text>
-            <text className="t-sub" x="44" y={y + 38}>{r.note}</text>
+            <text className="t-sub" x="44" y={y + 40}>{r.note}</text>
           </g>
         );
       })}

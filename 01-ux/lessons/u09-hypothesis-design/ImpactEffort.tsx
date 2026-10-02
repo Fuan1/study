@@ -6,21 +6,21 @@ const CELLS = [
 ];
 
 export default function ImpactEffort() {
-  const w = 170;
+  const w = 166;
   const h = 98;
   return (
-    <svg viewBox="0 0 360 240" role="img" aria-label="영향과 노력 두 축의 2 곱하기 2 매트릭스. 영향 큼 노력 작음은 먼저 한다, 영향 큼 노력 큼은 쪼개서 계획한다, 영향 작음 노력 작음은 여유 있을 때 한다, 영향 작음 노력 큼은 하지 않는다.">
-      <text className="t-sub" x={8 + w / 2} y="16" textAnchor="middle">노력 작음</text>
-      <text className="t-sub" x={182 + w / 2} y="16" textAnchor="middle">노력 큼</text>
+    <svg viewBox="0 0 360 250" role="img" aria-label="영향과 노력 두 축의 2 곱하기 2 매트릭스. 영향 큼 노력 작음은 먼저 한다, 영향 큼 노력 큼은 쪼개서 계획한다, 영향 작음 노력 작음은 여유 있을 때 한다, 영향 작음 노력 큼은 하지 않는다.">
+      <text className="t-sub" x={8 + w / 2} y="18" textAnchor="middle">노력 작음</text>
+      <text className="t-sub" x={186 + w / 2} y="18" textAnchor="middle">노력 큼</text>
       {CELLS.map((c) => {
-        const x = c.col === 0 ? 8 : 182;
-        const y = 26 + c.row * (h + 8);
+        const x = c.col === 0 ? 8 : 186;
+        const y = 34 + c.row * (h + 12);
         return (
           <g key={c.cond}>
             <rect className={c.cls} x={x} y={y} width={w} height={h} rx="8" />
-            <text className="t-sub" x={x + 10} y={y + 24}>{c.cond}</text>
-            <text className={c.tcls} x={x + 10} y={y + 52}>{c.act}</text>
-            <text className="t-sub" x={x + 10} y={y + 78}>{c.note}</text>
+            <text className="t-sub" x={x + 14} y={y + 26}>{c.cond}</text>
+            <text className={c.tcls} x={x + 14} y={y + 54}>{c.act}</text>
+            <text className="t-sub" x={x + 14} y={y + 80}>{c.note}</text>
           </g>
         );
       })}

@@ -1,4 +1,6 @@
-import { Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import Search from './Search';
 import Home from './Home';
 import UnitPage from './UnitPage';
 import NotFound from './NotFound';
@@ -14,9 +16,22 @@ function CourseRedirect() {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+  // 데스크톱: "/" 키로 어디서든 검색으로 이동
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey || (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))) return;
+      e.preventDefault();
+      navigate('/search');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [navigate]);
   return (
     <Routes>
       <Route index element={<Home />} />
+      <Route path="search" element={<Search />} />
       <Route path=":slug" element={<CourseRedirect />} />
       <Route path=":slug/:unitId" element={<UnitPage />} />
       <Route path="*" element={<NotFound />} />

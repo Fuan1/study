@@ -7,15 +7,15 @@ const ROWS = [
 
 export default function FidelityLadder() {
   return (
-    <svg viewBox="0 0 360 296" role="img" aria-label="충실도 사다리. 종이 스케치, 와이어프레임, 클릭 가능 프로토타입, 실제 코드와 데이터 순으로 막대가 길어지고, 각 단계가 답하는 질문이 적혀 있다.">
-      <text className="t-sub" x="8" y="18">막대가 길수록 만들고 고치는 데 더 든다(상대 비교)</text>
+    <svg viewBox="0 0 360 424" role="img" aria-label="충실도 사다리. 종이 스케치, 와이어프레임, 클릭 가능 프로토타입, 실제 코드와 데이터 순으로 막대가 길어지고, 각 단계가 답하는 질문이 적혀 있다.">
+      <text className="t-sub" x="8" y="18">막대가 길수록 비용이 크다(상대 비교)</text>
       {ROWS.map((r, i) => {
-        const y = 32 + i * 66;
+        const y = 52 + i * 96;
         return (
           <g key={r.name}>
-            <rect className={i === 0 ? 'svg-box-key' : 'svg-box'} x="8" y={y} width={r.w} height="28" rx="6" />
-            <text className="t-strong" x="20" y={y + 19}>{r.name}</text>
-            <text className="t-sub" x="8" y={y + 50}>{r.q}</text>
+            <rect className={i === 0 ? 'svg-box-key' : 'svg-box'} x="8" y={y} width={r.w} height="46" rx="8" />
+            <text className="t-strong" x="20" y={y + 29}>{r.name}</text>
+            <text className="t-sub" x="8" y={y + 70}>{r.q}</text>
           </g>
         );
       })}

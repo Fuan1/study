@@ -1,13 +1,14 @@
 const STEPS = [
-  { title: '사용자에게서 모은 것', sub: '인터뷰·관찰 기록, 로그, 설문', h: 52 },
-  { title: '패턴', sub: '친화도 다이어그램으로 묶은 주제', h: 52 },
-  { title: '문제 정의', sub: '누가·상황·하려는 일·막히는 이유', h: 70, key: true, tag: '전략·범위를 정하는 근거' },
-  { title: 'How Might We', sub: '해결 방향을 여는 질문', h: 52 },
-  { title: '가설과 설계', sub: '아이디어, 프로토타입, 검증(U9, U10)', h: 52 },
+  { title: '사용자에게서 모은 것', sub: '인터뷰·관찰 기록, 로그, 설문', h: 68 },
+  { title: '패턴', sub: '친화도 다이어그램으로 묶은 주제', h: 68 },
+  { title: '문제 정의', sub: '누가·상황·하려는 일·막히는 이유', h: 90, key: true, tag: '전략·범위를 정하는 근거' },
+  { title: 'How Might We', sub: '해결 방향을 여는 질문', h: 68 },
+  { title: '가설과 설계', sub: '아이디어, 프로토타입, 검증(U9, U10)', h: 68 },
 ];
 
 export default function ResearchFlow() {
-  const gap = 18;
+  // 여백 기준: 상자 안 14px 이상, 줄 간격 21px, 상자 사이 32px.
+  const gap = 32;
   let y = 8;
   const rows = STEPS.map((s) => {
     const row = { ...s, y };
@@ -23,10 +24,10 @@ export default function ResearchFlow() {
       {rows.map((s, i) => (
         <g key={s.title}>
           <rect className={s.key ? 'svg-box-key' : 'svg-box'} x="8" y={s.y} width="344" height={s.h} rx="8" />
-          <text className="t-strong" x="22" y={s.y + 23}>{s.title}</text>
-          <text className="t-sub" x="22" y={s.y + 43}>{s.sub}</text>
-          {s.tag && <text className="t-accent" x="22" y={s.y + 62}>{s.tag}</text>}
-          {i < rows.length - 1 && <line className="svg-flow" x1="180" y1={s.y + s.h + 1} x2="180" y2={s.y + s.h + gap - 1} markerEnd="url(#u8ar)" />}
+          <text className="t-strong" x="22" y={s.y + 29}>{s.title}</text>
+          <text className="t-sub" x="22" y={s.y + 50}>{s.sub}</text>
+          {s.tag && <text className="t-accent" x="22" y={s.y + 71}>{s.tag}</text>}
+          {i < rows.length - 1 && <line className="svg-flow" x1="180" y1={s.y + s.h + 4} x2="180" y2={s.y + s.h + gap - 4} markerEnd="url(#u8ar)" />}
         </g>
       ))}
     </svg>

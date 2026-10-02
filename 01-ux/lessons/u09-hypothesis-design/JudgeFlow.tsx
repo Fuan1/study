@@ -6,22 +6,22 @@ const ROWS = [
 
 export default function JudgeFlow() {
   return (
-    <svg viewBox="0 0 360 300" role="img" aria-label="실험 결과를 실험 전에 정한 기준과 비교한 뒤 세 갈래로 판단한다. 기준을 넘으면 계속, 기준 미달이고 원인이 해법이면 수정, 기준 미달이고 원인이 가정이면 폐기한다.">
+    <svg viewBox="0 0 360 316" role="img" aria-label="실험 결과를 실험 전에 정한 기준과 비교한 뒤 세 갈래로 판단한다. 기준을 넘으면 계속, 기준 미달이고 원인이 해법이면 수정, 기준 미달이고 원인이 가정이면 폐기한다.">
       <defs>
         <marker id="arJudge" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" /></marker>
       </defs>
       <text className="t-accent" x="180" y="18" textAnchor="middle">실험 전에 정한 기준과 비교한다</text>
       {ROWS.map((r, i) => {
-        const y = 36 + i * 86;
+        const y = 46 + i * 94;
         return (
           <g key={r.verdict}>
-            <rect className="svg-box" x="8" y={y} width="180" height="70" rx="8" />
+            <rect className="svg-box" x="8" y={y} width="170" height="70" rx="8" />
             <text className="t-sub" x="20" y={y + 29}>{r.cond[0]}</text>
             <text className="t-sub" x="20" y={y + 49}>{r.cond[1]}</text>
-            <line className="svg-flow" x1="190" y1={y + 35} x2="208" y2={y + 35} markerEnd="url(#arJudge)" />
-            <rect className={r.cc} x="210" y={y} width="142" height="70" rx="8" />
-            <text className={r.vc} x="222" y={y + 29}>{r.verdict}</text>
-            <text className="t-sub" x="222" y={y + 50}>{r.note}</text>
+            <line className="svg-flow" x1="184" y1={y + 35} x2="206" y2={y + 35} markerEnd="url(#arJudge)" />
+            <rect className={r.cc} x="212" y={y} width="140" height="70" rx="8" />
+            <text className={r.vc} x="224" y={y + 29}>{r.verdict}</text>
+            <text className="t-sub" x="224" y={y + 50}>{r.note}</text>
           </g>
         );
       })}

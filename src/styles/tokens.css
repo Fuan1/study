@@ -1,22 +1,23 @@
-/* 어두운 배경 고정. 모바일에서 오래 읽는 용도라 순흑(#000) 대신 약간 푸른 근흑을 쓴다.
-   본문 13.7:1, 보조 글자 7:1 이상, 강조색 9:1 이상 (WCAG 상대 휘도로 계산). */
+/* 블랙 계열 고정. 푸른 기운이 없는 중성 근흑이고 순흑(#000)은 피한다. 색은 의미(경고·좋음·나쁨)에만 쓰고 강조는 밝기로 한다.
+   글자는 너무 밝지 않게 낮췄다. 대비(WCAG 상대 휘도 계산): 본문 10:1, 제목 14:1, 보조 글자 5.5:1, 의미색 7:1 이상. */
 :root {
   color-scheme: dark;
-  --bg: #0E1318;
-  --raise: #151C23;
-  --sunk: #0A0E12;
-  --ink: #D6DEE6;
-  --strong: #F1F5F9;
-  --muted: #9DAAB7;
-  --line: #27323C;
-  --accent: #6BD0DA;
-  --accent-soft: #10282F;
-  --warm: #F2A072;
-  --warm-soft: #2E2118;
-  --water: #101C25;
-  --good: #7ADBA6;
-  --bad: #F59A92;
-  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --font-display: "Black Han Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: #0B0B0C;
+  --raise: #141415;
+  --sunk: #070708;
+  --ink: #B9B9BD;
+  --strong: #DADADD;
+  --muted: #8C8C92;
+  --line: #2A2A2D;
+  --accent: #CFCFD3;
+  --accent-soft: #1D1D1F;
+  --warm: #D6AC5F;
+  --warm-soft: #241E14;
+  --water: #101011;
+  --good: #7FC48B;
+  --bad: #E88A82;
+  --font-body: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  --font-display: var(--font-body);
+  --font-mono: var(--font-body);
+  --bar-h: 52px;
 }

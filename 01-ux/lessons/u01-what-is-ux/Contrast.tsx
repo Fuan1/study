@@ -11,8 +11,8 @@ const ratio = (a: string, b: string) => {
 const PAIRS = [
   { fg: '#767676', bg: '#FFFFFF' },
   { fg: '#999999', bg: '#FFFFFF' },
-  { fg: '#8E9BA8', bg: '#0E1318' },
-  { fg: '#4E5D6B', bg: '#0E1318' },
+  { fg: '#9A9A9E', bg: '#0B0B0C' },
+  { fg: '#5A5A5E', bg: '#0B0B0C' },
 ];
 
 export default function Contrast() {

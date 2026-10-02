@@ -21,27 +21,26 @@ const ROWS = [
 
 export default function ResponseLimits() {
   return (
-    <svg viewBox="0 0 360 262" role="img" aria-label="응답 시간을 로그 눈금으로 그린 축. 0.1초, 0.4초(도허티), 1초, 10초가 표시되고 구간마다 필요한 피드백이 아래에 정리되어 있다.">
+    <svg viewBox="0 0 360 352" role="img" aria-label="응답 시간을 로그 눈금으로 그린 축. 0.1초, 0.4초(도허티), 1초, 10초가 표시되고 구간마다 필요한 피드백이 아래에 정리되어 있다.">
       {ZONES.map((z) => (
-        <rect key={z.from} x={px(z.from)} y="30" width={px(z.to) - px(z.from)} height="24" style={{ fill: z.fill, fillOpacity: 0.28 }} />
+        <rect key={z.from} x={px(z.from)} y="36" width={px(z.to) - px(z.from)} height="24" style={{ fill: z.fill, fillOpacity: 0.28 }} />
       ))}
-      <line x1={X0} y1="54" x2={X1} y2="54" stroke="var(--muted)" strokeWidth="1.5" />
+      <line x1={X0} y1="60" x2={X1} y2="60" stroke="var(--muted)" strokeWidth="1.5" />
       {[0.1, 1, 10].map((t) => (
         <g key={t}>
-          <line x1={px(t)} y1="26" x2={px(t)} y2="58" stroke="var(--strong)" strokeWidth="1.5" />
-          <text className="t-strong" x={px(t)} y="18" textAnchor="middle">{t}초</text>
+          <line x1={px(t)} y1="32" x2={px(t)} y2="64" stroke="var(--strong)" strokeWidth="1.5" />
+          <text className="t-strong" x={px(t)} y="20" textAnchor="middle">{t}초</text>
         </g>
       ))}
-      <line x1={px(0.4)} y1="30" x2={px(0.4)} y2="62" stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="3 3" />
-      <text className="t-accent" x={px(0.4)} y="78" textAnchor="middle">0.4초 (도허티)</text>
-      <text className="t-sub" x={X1} y="78" textAnchor="end">로그 눈금</text>
+      <line x1={px(0.4)} y1="36" x2={px(0.4)} y2="68" stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="3 3" />
+      <text className="t-accent" x={px(0.4)} y="89" textAnchor="middle">0.4초 (도허티)</text>
       {ROWS.map((r, i) => {
-        const y = 96 + i * 41;
+        const y = 120 + i * 62; // 묶음 높이 38 + 묶음 사이 24
         return (
           <g key={r.title}>
-            <rect x="8" y={y} width="5" height="32" rx="2" style={{ fill: r.fill, fillOpacity: 0.8 }} />
-            <text className="t-strong" x="22" y={y + 13}>{r.title}</text>
-            <text className="t-sub" x="22" y={y + 30}>{r.body}</text>
+            <rect x="8" y={y} width="5" height="38" rx="2" style={{ fill: r.fill, fillOpacity: 0.8 }} />
+            <text className="t-strong" x="24" y={y + 13}>{r.title}</text>
+            <text className="t-sub" x="24" y={y + 34}>{r.body}</text>
           </g>
         );
       })}

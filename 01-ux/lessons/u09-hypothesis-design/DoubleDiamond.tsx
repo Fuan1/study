@@ -7,7 +7,7 @@ const Q = [
 
 export default function DoubleDiamond() {
   return (
-    <svg viewBox="0 0 360 262" role="img" aria-label="넓히고 좁히기를 두 번 반복하는 과정. 왼쪽은 문제 공간에서 이해로 넓히고 정의로 좁힌다. 오른쪽은 해법 공간에서 내기로 넓히고 시험으로 좁힌다.">
+    <svg viewBox="0 0 360 270" role="img" aria-label="넓히고 좁히기를 두 번 반복하는 과정. 왼쪽은 문제 공간에서 이해로 넓히고 정의로 좁힌다. 오른쪽은 해법 공간에서 내기로 넓히고 시험으로 좁힌다.">
       <text className="t-accent" x="92" y="22" textAnchor="middle">문제 공간</text>
       <text className="t-accent" x="260" y="22" textAnchor="middle">해법 공간</text>
       <polygon className="svg-berg" points="8,110 92,40 176,110 92,180" />
@@ -18,8 +18,8 @@ export default function DoubleDiamond() {
       {Q.map((q) => (
         <g key={q.name} textAnchor="middle">
           <text className="t-strong" x={q.x} y="208">{q.name}</text>
-          <text className="t-accent" x={q.x} y="227">{q.mode}</text>
-          <text className="t-sub" x={q.x} y="246">{q.what}</text>
+          <text className="t-accent" x={q.x} y="229">{q.mode}</text>
+          <text className="t-sub" x={q.x} y="249">{q.what}</text>
         </g>
       ))}
     </svg>

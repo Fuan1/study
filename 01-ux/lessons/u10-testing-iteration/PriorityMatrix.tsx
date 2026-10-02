@@ -6,13 +6,13 @@ const CELLS = [
 ];
 
 export default function PriorityMatrix() {
-  const x0 = 56;
+  const x0 = 64;
   const y0 = 10;
-  const cw = 146;
+  const cw = 138;
   const ch = 108;
-  const g = 8;
+  const g = 12;
   return (
-    <svg viewBox="0 0 360 286" role="img" aria-label="문제 우선순위 격자. 가로는 몇 명이 겪었나(빈도), 세로는 막았을 때 결과가 얼마나 나쁜가(심각도). 심각도가 높고 빈도가 높은 칸이 가장 먼저다.">
+    <svg viewBox="0 0 360 282" role="img" aria-label="문제 우선순위 격자. 가로는 몇 명이 겪었나(빈도), 세로는 막았을 때 결과가 얼마나 나쁜가(심각도). 심각도가 높고 빈도가 높은 칸이 가장 먼저다.">
       {CELLS.map((c) => {
         const x = x0 + c.col * (cw + g);
         const y = y0 + c.row * (ch + g);
@@ -25,12 +25,12 @@ export default function PriorityMatrix() {
           </g>
         );
       })}
-      <text className="t-sub" x={x0} y={y0 + 2 * ch + g + 22}>적게 겪음</text>
-      <text className="t-sub" x={x0 + 2 * cw + g} y={y0 + 2 * ch + g + 22} textAnchor="end">많이 겪음</text>
-      <text className="t-strong" x={x0 + cw + g / 2} y={y0 + 2 * ch + g + 44} textAnchor="middle">빈도</text>
-      <text className="t-sub" x="50" y={y0 + 20} textAnchor="end">높음</text>
-      <text className="t-sub" x="50" y={y0 + 2 * ch + g - 6} textAnchor="end">낮음</text>
-      <text className="t-strong" x="50" y={y0 + ch + g / 2 + 5} textAnchor="end">심각도</text>
+      <text className="t-sub" x={x0} y={y0 + 2 * ch + g + 26}>적게 겪음</text>
+      <text className="t-sub" x={x0 + 2 * cw + g} y={y0 + 2 * ch + g + 26} textAnchor="end">많이 겪음</text>
+      <text className="t-strong" x={x0 + cw + g / 2} y={y0 + 2 * ch + g + 26} textAnchor="middle">빈도</text>
+      <text className="t-sub" x="56" y={y0 + 20} textAnchor="end">높음</text>
+      <text className="t-sub" x="56" y={y0 + 2 * ch + g - 6} textAnchor="end">낮음</text>
+      <text className="t-strong" x="56" y={y0 + ch + g / 2 + 5} textAnchor="end">심각도</text>
     </svg>
   );
 }

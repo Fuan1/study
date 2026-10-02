@@ -8,10 +8,11 @@ const SLOTS = [
 ];
 
 export default function ProblemSentence() {
-  const gap = 10;
+  // 여백 기준: 상자 안 14px 이상, 줄 간격 22px, 상자 사이 14px.
+  const gap = 14;
   let y = 8;
   const rows = SLOTS.map((s) => {
-    const h = 34 + s.lines.length * 20;
+    const h = 44 + s.lines.length * 22;
     const row = { ...s, y, h };
     y += h + gap;
     return row;
@@ -22,9 +23,9 @@ export default function ProblemSentence() {
       {rows.map((s) => (
         <g key={s.label}>
           <rect className={s.tone === 'bad' ? 'svg-box-bad' : 'svg-box-key'} x="8" y={s.y} width="344" height={s.h} rx="8" />
-          <text className={s.tone === 'bad' ? 't-bad' : 't-accent'} x="20" y={s.y + 22}>{s.label}</text>
+          <text className={s.tone === 'bad' ? 't-bad' : 't-accent'} x="20" y={s.y + 26}>{s.label}</text>
           {s.lines.map((t, i) => (
-            <text key={t} x="20" y={s.y + 44 + i * 20} fontSize="13">{t}</text>
+            <text key={t} x="20" y={s.y + 48 + i * 22} fontSize="13">{t}</text>
           ))}
         </g>
       ))}

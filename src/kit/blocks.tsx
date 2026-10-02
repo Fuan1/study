@@ -1,10 +1,10 @@
-import { Children, useEffect, useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react';
+import { Children, cloneElement, isValidElement, useEffect, useLayoutEffect, useRef, useState, type ComponentProps, type ReactElement, type ReactNode } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCourse } from '../lib/catalog';
 
 const textOf = (children: ReactNode) =>
   Children.toArray(children).map((c) => (typeof c === 'string' || typeof c === 'number' ? String(c) : '')).join('');
-const slugify = (s: string) => s.trim().replace(/\s+/g, '-').replace(/[^\p{L}\p{N}-]/gu, '');
+export const slugify = (s: string) => s.trim().replace(/\s+/g, '-').replace(/[^\p{L}\p{N}-]/gu, '');
 
 /** 번호는 CSS counter 로 붙고(1., 1.1), 목차는 이 id 로 이동한다. */
 export const H2 = ({ children }: { children?: ReactNode }) => <h2 id={slugify(textOf(children))}>{children}</h2>;
@@ -29,9 +29,29 @@ export function A({ href = '', children }: { href?: string; children?: ReactNode
   return <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{children}</a>;
 }
 
+const RULE_TAGS: Record<string, string> = { 해라: 'rule-do', '하지 마라': 'rule-dont', 기준값: 'rule-val' };
+
+/** "해라:", "하지 마라:", "기준값:" 로 시작하는 목록 항목은 앞에 색 태그를 붙여 훑어보기 쉽게 한다. 다른 항목은 그대로 둔다. */
+function tagRules(children: ReactNode): ReactNode {
+  return Children.map(children, (child) => {
+    if (!isValidElement(child) || child.type !== 'ul') return child;
+    const ul = child as ReactElement<{ children?: ReactNode }>;
+    const items = Children.map(ul.props.children, (li) => {
+      if (!isValidElement(li)) return li;
+      const item = li as ReactElement<{ children?: ReactNode }>;
+      const kids = Children.toArray(item.props.children);
+      const first = kids[0];
+      const m = typeof first === 'string' ? first.match(/^(해라|하지 마라|기준값)\s*:\s*/) : null;
+      if (!m) return li;
+      return cloneElement(item, {}, <span className={`rule-tag ${RULE_TAGS[m[1]]}`}>{m[1]}</span>, <span>{(first as string).slice(m[0].length)}{kids.slice(1)}</span>);
+    });
+    return cloneElement(ul, { className: 'rules' } as object, items);
+  });
+}
+
 /** 글 맨 위의 핵심 규칙 요약(명령형 3~5개). */
 export function Overview({ label = '핵심 규칙', children }: { label?: string; children: ReactNode }) {
-  return <section className="overview" aria-label={label}><div className="label">{label}</div>{children}</section>;
+  return <section className="overview" aria-label={label}><div className="label">{label}</div>{tagRules(children)}</section>;
 }
 
 /** 본문의 h2/h3 로 목차를 자동 생성한다. 개요 바로 아래에 `<Toc />` 를 둔다. */
@@ -53,8 +73,10 @@ export function Toc() {
     document.getElementById(id)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   };
   return (
-    <nav className="toc-inline" aria-label="이 글의 목차">
-      <div className="label">목차</div>
+    <details className="toc-inline">
+      <summary>
+        <span>목차<small>{items.filter((it) => it.level === 2).length}개 섹션</small></span>
+      </summary>
       <ol>
         {items.map((it) => (
           <li key={it.id} className={it.level === 3 ? 'sub' : undefined}>
@@ -62,7 +84,7 @@ export function Toc() {
           </li>
         ))}
       </ol>
-    </nav>
+    </details>
   );
 }
 
