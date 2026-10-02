@@ -1,90 +1,89 @@
 import AdChain from './AdChain';
-import SameCpa from './SameCpa';
+import DiagnoseFlow from './DiagnoseFlow';
 import RoiLines from './RoiLines';
 import MarginalCurve from './MarginalCurve';
-import TestSample from './TestSample';
+import FatigueTrend from './FatigueTrend';
 
 <Overview>
 
-- 해라: 광고 숫자는 곱셈 사슬로 쪼개라. `CPA = CPM ÷ (1000 × CTR × CVR)`이고, 기준 대비 가장 어긋난 항 하나가 고칠 곳이다.
+- 해라: 광고 숫자는 곱셈 사슬로 쪼개라. CPA = CPM ÷ (1000 × CTR × CVR)이고 기준(업계 평균이 아니라 같은 광고의 직전 안정기 값)에서 가장 벗어난 항 하나가 고칠 곳이다.
 - 기준값: 손익분기 ROAS = 1 ÷ 공헌이익률(광고비 빼기 전). 공헌이익률 40%면 2.5, 20%면 5.0이다.
 - 하지 마라: 평균 ROAS 로 증액을 정하지 마라. 늘린 광고비가 벌어 온 한계 ROAS 가 손익분기 ROAS 이상일 때만 올려라.
-- 해라: 소재는 한 번에 한 변수만 바꾸고, 군당 클릭이나 전환이 `16 ÷ (상대 차이)²` 건쯤 쌓이기 전에는 승자를 고르지 마라.
+- 해라: 소재는 한 번에 한 변수만 바꾸고 최종 판정은 CTR 이 아니라 CPA 로 해라.
 - 하지 마라: 플랫폼 화면의 ROAS 를 손익 판단에 그대로 쓰지 마라. 내부 주문 데이터로 다시 계산한다(m12).
 
 </Overview>
 
 <Toc />
 
-예시 숫자는 모두 가상(가정)이다. 플랫폼 화면·메뉴 이름·기본값은 단정하지 않고 공식 문서로 확인한 것만 출처를 붙인다. Meta 도움말은 본문을 열지 못해 "확인 필요"로 남겼다.
+확인 시점은 2026년 10월이다. 플랫폼 정의는 Google Ads 와 IAB/MRC 공식 문서에서 확인한 것만 쓴다. Meta 도움말은 본문을 열지 못해 단정하지 않는다(확인 필요). 예시 값은 가상이다.
+
+## 광고 운영에서 무엇을 정할지 모를 때
+
+| 질문 | 필요한 데이터 | 분석 | 결과물 | 결정 |
+|---|---|---|---|---|
+| 숫자가 무엇을 뜻하나 | 노출, 클릭, 광고비, 전환 | 정의 고정, 곱셈 분해 | 지표 정의표 | 비교 전에 정의를 맞춘다 |
+| CPA 가 왜 높나 | 단계별 지표, 전환 건수 | CPM, CTR, CVR 분해 | 진단 흐름 | 고칠 곳 하나 |
+| 얼마까지 써도 남나 | 객단가, 공헌이익률 | 손익분기 계산 | 손익분기 표 | 목표 ROAS, CPA |
+| 예산을 올려도 되나 | 단계별 광고비, 내부 매출 | 한계 ROAS | 증액 판단표 | 올림, 유지, 되돌림 |
+| 소재가 지쳤나 | 소재별 주간 빈도, CTR, CPM | 같은 소재의 추이 | 소재 추이 | 교체 시점 |
 
 ## 광고 숫자를 읽을 때
 
-규칙: 지표 이름이 같아도 분자·분모가 다를 수 있다. 아래 정의로 고정하고, 플랫폼 열이 다르면 정의부터 맞춘다.
+규칙: 이름이 같은 지표도 분자와 분모가 다를 수 있다. 아래 정의로 고정한다.
 
-| 지표 | 이 글의 정의 | 플랫폼 확인 |
+| 지표 | 이 글의 정의 | 공식 문서에서 확인한 것 |
 |---|---|---|
-| 노출 | 광고가 표시된 횟수 | Google: 표시될 때마다 1회<Ref n={1} />. Meta: 확인 필요 |
-| 도달 | 광고를 본 고유 사용자 수 | 집계 기준·기간은 플랫폼마다 다르다. 확인 필요 |
-| 빈도 | 노출 ÷ 도달 | Google 동영상 열은 7일·30일 창의 노출 ÷ 고유 사용자<Ref n={2} />. Meta: 확인 필요 |
-| 클릭 | 광고 클릭 수 | 클릭 종류가 여럿일 수 있다. 열 확인 |
-| CPM | 광고비 ÷ 노출 × 1000 | 1,000회 노출당 비용 |
-| CPC | 광고비 ÷ 클릭 | Google 평균 CPC는 총 비용 ÷ 클릭<Ref n={3} /> |
-| CTR | 클릭 ÷ 노출 | Google 동일<Ref n={4} /> |
-| 전환 | 정한 목표 행동 수(구매 등) | Google: 구매는 건마다(Every), 리드는 1회(One)로 센다<Ref n={5} /> |
-| CVR | 전환 ÷ 클릭 | Google의 분모는 상호작용이고, 전환을 건마다 세면 100%를 넘을 수 있다<Ref n={6} /> |
-| CPA | 광고비 ÷ 전환 | Google 평균 CPA는 비용 ÷ 전환<Ref n={7} /> |
-| 매출 | 전환값의 합 | 값을 넣어야 의미가 있다. 환불 반영 여부 확인<Ref n={5} /> |
-| ROAS | 매출 ÷ 광고비 | Google 열 이름은 전환값/비용이고 문서는 "투자수익 추정"이라 부른다<Ref n={5} />. 이 글의 ROI 가 아니다 |
-| ROI | (공헌이익 − 광고비) ÷ 광고비 | 플랫폼 열에 없다. 직접 계산 |
+| 노출 | 광고가 표시된 횟수 | Google 은 표시될 때마다 1회다<Ref n={1} />. 뷰어블 노출은 별개로, MRC 기준은 픽셀 50% 이상이 디스플레이 1초, 영상 2초 이상 보일 때다(큰 광고는 30%)<Ref n={2} /> |
+| 도달 | 광고를 본 중복 없는 사용자 수 | IAB/MRC 는 고유 브라우저, 기기, 사용자를 다른 단위로 정의한다<Ref n={3} />. 플랫폼 단위를 확인한다 |
+| 빈도 | 노출 ÷ 도달 | Google 동영상 열은 7일·30일 창의 노출 ÷ 고유 사용자다<Ref n={4} /> |
+| 클릭 | 광고 클릭 수 | Google 은 무효 클릭을 지표와 청구에서 뺀다<Ref n={5} /> |
+| CTR | 클릭 ÷ 노출 | Google 은 좋은 CTR 에 보편 기준이 없다고 한다<Ref n={6} /> |
+| CPM | 광고비 ÷ 노출 × 1000 | Google 디스플레이에 1천 회 노출당 지불 입찰이 있다<Ref n={7} /> |
+| CPC | 광고비 ÷ 클릭 | Google 평균 CPC 는 총 비용 ÷ 클릭이다<Ref n={8} /> |
+| CVR | 전환 ÷ 클릭 | Google 열의 분모는 상호작용이고 건마다(Every) 세면 100%를 넘을 수 있다<Ref n={9} /> |
+| CPA | 광고비 ÷ 전환 | Google 은 구매를 건마다, 리드를 1회(One)로 세고<Ref n={10} /> 평균 CPA 는 총 비용 ÷ 전환이다<Ref n={11} /> |
+| ROAS | 전환값 ÷ 광고비 | Google 열은 전환값/비용이고 "투자수익 추정"이라 부른다<Ref n={10} />. 이익률이 아니다 |
 
-지표 사이의 관계식이다. 객단가는 전환 1건당 매출이다.
+지표 사이의 관계는 정의에서 대수로 나온다. 객단가는 전환 1건당 매출이다.
 
-```text
-CPC  = CPM ÷ (1000 × CTR)
-CPA  = CPC ÷ CVR
-     = CPM ÷ (1000 × CTR × CVR)
-ROAS = 매출 ÷ 광고비 = 객단가 ÷ CPA
-ROI  = ROAS × 공헌이익률 − 1
-```
+- CPC = CPM ÷ (1000 × CTR)
+- CPA = CPC ÷ CVR = CPM ÷ (1000 × CTR × CVR)
+- ROAS = 객단가 ÷ CPA (객단가가 일정할 때)
+- ROI = ROAS × 공헌이익률 − 1
 
-무작위 값 1만 쌍을 python 으로 넣어 네 식의 일치를 확인했다.
+Google 열의 CVR 은 상호작용 기준이라 클릭 기준 식과 어긋날 수 있으니 분모를 하나로 정해 적는다.
 
-<Figure caption="광고비는 CPM, CTR, CVR, 객단가 네 값을 지나 매출이 된다. 이 네 값이 CPA 와 ROAS 를 정한다.">
+<Figure caption="형태 예시(가상 값). 광고비는 CPM, CTR, CVR, 객단가 네 값을 지나 매출이 되고, 그 결과가 CPC, CPA, ROAS 다.">
   <AdChain />
 </Figure>
 
-## CPA 가 높아 어디를 고칠지 정할 때
+## CPA 가 높을 때
 
-규칙: 분모부터 확인한 뒤 CPA 를 CPM, CTR, CVR 세 항으로 나눈다. 기준 대비 가장 어긋난 한 항만 고친다. 두 항을 같이 고치면 무엇이 먹혔는지 모른다.
+규칙: 전환 건수를 본 뒤 CPA 를 CPM, CTR, CVR 세 항으로 나누고 가장 벗어난 한 항만 고친다. 둘을 같이 고치면 무엇이 먹혔는지 모른다.
 
-<Figure caption="CPA 가 66,667원으로 같아도 어긋난 항이 CPM, CTR, CVR 중 어디냐에 따라 고칠 곳이 다르다.">
-  <SameCpa />
+<Figure caption="위에서 아래로 묻고 예이면 오른쪽에서 고친다. 셋 다 정상이면 손익분기 계산을 다시 본다.">
+  <DiagnoseFlow />
 </Figure>
 
-| 증상(가상 수치) | 먼저 의심 | 확인 | 처방 |
-|---|---|---|---|
-| CTR 낮음(1.0%에서 0.5%) | 소재, 타깃 | 소재별·타깃별 CTR 비교 | 소재 교체 테스트(m04), 타깃 조정 |
-| CPM 높음(10,000원에서 20,000원) | 타깃 규모, 경쟁 시기 | 타깃 크기, 기간별 CPM | 타깃을 넓히거나 시기를 옮긴다 |
-| CPC 높음(1,000원에서 2,000원) | CPM 또는 CTR | CPM ÷ (1000 × CTR)로 분해 | CPM 이 원인이면 타깃·시기, CTR 이면 소재 |
-| CVR 낮음(3.0%에서 1.5%) | 랜딩, 제안, 유입 의도 | 클릭 뒤 이탈 구간, 소재와 랜딩 문구 일치 | 랜딩 수정(m11), 제안·타깃 점검 |
-| CTR 높고 CVR 낮음 | 소재가 약속한 것과 제안이 다름 | 소재 문구와 랜딩 제안 대조 | 소재를 제안에 맞춘다 |
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| CTR 이 낮다 | 소재, 타깃 | 소재별·타깃별 CTR 을 비교하고 소재를 테스트한다(m04) |
+| CPM 이 높다 | 타깃이 좁다, 경쟁이 몰린 시기 | 기간별 CPM 을 보고 타깃·시기를 바꾼다 |
+| CVR 이 낮다 | 랜딩, 제안, 유입 의도 | 클릭 뒤 이탈 구간을 보고 랜딩을 고친다(m11) |
+| CTR 은 높고 CVR 은 낮다 | 소재의 약속과 제안이 다르다 | 소재 문구를 랜딩 제안에 맞춘다 |
 
-분모 확인: 전환이 n건이면 CVR 과 CPA 의 상대 표준오차는 약 1 ÷ √n이다(근사). 10건이면 32%, 30건 18%, 100건 10%, 400건 5%다. 허용 오차를 먼저 정하고 그 건수가 쌓인 뒤 분해한다.
+전환이 n건이면 CVR 과 CPA 의 상대 변동은 대략 1 ÷ √n이다(포아송 근사). 10건이면 32%, 30건 18%, 100건 10%, 400건 5%다. 허용 오차를 먼저 정하고 그 건수가 쌓인 뒤 분해한다.
 
 ## 손익분기를 정할 때
 
-규칙: 손익분기는 광고비를 빼기 전 공헌이익률로 정한다. 변동비에 광고비를 넣으면 두 번 빼게 된다.
+규칙: 손익분기는 광고비를 빼기 전 공헌이익률로 정한다. 변동비에 광고비를 넣으면 두 번 뺀다. 공헌이익 계산은 m06 을 본다.
 
-| 항목 | 이 글의 정의 |
-|---|---|
-| 매출 | 할인 적용 후 결제액에서 환불을 뺀 값 |
-| 변동비 | 원가, 배송, 결제 수수료, 반품 처리처럼 주문에 따라 늘어나는 비용. 광고비 제외 |
-| 공헌이익률 | (매출 − 변동비) ÷ 매출. 광고비 빼기 전 |
-| 손익분기 ROAS | 1 ÷ 공헌이익률 |
-| 손익분기 CPA | 객단가 × 공헌이익률 |
+- 공헌이익률 = (매출 − 변동비) ÷ 매출. 매출은 할인 후 결제액에서 환불을 뺀 값이고 변동비는 원가, 배송, 수수료처럼 주문에 따라 늘며 광고비는 뺀다.
+- 광고 뒤 이익 = 공헌이익률 × 매출 − 광고비. 이것이 0 이상이면 손익분기 ROAS = 1 ÷ 공헌이익률 이상이다.
+- 손익분기 CPA = 객단가 × 공헌이익률.
 
-공헌이익 계산은 m06 을 본다. 객단가 100,000원(가정)일 때 값이다.
+객단가 100,000원(가정)일 때의 값이다.
 
 | 공헌이익률 | 손익분기 ROAS | 손익분기 CPA |
 |---|---|---|
@@ -93,118 +92,80 @@ ROI  = ROAS × 공헌이익률 − 1
 | 40% | 2.50 | 40,000원 |
 | 60% | 1.67 | 60,000원 |
 
-ROAS 와 ROI 는 다르다. 광고비 1,000,000원, 공헌이익률 40%(가정)일 때 값이다. 매출은 광고비 × ROAS다.
-
-| ROAS | 공헌이익 | 광고 뒤 이익 | ROI |
-|---|---|---|---|
-| 2.0 | 800,000 | −200,000 | −20% |
-| 2.5 | 1,000,000 | 0 | 0% |
-| 3.0 | 1,200,000 | 200,000 | 20% |
-
-<Figure caption="ROAS 3.0 은 공헌이익률 40%에서 ROI 20%이고, 20%에서는 −40%다. 같은 ROAS 도 마진에 따라 이익과 손실이 갈린다.">
+<Figure caption="ROI 는 ROAS × 공헌이익률 − 1 이라 0이 되는 ROAS 가 마진마다 다르다. 같은 ROAS 3.0도 마진 40%에서는 ROI 20%, 20%에서는 −40%다.">
   <RoiLines />
 </Figure>
 
-- 목표 ROAS 를 플랫폼에 넣을 때는 단위를 확인한다. Google 은 매출 5달러 대 광고비 1달러를 500%로 쓴다<Ref n={8} />. 5배와 500%를 헷갈리면 목표가 100배 어긋난다.
-- 첫 구매로 손익분기를 못 넘겨도 재구매로 회수한다면 LTV 기준으로 따로 정하고 회수 기간을 적는다(m06).
+- 목표 ROAS 단위를 확인한다. Google 은 매출 5달러 대 광고비 1달러를 500%로 쓴다<Ref n={12} />. 5배와 500%를 헷갈리면 목표가 100배 어긋난다.
+- Google 은 목표 ROAS 를 사업 목표와 과거 ROAS 를 참고해 정하라고 한다<Ref n={12} />.
+- 전환값에 매출을 넣었는지 공헌이익을 넣었는지 확인한다. 공헌이익을 넣었다면 손익분기 ROAS 는 1이다.
 
 ## 예산을 올릴 때
 
-규칙: 평균이 아니라 한계 ROAS 로 정한다. 한계 ROAS = 늘어난 매출 ÷ 늘어난 광고비다. 손익분기 이상이면 올리고 아래면 멈춘다.
+규칙: 평균이 아니라 한계 ROAS 로 정한다. 한계 ROAS = 늘어난 매출 ÷ 늘어난 광고비다. Google Meridian 문서는 한계 ROI 를 반응 곡선의 미분, 곧 현재 지출 다음 한 단위의 수익으로 정의하고 광고에 수확 체감을 가정한다<Ref n={13} />. mROI 가 가장 높은 채널이 추가 예산에 가장 낫다고 안내한다<Ref n={14} />. Jin 외(2017)는 선형 반응이 높은 지출의 포화를 담지 못한다고 보고 Hill 함수를 쓴다<Ref n={15} />.
 
-가상 곡선이다. 일 매출 `R(s) = 5,000,000 × (1 − e^(−s/1,000,000))`, 공헌이익률 40%(손익분기 2.5)다. 한계 ROAS 는 직전 단계에서 올린 구간의 값이다.
+판단 근거는 이익이다. 광고 뒤 이익의 변화 = 공헌이익률 × 늘어난 매출 − 늘어난 광고비이고, 이것이 0 이상이면 한계 ROAS 가 손익분기 ROAS 이상이다.
 
-| 일 광고비 | 일 매출 | 평균 ROAS | 한계 ROAS | 광고 뒤 이익 |
-|---|---|---|---|---|
-| 200,000 | 906,346 | 4.53 | 4.53 | 162,538 |
-| 400,000 | 1,648,400 | 4.12 | 3.71 | 259,360 |
-| 600,000 | 2,255,942 | 3.76 | 3.04 | 302,377 |
-| 800,000 | 2,753,355 | 3.44 | 2.49 | 301,342 |
-| 1,000,000 | 3,160,603 | 3.16 | 2.04 | 264,241 |
-| 1,400,000 | 3,767,015 | 2.69 | 1.52 | 106,806 |
-| 2,000,000 | 4,323,324 | 2.16 | 0.93 | −270,671 |
-
-평균 ROAS 는 140만원에서도 2.5를 넘어 계속 올려도 될 것처럼 보인다. 그러나 60만원에서 80만원으로 올린 구간의 한계 ROAS 가 2.49로 손익분기 아래라 60만원에서 멈춘다. 이론상 최적은 69만원이고 60만원의 이익은 그 98.5%다.
-
-<Figure caption="평균 ROAS 는 159만원까지 손익분기를 넘지만, 한계 ROAS 는 69만원에서 이미 손익분기에 닿는다. 증액은 한계 ROAS 로 판단한다.">
+<Figure caption="형태 예시(가상 값, 공헌이익률 40%). 평균 ROAS 는 140만원까지 손익분기 위지만 한계 ROAS 는 55만원 근처에서 손익분기에 닿는다.">
   <MarginalCurve />
 </Figure>
 
-실제 곡선은 모양을 모른다. 계단으로 올리며 잰다.
+같은 가상 곡선을 단계로 올릴 때의 값이다. 한계 ROAS 는 직전 단계에서 이 단계로 올린 구간의 값이다.
 
-1. 한 번에 한 단계만 올리고, 그동안 소재·타깃·가격을 바꾸지 않는다.
-2. 전후를 같은 길이, 같은 요일 구성으로 비교한다. 전환 주기보다 짧게 끊지 않는다.
+| 일 광고비 | 일 매출 | 평균 ROAS | 한계 ROAS | 광고 뒤 이익 |
+|---|---|---|---|---|
+| 200,000 | 1,000,000 | 5.00 | 5.00 | 200,000 |
+| 400,000 | 1,714,286 | 4.29 | 3.57 | 285,714 |
+| 600,000 | 2,250,000 | 3.75 | 2.68 | 300,000 |
+| 800,000 | 2,666,667 | 3.33 | 2.08 | 266,667 |
+| 1,400,000 | 3,500,000 | 2.50 | 1.25 | 0 |
+
+평균 ROAS 가 2.5인 140만원은 이익이 0인 지점이다. 평균만 보면 계속 올릴 것 같지만 60만원에서 80만원으로 올린 구간의 한계 ROAS 가 2.08이라 60만원에서 멈춘다.
+
+| 단계의 한계 ROAS | 판단 | 다음 행동 |
+|---|---|---|
+| 손익분기보다 확실히 높다 | 올린다 | 같은 폭으로 다음 단계 |
+| 손익분기 근처다 | 멈춘다 | 유지하고 소재·타깃을 개선한다 |
+| 손익분기보다 낮다 | 되돌린다 | 직전 단계로 돌아가 원인을 본다 |
+
+실제 곡선은 모르니 계단으로 올리며 잰다.
+
+1. 한 번에 한 단계만 올리고 그동안 소재·타깃·가격을 바꾸지 않는다.
+2. 전후를 같은 길이, 같은 요일 구성으로 비교한다.
 3. 한계 ROAS = (후 매출 − 전 매출) ÷ (후 광고비 − 전 광고비). 매출은 내부 주문 데이터로 센다.
-4. 손익분기 이상이면 다음 단계로 간다. 아래면 직전 단계로 돌아간다.
+4. 시험한 광고비 범위 밖의 곡선은 외삽이다. 모델이 추정한 최적 배분도 분산이 크다<Ref n={15} />.
 
-플랫폼 안내로 확인한 것이다.
+Google 안내로 확인한 것이다.
 
-- Google 일 지출은 일 예산의 최대 2배까지 갈 수 있고 월 한도는 일 예산의 30.4배다<Ref n={9} />. 하루 단위 ROAS 로 증액 효과를 판단하지 말고 주 단위 합계로 본다.
-- Google 은 새 입찰 전략을 적용하기 전에 몇 번의 전환 주기(클릭에서 전환까지 걸리는 시간) 분량의 데이터를 쌓으라고 하고, 변경 뒤 성과는 최소 한 전환 주기 뒤에 보라고 한다<Ref n={10} />. 학습 기간은 전환 수와 전환 주기 길이에 좌우되며 보통 1에서 2 전환 주기다<Ref n={11} />.
-- Google 은 목표 CPA·ROAS 를 자주, 크게 바꿔도 즉시 반영된다고 안내한다<Ref n={10} />. 예산을 한 번에 어디까지 올려도 되는지의 수치는 확인하지 못했다.
-- Meta 의 학습 단계 기준(최적화 이벤트 수, 학습이 다시 시작되는 변경 폭): 확인 필요. 수치는 쓰지 않는다.
+- 일 지출은 일 예산의 최대 2배, 월 한도는 일 예산의 30.4배다(대부분의 캠페인)<Ref n={16} />. 하루 단위가 아니라 주 단위로 본다.
+- 같은 날 예산을 여러 번 고치면 그날 지출 한도는 가장 높은 예산 기준이다<Ref n={17} />. 증액은 하루 한 번만 한다.
+- 성과는 최소 한 전환 주기 뒤에, 지연 전환까지는 1에서 2 주기 뒤에 본다<Ref n={18} />. 학습 기간은 전환 수, 전환 주기, 입찰 전략이 좌우하고 변경 목록에 예산은 없다<Ref n={19} />. 예산 증액의 학습 영향은 확인 필요.
+- Meta 의 학습 단계 기준과 증액 폭: 확인 필요.
 
-그래서 이 글의 규칙은 수치가 아니라 절차다. 한 번에 올리는 폭은 계정의 하루 전환 수를 보고 정해 문서에 적고, 한 단계마다 전환 주기 이상 기다린 뒤 다시 잰다.
+주 단위 숫자도 잡음이 크다. 소매·증권사 25건의 현장 실험에서 광고 투자수익률 신뢰구간 폭의 중앙값이 100퍼센트포인트를 넘었다<Ref n={20} />. 한 단계로 단정하지 말고 추세로 본다. 증분 측정은 m12 를 본다.
 
 ## 소재를 테스트할 때
 
-규칙: 한 번에 한 변수(이미지, 첫 문장, 제안 중 하나)만 바꾸고, 같은 타깃·같은 기간·같은 예산 조건에서 동시에 돌린다. 지난주와 이번주를 비교하면 요일, 시즌, 학습 상태가 섞인다.
+규칙: 한 번에 한 변수(이미지, 첫 문장, 제안 중 하나)만 바꾸고 같은 타깃, 기간, 예산에서 동시에 돌린다.
 
-- 최종 판정은 CPA 로 한다. CTR 은 중간 지표다. 가상 예(CPM 10,000원): 소재 X는 CTR 1.2%, CVR 2.0%라 CPA 41,667원, Y는 CTR 0.9%, CVR 3.0%라 37,037원이다. CTR 이 낮은 Y가 이긴다.
-- 플랫폼이 한쪽 소재에 노출을 몰아주면 표본이 불균등하다. 소재별 노출·클릭 수를 먼저 본다.
-
-판정 전 최소 표본은 클릭이나 전환 수로 세운다. 두 군이 같은 크기이고 유의수준 5%(양측), 검정력 80%일 때 군당 표본은 아래 식이다<Ref n={12} />.
-
-```python
-import math
-from statistics import NormalDist as N
-k = N().inv_cdf(.975) + N().inv_cdf(.8)
-p1, p2 = 0.03, 0.036
-pb = (p1 + p2) / 2
-var = 2 * pb * (1 - pb)
-n = var * k**2 / (p2 - p1)**2
-print(math.ceil(n))  # 13915
-```
-
-CVR 3%인 기준 소재와 비교할 때의 값이다. 클릭당 비용 1,000원(가정)으로 두 군 비용을 계산했다.
-
-| 찾으려는 상대 차이 | 군당 클릭 | 군당 전환 | 두 군 광고비 |
-|---|---|---|---|
-| +10% | 53,212 | 1,596 | 106,424,000원 |
-| +20% | 13,915 | 417 | 27,830,000원 |
-| +30% | 6,456 | 194 | 12,912,000원 |
-| +50% | 2,519 | 76 | 5,038,000원 |
-
-어림: 군당 필요 건수는 `16 ÷ (상대 차이)²`다(+20%면 400, 정확한 값 417). 차이가 클수록 낮게 나오니 계획서에는 정확한 식을 쓴다.
-
-<Figure caption="찾으려는 차이가 작을수록 필요한 전환 수가 급격히 늘어난다. 작은 차이는 광고비가 못 받쳐 준다.">
-  <TestSample />
-</Figure>
-
-- 광고비가 못 받쳐 주면 작은 차이를 찾지 마라. 제안, 첫 화면 메시지처럼 큰 변경만 테스트한다.
-- 계획한 건수가 차기 전에 유의해 보이는 날 멈추지 마라. 검정과 중간 확인의 함정은 d09 에서 본다.
-- 승자를 정한 뒤에도 후보 하나를 계속 돌린다. 승자도 피로해진다(다음 절).
+- 최종 판정은 CPA 로 한다. CPA = CPM ÷ (1000 × CTR × CVR)이므로 CTR 이 낮아도 CVR 이 높으면 이긴다. 가상 예(CPM 10,000원): X는 CTR 1.2%, CVR 2.0%라 CPA 41,667원, Y는 CTR 0.9%, CVR 3.0%라 37,037원이다.
+- 개인 단위 매출은 변동이 커서 25건 실험에서 변동계수 10이 흔했고 의미 있는 실험에 1천만 person-weeks 이상이 필요할 수 있었다<Ref n={20} />. 광고비가 모자라면 큰 변경만 테스트한다.
+- 표본 크기, 중간에 보고 멈추는 함정, 구간 해석은 d10 에서 본다.
 
 ## 빈도와 광고 피로를 점검할 때
 
-규칙: 빈도에 절대 기준값을 두지 않는다. 같은 소재의 주별 추이로 본다. 빈도가 오르면서 CTR 이 내리고 CPM 이 오르는데 CVR 은 그대로면 피로다. CVR 이 같이 내리면 랜딩을 먼저 의심한다.
+규칙: 빈도에 절대 기준값을 두지 않고 같은 소재의 주별 추이로 본다. 빈도가 오르며 CTR 이 내리고 CPM 이 오르는데 CVR 은 그대로면 피로를 의심한다. CVR 이 같이 내리면 랜딩을 먼저 본다. 이 판별은 이 글의 진단 규칙이며 공식 기준이 아니다.
 
-같은 소재의 4주 추이다(가상, CVR 3.0%, 객단가 100,000원, 손익분기 ROAS 2.5).
+<Figure caption="형태 예시(가상 값, 1주차 = 100). 빈도가 2.6배가 되는 동안 CPM 은 오르고 CTR 은 내리며 CVR 은 3.0%로 그대로다. CPA 는 33,333원에서 65,657원이 된다.">
+  <FatigueTrend />
+</Figure>
 
-| 주차 | 빈도 | CPM | CTR | CPA | ROAS |
-|---|---|---|---|---|---|
-| 1주 | 1.3 | 10,000원 | 1.00% | 33,333원 | 3.00 |
-| 2주 | 1.9 | 10,800원 | 0.92% | 39,130원 | 2.56 |
-| 3주 | 2.6 | 11,800원 | 0.80% | 49,167원 | 2.03 |
-| 4주 | 3.4 | 13,000원 | 0.66% | 65,657원 | 1.52 |
-
-- CTR 이 8% 내린 2주차에 교체 소재를 준비한다. 3주차에 ROAS 가 손익분기 아래로 간다.
-- 빈도는 평균이라 일부에게 노출이 몰려도 낮게 나온다. 집계 기간을 맞추고, 노출 횟수별 분포 열이 있는지는 확인 필요.
-- 빈도의 하한은 노출 ÷ 타깃 크기다. 일 광고비 600,000원, CPM 10,000원이면 일 노출 60,000회라, 타깃 100,000명이면 5일 뒤 빈도가 3.0 이상이다. 예산이 크고 타깃이 작을수록 피로가 빠르다.
+- 기준값을 못 두는 이유: 반복 노출 메타분석은 실험 환경에서 광고 태도가 약 10회 노출에서 최대였고 관여도와 노출 간격에 따라 달랐다고 한다<Ref n={21} />. 온라인 현장 실험은 같은 노출도 간격을 벌릴 때 구매 가능성이 커졌다고 한다<Ref n={22} />. 어느 쪽도 운영 기준값이 아니다.
+- 노출 상한(frequency cap)은 Google 디스플레이와 동영상에서 둘 수 있다<Ref n={23} />. Meta: 확인 필요.
 
 ## 계정과 캠페인을 나눌 때
 
-규칙: 예산과 손익분기 목표가 다른 것은 캠페인을 나눈다. 신규 확보, 재방문·기존 고객, 테스트를 섞지 않는다. 섞이면 지표의 분모가 섞여 분해가 안 되고 평균 ROAS 가 부풀려진다.
+규칙: 예산과 손익분기 목표가 다른 것은 캠페인을 나눈다. 신규 확보, 재방문, 테스트를 섞지 않는다. 섞이면 평균 ROAS 가 부풀려진다.
 
 가상 예시(공헌이익률 40%, 손익분기 2.5)다.
 
@@ -214,45 +175,49 @@ CVR 3%인 기준 소재와 비교할 때의 값이다. 클릭당 비용 1,000원
 | 재방문 | 200,000 | 1,400,000 | 7.0 | 360,000 |
 | 합계 | 1,000,000 | 3,000,000 | 3.0 | 200,000 |
 
-합계 ROAS 3.0은 손익분기를 넘어 보이지만 신규 확보는 적자다. 재방문 매출 중 광고 없이도 났을 몫은 증분성 문제이고 m12 에서 다룬다.
+합계 3.0은 손익분기를 넘어 보이지만 신규 확보는 적자다. 재방문 매출 중 광고 없이도 났을 몫은 m12 를 본다.
 
-- 이름은 규칙으로 만든다. 예: `채널_목표_타깃_소재_연월`(`meta_new_cat-a_v2_2610`). 소문자, 공백 없음, 구분자 하나로 통일한다.
-- 광고 이름과 UTM 의 campaign 값은 같은 토큰을 쓴다. 필드 규칙의 원본은 m12 다. 어긋나면 광고 보고와 내부 데이터를 잇지 못한다.
+- Google 의 예산은 캠페인마다 정하는 일 평균 금액이다<Ref n={24} />. 공유 예산은 쓰지 못한 몫을 한도에 닿은 캠페인으로 자동 재배분하므로<Ref n={25} /> 목표가 다른 캠페인을 묶으면 의도한 몫이 유지되지 않을 수 있다.
+- 쪼갤수록 조각마다 전환이 줄어 학습이 늦어질 수 있으니(추론, 학습 기간은 전환 수에 좌우된다<Ref n={19} />) 목표가 다를 때만 나눈다.
+- 캠페인 이름은 UTM 의 campaign 값과 같은 토큰으로 만든다(m12).
 
 ## 플랫폼 숫자가 실제 매출과 안 맞을 때
 
-규칙: 손익 판단은 내부 주문 데이터로 한 ROAS 로 한다. 플랫폼 보고치는 소재·타깃을 비교하는 용도로 쓴다.
+규칙: 손익 판단은 내부 주문 데이터로 한 ROAS 로 한다. 플랫폼 보고치는 소재·타깃 비교용이다.
 
-가상 예: 광고비 1,000,000원을 두 플랫폼에 썼고, 각각 매출 1,800,000원과 1,500,000원을 자기 성과로 보고했다(합계 ROAS 3.3). 내부 주문의 광고 유입 매출은 2,000,000원이라 ROAS 는 2.0이다. 손익분기 2.5로는 보고치는 흑자, 실제는 적자다. 원인은 중복 귀속, 전환 창, 지연 전환이고 분해와 처방은 m12 를 따른다.
+| 어긋나는 이유 | 공식 문서에서 확인한 것 | 처방 |
+|---|---|---|
+| 날짜 기준 | Google Ads 는 전환을 그 전환으로 이어진 클릭의 날짜로 보고한다<Ref n={26} /> | 전환 주기가 지난 날짜로만 판정한다 |
+| 세는 방식 | 건마다 세느냐 1회로 세느냐에 따라 다르다<Ref n={10} /> | 목표별 방식을 표로 적는다 |
+| 전환 창 | 클릭 기본 30일, 조회 기본 1일이다<Ref n={27} /> | 도구 사이 창을 맞춘다 |
+| 도구 간 차이 | Google Ads 쿠키는 클릭 뒤 90일, Analytics 는 최대 2년이다<Ref n={26} /> | 도구별 정의를 대조한다 |
 
-## 나쁜 예와 고친 예
+플랫폼끼리의 중복 귀속은 m12 에서 본다. Facebook 무작위 실험과 관측 방법을 비교한 연구는 관측 방법이 실험 효과를 정확히 복원하지 못하는 경우가 많다고 보고했다<Ref n={28} />. 타깃팅의 선택 편향이 관측 방법에 치명적이라는 지적도 있다<Ref n={20} />.
+
+## 흔한 실수
 
 | 나쁜 예 | 고친 예 | 이유 |
 |---|---|---|
-| CPA 가 높으니 소재부터 바꾼다 | CPM, CTR, CVR 로 쪼개 어긋난 항을 고친다 | 원인이 랜딩일 수 있다 |
-| ROAS 3.0이니 잘 된다 | 공헌이익률로 손익분기 ROAS 와 비교 | 마진 20%면 ROI 가 −40%다 |
-| 평균 ROAS 가 높으니 예산을 두 배로 | 단계별 한계 ROAS 를 재서 올린다 | 평균은 마지막 한 푼의 효율을 가린다 |
-| 전환 8건 대 12건으로 승자를 정한다 | 필요한 건수가 쌓인 뒤 판정 | 8건의 표준오차가 35%쯤이다 |
+| CPA 가 높으니 소재부터 바꾼다 | CPM, CTR, CVR 로 쪼갠다 | 원인이 랜딩일 수 있다 |
+| ROAS 3.0이니 잘 된다 | 손익분기 ROAS 와 비교한다 | 마진 20%면 ROI 가 −40%다 |
+| 평균 ROAS 가 높으니 두 배로 | 단계별 한계 ROAS 로 올린다 | 평균은 마지막 한 푼의 효율을 가린다 |
 
 ## 증상으로 찾기
 
 | 증상 | 원인 | 처방 |
 |---|---|---|
-| 노출은 많은데 클릭이 적다 | 소재가 안 끌린다, 타깃 불일치 | 소재별 CTR 비교, 소재 테스트 |
-| 클릭은 많은데 구매가 없다 | 랜딩 문제, 소재와 제안 불일치 | 랜딩 이탈 구간 확인(m11), 소재를 제안에 맞춘다 |
 | 같은 소재의 CTR 이 주마다 떨어진다 | 광고 피로(빈도 상승) | 교체 소재 투입, 타깃 확대 |
-| 증액하자 ROAS 가 크게 떨어진다 | 한계 ROAS 가 평균보다 낮다 | 직전 단계로 돌아가 단계별로 재측정 |
-| 어제 CPA 가 며칠 뒤 보니 좋아져 있다 | 지연 전환이 늦게 들어온다 | 전환 주기가 지난 날짜로만 판정(m12) |
-| 플랫폼 매출 합계가 실제보다 크다 | 중복 귀속, 전환 창 차이 | 내부 주문 기준으로 재계산(m12) |
+| 증액하자 ROAS 가 크게 떨어진다 | 한계 ROAS 가 평균보다 낮다 | 직전 단계로 돌아가 재측정 |
+| 며칠 뒤 보니 어제 CPA 가 좋아져 있다 | 지연 전환이 클릭 날짜로 들어온다 | 전환 주기가 지난 날짜로 판정 |
 
 ## 점검 체크리스트
 
-- 지표마다 분자·분모와 집계 창을 정의표에 적었는가.
-- 공헌이익률(광고비 빼기 전)로 손익분기 ROAS 와 CPA 를 계산했는가.
-- 플랫폼 ROAS 와 내부 주문 ROAS 를 나란히 놓고 차이를 확인했는가.
-- CPA 를 CPM, CTR, CVR 로 분해했고 분모가 충분한가.
+- 지표마다 분자·분모와 집계 창을 적었는가.
+- 공헌이익률로 손익분기 ROAS 와 CPA 를 계산했고 전환값이 매출인지 이익인지 확인했는가.
+- 플랫폼 ROAS 와 내부 주문 ROAS 를 나란히 놓았는가.
+- CPA 를 CPM, CTR, CVR 로 분해했고 전환 건수가 충분한가.
 - 증액을 한 번에 한 단계만 했고 한계 ROAS 를 따로 쟀는가.
-- 소재 테스트가 한 변수, 같은 조건, 사전 계산한 건수인가.
+- 소재 테스트가 한 변수, 같은 조건이고 CPA 로 판정하는가.
 - 빈도, CTR, CPM 을 주별로 보고 교체 소재가 있는가. 캠페인이 목표별로 나뉘고 이름이 UTM 과 맞는가.
 
 ## 관련 글
@@ -262,22 +227,38 @@ CVR 3%인 기준 소재와 비교할 때의 값이다. 클릭당 비용 1,000원
   <Rel to="m07" note="채널 선택과 퍼널 정의" />
   <Rel to="m11" note="CVR 이 낮을 때 랜딩 구조와 전환 진단" />
   <Rel to="m12" note="중복 귀속, 전환 창, UTM 규칙, 증분성 측정" />
-  <Rel to="d10" course="data-analysis" note="표본 크기와 결과 읽는 법" />
+  <Rel to="d10" course="data-analysis" note="표본 크기, 중간 확인의 함정, 결과 읽는 법" />
 </Related>
 
 ## 출처
 
 <Sources>
-  <Source n={1}>Google Ads 도움말, "Impressions: Definition". support.google.com/google-ads/answer/6320. 광고가 표시될 때마다 1회로 센다.</Source>
-  <Source n={2}>Google Ads 도움말, "About avg. impr. freq. per user (7 or 30 days)". support.google.com/google-ads/answer/9507337. 동영상 캠페인의 7일·30일 창 평균 노출 빈도(노출 ÷ 고유 사용자)를 확인했다.</Source>
-  <Source n={3}>Google Ads 도움말, "Average cost-per-click (Avg. CPC): Definition". support.google.com/google-ads/answer/14074. 총 비용 ÷ 클릭이다.</Source>
-  <Source n={4}>Google Ads 도움말, "About clickthrough rate (CTR)". support.google.com/google-ads/answer/2615875. 클릭 ÷ 노출이다.</Source>
-  <Source n={5}>Google Ads 도움말, "Understand your conversion tracking data". support.google.com/google-ads/answer/6270625. 전환, 전환값, 전환값/비용 열, Every·One 집계 방식을 확인했다.</Source>
-  <Source n={6}>Google Ads 도움말, "About conversion rate". support.google.com/google-ads/answer/2684489. 전환 ÷ 상호작용이며 100%를 넘을 수 있다.</Source>
-  <Source n={7}>Google Ads 도움말, "Average CPA: Definition". support.google.com/google-ads/answer/6396841. 총 비용 ÷ 전환이다.</Source>
-  <Source n={8}>Google Ads 도움말, "About Target ROAS bidding". support.google.com/google-ads/answer/6268637. 매출 5달러 대 광고비 1달러를 500%로 쓰는 예를 확인했다.</Source>
-  <Source n={9}>Google Ads 도움말, "About average daily budgets". support.google.com/google-ads/answer/6385083. 일 지출 한도 2배, 월 한도 30.4배를 확인했다(대부분의 캠페인 기준).</Source>
-  <Source n={10}>Google Ads 도움말, "How our bidding algorithms learn". support.google.com/google-ads/answer/10970825. 전환 주기 대기, 목표 변경 자유도를 확인했다.</Source>
-  <Source n={11}>Google Ads 도움말, "Duration of the learning period for campaigns and what affects it". support.google.com/google-ads/answer/13020501. 전환 수, 전환 주기 길이, 입찰 전략 유형이 기간을 좌우한다. 예산 변경은 이 문서에 없다.</Source>
-  <Source n={12}>Jing Zhou, Jiannan Lu, Anas Shallah (2023), "All about Sample-Size Calculations for A/B Testing: Novel Extensions and Practical Guide", CIKM 2023, arXiv:2305.16459. 초록으로 확인했고 식은 일반적인 두 비율 비교의 표본 수 식이다.</Source>
+  <Source n={1}>Google Ads 도움말, "Impressions: Definition". support.google.com/google-ads/answer/6320. 광고가 표시될 때마다 1회로 센다(2026-10 확인).</Source>
+  <Source n={2}>Media Rating Council, "Viewable Ad Impression Measurement Guidelines", v2.0(2015-08-18, 데스크톱 기준). mediaratingcouncil.org 표준·지침 목록의 PDF. 디스플레이 50% 픽셀 1초, 영상 2초, 242,500 픽셀 이상 30%를 확인했다. 모바일은 별도 지침이다.</Source>
+  <Source n={3}>IAB·MRC, "Audience Reach Measurement Guidelines" v2.0(2013-08). mediaratingcouncil.org 표준·지침 목록의 PDF. 고유 브라우저, 고유 기기, 고유 사용자 정의를 확인했다.</Source>
+  <Source n={4}>Google Ads 도움말, "About avg. impr. freq. per user (7 or 30 days)". support.google.com/google-ads/answer/9507337. 동영상 캠페인의 7일·30일 창 평균 노출 빈도 정의와 계산을 확인했다.</Source>
+  <Source n={5}>Google Ads 도움말, "Invalid clicks: Definition". support.google.com/google-ads/answer/42995. 무효 클릭은 캠페인 지표와 청구에서 제외된다.</Source>
+  <Source n={6}>Google Ads 도움말, "About clickthrough rate (CTR)". support.google.com/google-ads/answer/2615875. 클릭 ÷ 노출이며 좋은 CTR 은 광고 대상과 네트워크에 상대적이다.</Source>
+  <Source n={7}>Google Ads 도움말, CPM 입찰 항목. support.google.com/google-ads/answer/6310. 디스플레이 네트워크에서 1천 회 노출당 지불하는 방식이고 뷰어블 CPM 도 있다. 계산식은 문서에 없어 이 글의 정의를 썼다.</Source>
+  <Source n={8}>Google Ads 도움말, "Average cost-per-click (Avg. CPC): Definition". support.google.com/google-ads/answer/14074. 총 비용 ÷ 클릭이다.</Source>
+  <Source n={9}>Google Ads 도움말, "About conversion rate". support.google.com/google-ads/answer/2684489. 전환 ÷ 상호작용이며 Every 집계에서는 100%를 넘을 수 있다.</Source>
+  <Source n={10}>Google Ads 도움말, "Understand your conversion tracking data". support.google.com/google-ads/answer/6270625. 전환, 전환값, 전환값/비용("투자수익 추정"), 비용/전환, Every·One 집계를 확인했다.</Source>
+  <Source n={11}>Google Ads 도움말, "Average CPA: Definition". support.google.com/google-ads/answer/6396841. 총 비용 ÷ 전환이다.</Source>
+  <Source n={12}>Google Ads 도움말, "About Target ROAS bidding". support.google.com/google-ads/answer/6268637. 500% = 매출 5달러 대 광고비 1달러, 전환값 4주 또는 1에서 2 전환 주기 보고, 목표는 사업 목표와 과거 ROAS 를 참고한다.</Source>
+  <Source n={13}>Google, Meridian 용어집. developers.google.com/meridian/docs/basics/glossary. ROI = 증분 결과 ÷ 지출, 한계 ROI = 반응 곡선의 미분, 수확 체감과 점근 한계 가정을 확인했다. 여기서 ROI 는 증분 기준이라 플랫폼 귀속 ROAS 와 다르다.</Source>
+  <Source n={14}>Google, Meridian, "ROI, mROI, response curves". developers.google.com/meridian/docs/post-modeling/roi-mroi-response-curves. mROI 는 과거 예산 수준 위 다음 한 단위의 수익이고, 포화 수준 평가와 추가 예산 배분에 쓴다.</Source>
+  <Source n={15}>Yuxue Jin, Yueqing Wang, Yunting Sun, David Chan, Jim Koehler (2017), "Bayesian Methods for Media Mix Modeling with Carryover and Shape Effects", Google. PDF 본문에서 선형 반응의 한계, Hill 함수, 한계 ROAS 정의, 최적 배분의 큰 분산을 확인했다.</Source>
+  <Source n={16}>Google Ads 도움말, "About average daily budgets". support.google.com/google-ads/answer/6385083. 일 지출 한도 2배, 월 한도 30.4배(대부분의 캠페인)를 확인했다.</Source>
+  <Source n={17}>Google Ads 도움말, "How budget changes take effect". support.google.com/google-ads/answer/10487143. 같은 날 여러 번 수정하면 그날 가장 높은 예산이 지출 한도의 기준이 된다.</Source>
+  <Source n={18}>Google Ads 도움말, "How our bidding algorithms learn". support.google.com/google-ads/answer/10970825. 전환 주기 정의, 몇 주기 대기, 한 주기 이상 뒤 평가, 1에서 2 주기 뒤 확인을 확인했다.</Source>
+  <Source n={19}>Google Ads 도움말, "Duration of the learning period for campaigns and what affects it". support.google.com/google-ads/answer/13020501. 기간을 좌우하는 요인과 학습 상태가 되는 변경 유형을 확인했다. 예산 변경은 이 문서에 없다.</Source>
+  <Source n={20}>Randall A. Lewis, Justin M. Rao (2015), "The Unfavorable Economics of Measuring the Returns to Advertising", Quarterly Journal of Economics 130(4), 1941-1973. DOI 10.1093/qje/qjv023. Crossref 에 등록된 초록으로 확인했다. 소매·증권사 25건 실험의 결과라 다른 업종에 일반화하지 않는다.</Source>
+  <Source n={21}>Susanne Schmidt, Martin Eisend (2015), "Advertising Repetition: A Meta-Analysis on Effective Frequency in Advertising", Journal of Advertising. DOI 10.1080/00913367.2015.1018460. OpenAlex 에 등록된 초록으로 확인했다. 실험 환경의 결과다.</Source>
+  <Source n={22}>Navdeep S. Sahni (2015), "Effect of temporal spacing between advertising exposures: Evidence from online field experiments", Quantitative Marketing and Economics. SSRN 2380375. Crossref 에 등록된 초록으로 확인했다.</Source>
+  <Source n={23}>Google Ads 도움말, "About frequency capping". support.google.com/google-ads/answer/6034106. 디스플레이와 동영상의 적용 단위와 기간을 확인했다.</Source>
+  <Source n={24}>Google Ads 도움말, 예산 개요. support.google.com/google-ads/answer/10486536. 예산은 캠페인별 일 평균 금액이다.</Source>
+  <Source n={25}>Google Ads 도움말, "About shared budgets". support.google.com/google-ads/answer/10487241. 미사용 예산이 한도에 닿은 캠페인으로 자동 재배분된다.</Source>
+  <Source n={26}>Google Ads 도움말, Google Analytics 이벤트에서 전환 만들기 문서의 데이터 차이 항목. support.google.com/google-ads/answer/2375435. 클릭 날짜 기준 보고, Every·One 집계, 무효 클릭 필터, 쿠키 기간 차이를 확인했다.</Source>
+  <Source n={27}>Google Ads 도움말, 전환 기간(conversion window) 항목. support.google.com/google-ads/answer/3123169. 클릭 기본 30일, 조회 기본 1일을 확인했다(2026-10).</Source>
+  <Source n={28}>Brett R. Gordon, Florian Zettelmeyer, Neha Bhargava, Dan Chapsky (2019), "A Comparison of Approaches to Advertising Measurement: Evidence from Big Field Experiments at Facebook", Marketing Science 38(2), 193-225. DOI 10.1287/mksc.2018.1135. Crossref 에 등록된 한 문장 초록만 확인했다.</Source>
 </Sources>

@@ -1,74 +1,42 @@
-/**
- * 한 고객이 세 시퀀스에 동시에 들어 있을 때 14일 동안의 발송 모의(가정).
- * 규칙: 하루 최대 1통, 직전 7일(당일 포함) 최대 3통, 같은 날 겹치면 우선순위가 높은 시퀀스가 보낸다.
- * 탈락한 메일은 이월하지 않고 폐기한다. 우선순위: 구매 후 > 재참여 > 뉴스레터.
- */
-type Seq = { name: string; days: number[] };
-
-const SEQS: Seq[] = [
-  { name: '구매 후 안내', days: [3, 5, 8] },
-  { name: '재참여', days: [1, 4, 8, 12] },
-  { name: '뉴스레터', days: [2, 9] },
-];
-const DAYS = 14;
-const DAY_CAP = 1;
-const WEEK_CAP = 3;
-
-type Cell = 'sent' | 'held' | null;
-function simulate(): Cell[][] {
-  const grid: Cell[][] = SEQS.map(() => Array<Cell>(DAYS + 1).fill(null));
-  const sentDays: number[] = [];
-  for (let d = 1; d <= DAYS; d += 1) {
-    const cands = SEQS.map((s, i) => ({ i, on: s.days.includes(d) })).filter((c) => c.on); // 앞쪽 시퀀스가 우선순위가 높다
-    let sentToday = 0;
-    for (const c of cands) {
-      const inWeek = sentDays.filter((x) => x > d - 7).length;
-      if (sentToday < DAY_CAP && inWeek < WEEK_CAP) {
-        grid[c.i][d] = 'sent';
-        sentDays.push(d);
-        sentToday += 1;
-      } else {
-        grid[c.i][d] = 'held';
-      }
-    }
-  }
-  return grid;
-}
-
-// 여백 기준: 행 제목은 점에서 8px 이상, 행 사이 24px 이상, 범례는 눈금 아래 24px 이상.
-const GRID = simulate();
-const R = 9;
-const PITCH_X = 344 / DAYS;
-const cx = (d: number) => 8 + (d - 0.5) * PITCH_X;
-const ROW_PITCH = 64;
-const rowY = (i: number) => 8 + i * ROW_PITCH; // 행 제목 baseline = rowY + 14
-const cy = (i: number) => rowY(i) + 14 + 12 + R; // 제목 baseline 아래 12, 점 반지름 9
-const TICK = cy(SEQS.length - 1) + R + 8 + 12; // 점 아래 8 + 글자 높이
-const LEG = TICK + 28;
+/** 빈도 상한은 시퀀스 위에서 고객 단위로 한 번에 건다. 상한을 넘은 메일은 보류 없이 건너뛰고 시퀀스는 다음 단계로 간다. 형태 예시. */
+const X = 8;
+const SEQ_W = 104;
+const SEQ_H = 44;
+const SEQ_GAP = 14; // 8 + 3*104 + 2*14 = 348
+const SEQ = ['A 구매 후', 'B 재참여', 'C 뉴스레터'];
+const CAP_Y = 108;
+const CAP_H = 66;
+const OUT_Y = CAP_Y + CAP_H + 28;
+const OUT_H = 66;
+const OUT_W = 166;
 const STROKE = 1.5;
-export const VB_H = Math.ceil(LEG + 4 + STROKE);
+export const VB_H = Math.ceil(OUT_Y + OUT_H + STROKE / 2 + 8);
 
 export default function FrequencyCap() {
+  const seqX = (i: number) => X + i * (SEQ_W + SEQ_GAP);
   return (
-    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="세 시퀀스가 겹친 14일 모의. 후보 9통 중 6통을 보내고 3통은 보류한다. 4일의 재참여와 5일의 구매 후 안내는 직전 7일 3통 상한에 걸리고, 8일의 재참여는 같은 날 우선순위가 높은 구매 후 안내에 밀린다.">
-      {SEQS.map((s, i) => (
-        <g key={s.name}>
-          <text className="t-strong" x={8} y={rowY(i) + 14}>{s.name}</text>
-          {GRID[i].map((c, d) => {
-            if (!c) return null;
-            return c === 'sent'
-              ? <circle key={d} className="svg-berg" cx={cx(d)} cy={cy(i)} r={R} />
-              : <circle key={d} className="svg-box-bad" cx={cx(d)} cy={cy(i)} r={R} />;
-          })}
+    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="시퀀스 A, B, C가 모두 고객 단위 빈도 상한과 우선순위를 거친다. 상한 안이면 발송하고, 넘으면 보류 없이 건너뛰며 시퀀스는 다음 단계로 간다.">
+      <defs>
+        <marker id="fc-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" /></marker>
+      </defs>
+      {SEQ.map((t, i) => (
+        <g key={t}>
+          <rect className="svg-box" x={seqX(i)} y={8} width={SEQ_W} height={SEQ_H} rx="8" />
+          <text className="t-strong" x={seqX(i) + SEQ_W / 2} y={8 + 27} textAnchor="middle">{t}</text>
+          <line className="svg-flow" x1={seqX(i) + SEQ_W / 2} y1={8 + SEQ_H + 4} x2={seqX(i) + SEQ_W / 2} y2={CAP_Y - 4} markerEnd="url(#fc-ar)" />
         </g>
       ))}
-      {Array.from({ length: DAYS }, (_, k) => k + 1).map((d) => (
-        <text key={d} className="t-sub" x={cx(d)} y={TICK} textAnchor="middle">{d}</text>
-      ))}
-      <circle className="svg-berg" cx={8 + R} cy={LEG - 4} r={7} />
-      <text className="t-sub" x={8 + 2 * R + 8} y={LEG}>발송</text>
-      <circle className="svg-box-bad" cx={120 + R} cy={LEG - 4} r={7} />
-      <text className="t-sub" x={120 + 2 * R + 8} y={LEG}>보류(상한·같은 날 중복)</text>
+      <rect className="svg-box-key" x={X} y={CAP_Y} width={344} height={CAP_H} rx="8" />
+      <text className="t-strong" x={X + 14} y={CAP_Y + 28}>고객 단위 상한과 우선순위</text>
+      <text className="t-sub" x={X + 14} y={CAP_Y + 50}>시퀀스마다가 아니라 한 번에</text>
+      <line className="svg-flow" x1={X + OUT_W / 2} y1={CAP_Y + CAP_H + 4} x2={X + OUT_W / 2} y2={OUT_Y - 4} markerEnd="url(#fc-ar)" />
+      <line className="svg-flow" x1={X + 344 - OUT_W / 2} y1={CAP_Y + CAP_H + 4} x2={X + 344 - OUT_W / 2} y2={OUT_Y - 4} markerEnd="url(#fc-ar)" />
+      <rect className="svg-box-good" x={X} y={OUT_Y} width={OUT_W} height={OUT_H} rx="8" />
+      <text className="t-strong" x={X + 14} y={OUT_Y + 28}>발송</text>
+      <text className="t-sub" x={X + 14} y={OUT_Y + 50}>상한 안</text>
+      <rect className="svg-box-bad" x={X + 344 - OUT_W} y={OUT_Y} width={OUT_W} height={OUT_H} rx="8" />
+      <text className="t-strong" x={X + 344 - OUT_W + 14} y={OUT_Y + 28}>건너뜀</text>
+      <text className="t-sub" x={X + 344 - OUT_W + 14} y={OUT_Y + 50}>보류 없음, 다음 단계</text>
     </svg>
   );
 }

@@ -1,59 +1,55 @@
 /**
- * 가격의 하한과 상한. 모든 입력은 가정이다(글의 표와 같은 값).
- * 개당 변동비 a = 15,600원(매입 12,000 + 포장·배송 3,000 + 반품 600), 가격 비례 비용 r = 3%.
- * 목표 공헌이익 c = (고정비 6,000,000 + 목표 이익 2,000,000) / 1,000개 = 8,000원.
- * 하한 = (a + c) / (1 - r), 공헌이익 0 가격 = a / (1 - r), 상한 = 대안 28,000 + 차별 가치 5,000.
+ * 가격 결정표의 모양. 형태 예시(가상 값).
+ * 가정: 개당 변동비 18,000원, 월 고정비 6,000,000원 + 목표 이익 2,000,000원, 예상 판매량 1,000개
+ * -> 목표 개당 공헌이익 8,000원 -> 하한 26,000원. 대안 가격 30,000원 + 확인된 차별 가치 3,000원 -> 상한 33,000원.
  */
-const A = 15600;
-const R = 0.03;
-const C = (6_000_000 + 2_000_000) / 1000;
-const FLOOR = Math.ceil((A + C) / (1 - R));
-const ZERO = Math.round(A / (1 - R));
-const ALT = 28000;
-const CEIL = ALT + 5000;
+const VAR = 18000;
+const CM = (6_000_000 + 2_000_000) / 1000;
+const FLOOR = VAR + CM;
+const ALT = 30000;
+const CEIL = ALT + 3000;
+const CANDS = [28000, 30000, 32000];
 const fmt = (n: number) => n.toLocaleString('en-US');
 
-const PMIN = 14000;
-const PMAX = 36000;
-const TOP = 40; // 위쪽 축 제목 아래
-const PX = 0.0125; // 원당 px
-const yOf = (p: number) => TOP + (PMAX - p) * PX;
-const BOTTOM = yOf(PMIN);
-const VB_H = Math.ceil(BOTTOM + 1 + 24);
-
-const BX = 12;
-const BW = 64;
-const TX = 94; // 라벨 x
-const G = 2; // 구역 사이 틈
+const PMIN = 24000;
+const PMAX = 35000;
+const X0 = 16;
+const X1 = 344;
+const xOf = (p: number) => X0 + ((p - PMIN) / (PMAX - PMIN)) * (X1 - X0);
+const BAND_Y = 46;
+const BAND_H = 40;
+const BAND_B = BAND_Y + BAND_H;
+const DIV = BAND_B + 72; // 눈금 라벨 두 줄 아래 20px 이상
+const NOTE1 = DIV + 24;
+const NOTE2 = NOTE1 + 22;
+const VB_H = NOTE2 + 4 + 12;
 
 export default function PriceBand() {
-  const yCeil = yOf(CEIL);
-  const yAlt = yOf(ALT);
-  const yFloor = yOf(FLOOR);
-  const yZero = yOf(ZERO);
+  const xf = xOf(FLOOR);
+  const xc = xOf(CEIL);
   return (
-    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label={`가격 후보 구간. 하한 ${fmt(FLOOR)}원은 변동비와 목표 공헌이익을 더해 수수료율로 나눈 값이고, 상한 ${fmt(CEIL)}원은 대안 가격 ${fmt(ALT)}원에 차별 가치 5,000원을 더한 값이다. 공헌이익이 0이 되는 가격은 ${fmt(ZERO)}원이다.`}>
-      <text className="t-sub" x={BX} y="20">판매가(원)</text>
-      <rect className="svg-box-bad" x={BX} y={TOP} width={BW} height={yCeil - TOP - G} rx="6" />
-      <rect className="svg-berg" x={BX} y={yCeil + G} width={BW} height={yFloor - yCeil - 2 * G} rx="6" />
-      <rect className="svg-tip" x={BX} y={yFloor + G} width={BW} height={yZero - yFloor - 2 * G} rx="6" />
-      <rect className="svg-box-bad" x={BX} y={yZero + G} width={BW} height={BOTTOM - yZero - G} rx="6" />
-      <text className="t-accent" x={BX + BW / 2} y={(yCeil + yFloor) / 2 + 4} textAnchor="middle">후보</text>
-      <text className="t-warm" x={BX + BW / 2} y={(yFloor + yZero) / 2 + 5} textAnchor="middle">미달</text>
-
-      <line x1={BX + BW} y1={yCeil} x2={TX - 8} y2={yCeil} stroke="var(--strong)" strokeWidth="1.5" />
-      <text className="t-strong" x={TX} y={yCeil + 5}>상한 {fmt(CEIL)}원</text>
-      <text className="t-sub" x={TX} y={yCeil + 25}>대안 {fmt(ALT)} + 차별 가치 {fmt(CEIL - ALT)}</text>
-
-      <line x1={BX + BW} y1={yAlt} x2={TX - 8} y2={yAlt} stroke="var(--line)" strokeWidth="1.5" strokeDasharray="3 2" />
-      <text className="t-sub" x={TX} y={yAlt + 5}>대안 가격 {fmt(ALT)}원</text>
-
-      <line x1={BX + BW} y1={yFloor} x2={TX - 8} y2={yFloor} stroke="var(--strong)" strokeWidth="1.5" />
-      <text className="t-strong" x={TX} y={yFloor + 5}>하한 {fmt(FLOOR)}원</text>
-      <text className="t-sub" x={TX} y={yFloor + 25}>(변동비 + 목표 공헌) ÷ 0.97</text>
-
-      <line x1={BX + BW} y1={yZero} x2={TX - 8} y2={yZero} stroke="var(--bad)" strokeWidth="1.5" />
-      <text className="t-bad" x={TX} y={yZero + 5}>{fmt(ZERO)}원: 공헌이익 0</text>
+    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label={`가격 후보 구간의 모양. 하한 ${fmt(FLOOR)}원 미만은 미달, 상한 ${fmt(CEIL)}원 초과는 고객이 사지 않는 구간이고, 그 사이에 후보 ${CANDS.map(fmt).join(', ')}원을 둔다. 가상 값이다.`}>
+      <rect className="svg-box-bad" x={X0} y={BAND_Y} width={xf - X0} height={BAND_H} rx="6" />
+      <rect className="svg-berg" x={xf} y={BAND_Y} width={xc - xf} height={BAND_H} rx="4" />
+      <rect className="svg-box-bad" x={xc} y={BAND_Y} width={X1 - xc} height={BAND_H} rx="6" />
+      <text className="t-bad" x={(X0 + xf) / 2} y={BAND_Y + 25} textAnchor="middle">미달</text>
+      <text className="t-bad" x={(xc + X1) / 2} y={BAND_Y + 25} textAnchor="middle">초과</text>
+      {CANDS.map((p) => (
+        <g key={p}>
+          <text className="t-sub" x={xOf(p)} y={BAND_Y - 10} textAnchor="middle">{fmt(p)}</text>
+          <circle cx={xOf(p)} cy={BAND_Y + BAND_H / 2} r="6" fill="var(--accent)" />
+        </g>
+      ))}
+      {[{ x: xf, k: '하한', v: FLOOR }, { x: xc, k: '상한', v: CEIL }].map((m) => (
+        <g key={m.k}>
+          <line x1={m.x} y1={BAND_B} x2={m.x} y2={BAND_B + 8} stroke="var(--strong)" strokeWidth="1.5" />
+          <text className="t-strong" x={m.x} y={BAND_B + 28} textAnchor="middle">{m.k}</text>
+          <text className="t-sub" x={m.x} y={BAND_B + 48} textAnchor="middle">{fmt(m.v)}원</text>
+        </g>
+      ))}
+      <line x1="8" y1={DIV} x2="352" y2={DIV} stroke="var(--line)" />
+      <text className="t-sub" x={X0} y={NOTE1}>하한: 변동비 {fmt(VAR)} + 개당 공헌 {fmt(CM)}</text>
+      <text className="t-sub" x={X0} y={NOTE2}>상한: 대안 {fmt(ALT)} + 확인된 가치 {fmt(CEIL - ALT)}</text>
     </svg>
   );
 }

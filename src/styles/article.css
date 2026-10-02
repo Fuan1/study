@@ -9,6 +9,7 @@
 .article-body strong { color: var(--strong); font-weight: 700; }
 .article-body ul, .article-body ol:not(.sources):not(.toc-inline ol) { padding-left: 1.2em; margin: 0 0 1em; }
 .article-body ul { list-style: disc; }
+.article-body ol:not(.sources):not(.toc-inline ol) { list-style: decimal; }
 .article-body ul li, .article-body ol li { margin-bottom: .45em; padding-left: .2em; }
 .article-body ul li::marker { color: var(--accent); }
 

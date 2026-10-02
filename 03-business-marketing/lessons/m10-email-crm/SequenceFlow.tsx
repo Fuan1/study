@@ -1,9 +1,9 @@
-/** 시퀀스 한 개의 구조: 트리거, 대기, 조건, 메시지, 종료 조건. 예시는 활성화 유도 시퀀스(가정). */
+/** 시퀀스 한 개의 구조: 트리거, 대기, 조건, 메시지, 종료 조건. 예시는 활성화 유도 시퀀스. */
 type Step = { title: string; sub: string; key?: boolean };
 
 const STEPS: Step[] = [
   { title: '1 트리거', sub: '가입 완료 이벤트' },
-  { title: '2 대기', sub: '24시간' },
+  { title: '2 대기', sub: '정한 시간' },
   { title: '3 조건', sub: '핵심 행동 전인가' },
   { title: '4 메시지', sub: '시작 안내 1통' },
   { title: '5 종료 조건', sub: '행동·해지하면 즉시', key: true },
@@ -24,7 +24,7 @@ export const VB_H = Math.ceil(y(STEPS.length - 1) + H + STROKE / 2 + 8);
 
 export default function SequenceFlow() {
   return (
-    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="시퀀스 구조. 가입 완료가 트리거이고, 24시간 대기한 뒤, 핵심 행동을 아직 안 했는지 조건을 확인한다. 이미 했으면 건너뛰고, 안 했으면 시작 안내를 1통 보낸다. 행동하거나 해지하면 어느 단계에서든 즉시 종료한다.">
+    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="시퀀스 구조. 가입 완료가 트리거이고, 정한 시간 대기한 뒤, 핵심 행동을 아직 안 했는지 조건을 확인한다. 이미 했으면 건너뛰고, 안 했으면 시작 안내를 1통 보낸다. 행동하거나 해지하면 어느 단계에서든 즉시 종료한다.">
       <defs>
         <marker id="seq-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" /></marker>
       </defs>

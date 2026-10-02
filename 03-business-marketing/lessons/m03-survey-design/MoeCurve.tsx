@@ -1,5 +1,5 @@
-/** 비율 추정의 오차 범위(p=0.5, 신뢰수준 95%, 단순 무작위 표본)를 표본 수에 대해 식으로 그린다. */
-const Z = 1.959964; // z(0.975), python statistics.NormalDist 로 계산한 값
+/** 비율 추정의 오차 범위(p=0.5, 신뢰수준 95%, 단순 무작위 표본)를 정의식 z·√(p(1-p)/n) 에서 그린다. 출처 값이 아니라 이론값이다. */
+const Z = 1.959964; // 표준정규분포의 97.5% 지점
 const moe = (n: number) => 100 * Z * Math.sqrt(0.25 / n); // 단위 %
 const need = (e: number) => Math.ceil((Z * Z * 0.25) / ((e / 100) ** 2)); // 필요 표본(모집단이 아주 클 때)
 const fmt = (n: number) => n.toLocaleString('en-US');

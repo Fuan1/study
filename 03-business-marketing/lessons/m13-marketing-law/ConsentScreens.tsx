@@ -9,7 +9,7 @@ const FIRST_Y = 36;
 const ROW_H = 40;
 const ROW_GAP = 12;
 const rowY = (i: number) => FIRST_Y + i * (ROW_H + ROW_GAP);
-const RIGHT_ROWS = ['(필수) 수집·이용', '(선택) 마케팅 수신', '(선택) 제3자 제공'];
+const RIGHT_ROWS = ['(필수) 수집·이용', '(선택) 홍보·판매', '(선택) 광고 수신', '(선택) 제3자 제공'];
 
 const LEFT_H = 66;
 const leftBottom = FIRST_Y + LEFT_H;
@@ -27,12 +27,12 @@ const Check = ({ x, y, on }: { x: number; y: number; on: boolean }) => (
 
 export default function ConsentScreens() {
   return (
-    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="동의 화면 비교. 나쁜 화면은 필수와 마케팅과 제3자 제공을 모두 동의 하나로 묶고 미리 체크해 둔다. 고친 화면은 수집 이용, 마케팅 수신, 제3자 제공을 각각 체크 상자로 따로 묻고 선택 항목은 비워 둔다.">
+    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="동의 화면 비교. 나쁜 화면은 필수와 홍보 판매와 광고 수신과 제3자 제공을 모두 동의 하나로 묶고 미리 체크해 둔다. 고친 화면은 수집 이용, 홍보 판매 목적 이용, 광고 수신, 제3자 제공을 각각 체크 상자로 따로 묻고 선택 항목은 비워 둔다.">
       <text className="t-bad" x={LEFT_X} y={HEAD_Y}>나쁜 화면</text>
       <rect className="svg-box-bad" x={LEFT_X} y={FIRST_Y} width={LEFT_W} height={LEFT_H} rx="8" />
       <Check x={LEFT_X + 12} y={FIRST_Y + 25} on />
       <text className="t-strong" x={LEFT_X + 36} y={FIRST_Y + 27}>모두 동의</text>
-      <text className="t-sub" x={LEFT_X + 36} y={FIRST_Y + 49}>마케팅·제공 포함</text>
+      <text className="t-sub" x={LEFT_X + 36} y={FIRST_Y + 49}>선택 항목 포함</text>
       <text className="t-bad" x={LEFT_X} y={leftBottom + 24}>미리 체크, 한 덩어리</text>
       <text className="t-bad" x={LEFT_X} y={leftBottom + 44}>선택을 거를 수 없다</text>
 

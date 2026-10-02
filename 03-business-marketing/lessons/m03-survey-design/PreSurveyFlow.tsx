@@ -1,8 +1,8 @@
-/** 설문을 만들기 전 세 질문. 하나라도 아니오이면 문항 설계로 넘어가지 않는다. */
+/** 설문을 만들기 전 세 질문. 하나라도 아니오이면 문항 설계로 넘어가지 않는다. 판단 흐름이며 수치는 없다. */
 type Step = { q: string; sub: string; no: string; fix: string };
 
 const STEPS: Step[] = [
-  { q: '결정에 쓰이나?', sub: '결정 한 줄과 기한', no: '보류', fix: '결정 먼저' },
+  { q: '기록으로 못 푸나?', sub: '행동은 로그가 먼저', no: '기록 조회', fix: '설문 안 함' },
   { q: '답이 결정을 바꾸나?', sub: '어느 답이든 같으면 삭제', no: '문항 삭제', fix: '묻지 않음' },
   { q: '대상에게 닿나?', sub: '대상 집단과 모집 경로', no: '방법 변경', fix: '대상 재정의' },
 ];
@@ -20,7 +20,7 @@ const VB_H = Math.ceil(y(LAST) + H + STROKE / 2 + 8);
 
 export default function PreSurveyFlow() {
   return (
-    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="설문 전 세 질문. 결정에 쓰이지 않으면 보류하고 결정부터 정한다. 답이 결정을 바꾸지 않으면 문항을 삭제한다. 대상에게 닿을 수 없으면 방법을 바꾼다. 모두 통과하면 문항 설계로 넘어간다.">
+    <svg viewBox={`0 0 360 ${VB_H}`} role="img" aria-label="설문 전 세 질문. 기록으로 풀 수 있으면 설문하지 않고 기록을 본다. 답이 결정을 바꾸지 않으면 문항을 삭제한다. 대상에게 닿을 수 없으면 방법을 바꾼다. 모두 통과하면 문항 설계로 넘어간다.">
       <defs>
         <marker id="m03ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" /></marker>
       </defs>
