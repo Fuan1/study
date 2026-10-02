@@ -1,0 +1,244 @@
+import CollectionFlow from './CollectionFlow';
+import TrackingPlanCard from './TrackingPlanCard';
+import IdentityFlow from './IdentityFlow';
+import TimestampSkew from './TimestampSkew';
+import NonresponseBias from './NonresponseBias';
+
+<Overview>
+
+- 해라: 기록을 심기 전에 질문을 적고, 이벤트마다 이름, 발생 시점, 속성, 기록 위치, 담당을 수집 계획서 한 장에 고정해라.
+- 해라: 이름 규칙 하나를 정해 지켜라. 대소문자만 달라도 도구는 다른 이벤트로 센다.
+- 해라: 로그인 ID는 바뀌지 않는 내부 번호로 하고 로그인 전 익명 ID와 잇어라. 안 그러면 한 사람이 여럿으로 세어진다.
+- 하지 마라: 쓸 일이 정해지지 않은 개인정보 모으기. 법은 필요한 최소한만 수집하라고 하고 입증 책임은 수집하는 쪽에 있다.
+- 하지 마라: 표본을 늘려 쏠림을 고치려 하기. 무응답·선택 편향은 표본이 커져도 줄지 않는다.
+
+</Overview>
+
+<Toc />
+
+## 수집 설계를 시작할 때
+
+규칙: 모으기 전에 "이 기록으로 무슨 결정을 하나"를 적는다. 질문 없는 이벤트는 쌓이기만 한다.
+
+<Figure caption="질문에서 시작해 점검표로 끝난다. 단계마다 문서가 하나씩 나온다.">
+  <CollectionFlow />
+</Figure>
+
+| 질문 | 필요한 데이터 | 분석 | 결과물 | 결정에 쓰는 법 |
+|---|---|---|---|---|
+| 가입 후 어디서 떠나나 | 단계별 이벤트, 사용자 ID, 발생 시각 | 퍼널 | 단계별 전환 표 | 가장 많이 빠지는 단계부터 고친다 |
+| 가입자가 계속 쓰나 | 가입 시각, 이후 이벤트, 사용자 ID | 코호트 | 유지 곡선 | 곡선이 평평해지는지 본다 |
+| 사용자가 만족하나 | 응답, 응답 여부, 대상자 정보 | 요약, 무응답 점검 | 응답 분포 | 응답자가 누구인지 밝히고 결론 범위를 제한한다 |
+| 새 화면이 더 나은가 | 노출 집단, 이벤트, 발생 시각 | 집단 비교 | 집단별 지표 표 | 정해 둔 지표로 출시를 판단한다 |
+
+분석 방법은 d07, d08, d10 글에서 다루고, 여기서는 입력의 기록만 정한다.
+
+## 수집 계획서를 쓸 때
+
+규칙: 이벤트 하나당 한 카드를 쓰고 질문과 발생 시점까지 적는다.
+
+수집 계획서(트래킹 플랜)는 모으려는 이벤트와 속성을 적은 명세다. Segment는 들어온 데이터가 계획과 다르면 위반으로 표시한다.<Ref n={1} /> 계획서는 직군을 넘는 단일 기준이다.<Ref n={2} />
+
+| 항목 | 적는 내용 | 안 적으면 |
+|---|---|---|
+| 질문 | 이 이벤트가 답하는 질문과 지표 | 안 쓰는 이벤트가 쌓인다 |
+| 이벤트 이름 | 규칙에 맞춘 이름 하나 | 같은 사건이 두 이름으로 갈린다 |
+| 발생 시점 | 어떤 동작이 끝난 순간인지 | 팀마다 다른 순간에 심는다 |
+| 속성 | 이름, 자료형, 단위, 필수 여부 | 숫자와 문자가 섞이고 단위가 달라진다 |
+| 식별자, 기록 위치 | 사용자 ID 포함 여부, 클라이언트인지 서버인지 | 같은 사건이 두 번 세어지거나 빠진다 |
+| 담당, 버전 | 고칠 사람, 바뀐 날짜 | 언제부터 정의가 달라졌는지 모른다 |
+
+Segment 계획서는 속성을 필수와 선택으로 나누고 자료형을 지정한다. 이벤트 자체는 필수로 표시할 수 없다. 언제 발생해야 하는지 도구가 모르기 때문이다.<Ref n={1} /> 그래서 "언제 발생하나" 칸은 사람이 쓴다.
+
+<Figure caption="형태 예시(가상 값). 이벤트 하나를 이 모양으로 적는다. 항목 구성은 트래킹 플랜을 따랐고 값은 가정이다.">
+  <TrackingPlanCard />
+</Figure>
+
+## 이벤트 이름과 속성을 정할 때
+
+규칙: 이름 규칙을 하나만 고르고 문서에 쓴다. 도구마다 권장이 다르니 섞지 마라.
+
+| 출처 | 이벤트 이름 | 비고 |
+|---|---|---|
+| Segment | 대상 + 동작, Title Case(Workspace Created). 속성은 snake_case | 대소문자와 철자까지 계획서와 맞아야 한다<Ref n={2} /> |
+| Amplitude | 대상 + 과거형 동사(Product Added), 사용자 관점 | Song Played와 song played는 별개 이벤트다<Ref n={3} /> |
+| GA4 | 영문자로 시작, 문자·숫자·밑줄만, 소문자 권장 | 대소문자를 구분하고 예약어가 있다<Ref n={4} /> |
+
+기준값: GA4는 이벤트 이름 40자, 이벤트당 매개변수 25개, 매개변수 값 100자까지다(2026년 10월 확인, 바뀔 수 있다).<Ref n={5} />
+
+- 해라: 이벤트는 일반적으로 짓고 세부는 속성으로 둔다. 결제수단별 이벤트 대신 주문 완료 이벤트 하나에 결제수단 속성을 둔다.<Ref n={3} />
+- 하지 마라: 이름에 날짜나 값 넣기, 속성 값을 이벤트 이름으로 올리기, feature_1 같은 번호 키 만들기.<Ref n={2} />
+- 하지 마라: "Event 12" 같은 뜻 없는 이름. 통화는 ISO 4217 코드(KRW)로 적는다.<Ref n={6} />
+- 해라: GA4가 권장 이벤트로 정한 사건(구매, 가입 등)은 권장 이름과 매개변수를 쓴다. 기본 보고서와 맞물린다.<Ref n={7} />
+
+Segment는 사업 목표에 연결된 적은 이벤트로 시작하라고 권한다.<Ref n={2} /> 질문 칸이 빈 이벤트는 뺀다. 반대로 완료 이벤트만 있으면 전환율의 분모가 없으니 시작과 완료를 쌍으로 적는다.
+
+<Callout kind="warn" title="한 행이 무엇인지 먼저 정한다">
+행 하나의 뜻(grain)을 먼저 선언하고 다른 단위를 한 표에 섞지 말라는 것이 Kimball의 규칙이다.<Ref n={8} /> 주문 하나가 한 행인지 상품 한 줄이 한 행인지 적어라. 섞으면 주문 금액이 상품 줄 수만큼 중복된다(이 글의 적용 예).
+</Callout>
+
+## 한 사람이 여럿으로 세어질 때
+
+규칙: 익명 ID와 회원번호를 구분해 정하고, 로그인 순간에 둘을 잇는다.
+
+| 식별자 | 정체 | 약점 |
+|---|---|---|
+| 익명 ID | 첫 방문에 자동 생성한 번호 | 기기마다 다르고, 쿠키와 저장소를 지우면 새 번호가 된다<Ref n={9} /> |
+| 회원번호 | 서비스 DB의 고유 번호 | 로그인 전에는 없다 |
+
+- 해라: 회원번호는 바뀌지 않는 값(UUID나 DB 번호)으로 한다. 이메일과 사용자명은 바뀔 수 있어 ID로 쓰지 말고 속성으로 둔다.<Ref n={9} /><Ref n={10} />
+- 해라: 가입과 로그인 때 두 ID를 함께 기록해 이전 방문을 잇고, 직후에 그 원인 이벤트를 남긴다.<Ref n={9} />
+- 하지 마라: 로그인 전 사용자에게 None 같은 공통 값을 ID로 넣기. 여러 사람이 한 사람이 된다. 대소문자만 다른 ID는 별개 프로필이 된다.<Ref n={11} />
+- 하지 마라: 신원을 알 수 있는 값을 ID로 쓰기. GA4는 이를 금지하고, 256자 이하에 사용자마다 고유해야 한다.<Ref n={12} />
+- 서버 기록은 익명 ID를 직접 만들어 넘겨야 하고,<Ref n={9} /> GA4 서버 전송은 웹 태그의 client_id와 맞춰야 이어진다.<Ref n={13} />
+
+<Figure caption="한 사람이 두 기기에서 방문하면 로그인 전에는 둘로 세어지고, 각 기기에서 같은 회원번호로 로그인하면 하나로 합쳐진다. 로그인하지 않은 기기끼리는 이어지지 않는다.">
+  <IdentityFlow />
+</Figure>
+
+GA4는 로그인 때 ID를 부여하면 그 전 이벤트도 소급해 잇고 로그아웃 뒤에는 끊긴다고 설명한다.<Ref n={12} /> 로그인 전 방문자 수는 익명 ID 수로 읽어라.
+
+## 시각이 어긋날 때
+
+규칙: 시각은 UTC로 저장하고, 발생 시각과 받은 시각을 따로 둔다.
+
+Segment는 모든 시각을 ISO-8601 UTC로 받고 네 가지를 구분한다. 기기에서 호출이 일어난 발생 시각(originalTimestamp), 전송 시각(sentAt), 서버가 받은 시각(receivedAt), 보정된 timestamp다. 순서가 중요하면 보정된 값을 권한다.<Ref n={14} />
+
+<Figure caption="보정 시각 = 수신 시각 - (전송 시각 - 발생 시각). 기기 시계가 틀려도 대기 시간 간격은 맞다고 보고 서버 시계로 옮긴다. 시각 값은 가상 예시이고 보정 결과는 식으로 계산했다.">
+  <TimestampSkew />
+</Figure>
+
+| 기준 | 클라이언트(앱, 브라우저) | 서버 |
+|---|---|---|
+| 맞는 사건 | 사용자 동작, 본 화면 | 시스템이 확정한 결과(결제 승인 등) |
+| 신뢰성 | 네트워크가 끊기면 늦거나 빠진다 | 사용자에게 보이지 않아 더 믿을 만하다는 것이 Segment의 설명이다<Ref n={9} /> |
+
+첫 행은 이 글의 권고다. 해라: 한 사건은 한 곳에서만 기록하고 계획서에 적어라. 양쪽이면 두 번 세어진다. 기준값: GA4 서버 전송은 웹·앱 태그를 대체하지 못하고 보완한다. 과거 시각은 72시간까지만 인정하고, 세션 ID를 쓰면 세션 시작 24시간 안에 보낸다(2026년 10월 확인).<Ref n={15} /><Ref n={13} />
+
+## 설문과 로그가 한쪽으로 쏠릴 때
+
+규칙: 누가 기록에 들어오고 누가 빠지는지를 수집 단계에서 같이 기록한다.
+
+| 편향 | 증상 | 수집 단계에서 줄이는 법 |
+|---|---|---|
+| 선택 편향 | 감정이 강한 사람만 참여한다 | 무작위로 초대하고 전체 대상자 정보를 남긴다 |
+| 무응답 편향 | 응답 안 한 사람이 응답한 사람과 다르다 | 응답 여부와 응답 전 정보(가입일, 구매 이력)를 함께 보관한다<Ref n={16} /> |
+| 생존자 편향 | 선택을 통과한 대상만 있어 성과가 좋아 보인다 | 이탈 대상도 기록하고 분모를 처음 대상 전체로 둔다<Ref n={17} /> |
+| 커버리지 쏠림 | 로그인 안 한 사람, 추적 거부자가 빠진다 | 전체 대상 수와 추적된 수를 같이 적는다<Ref n={18} /> |
+
+AAPOR는 평균의 무응답 편향을 대략 무응답 비율 곱하기 응답자와 무응답자의 평균 차이로 표현한다. 응답률은 편향의 가능성이지 실제 편향이 아니다.<Ref n={16} />
+
+<Figure caption="형태 예시(가상 값). 무응답 비율과 평균 차이를 곱해 계산했다. 무응답이 많아도 차이가 없으면 편향이 없다.">
+  <NonresponseBias />
+</Figure>
+
+- 해라: 응답 여부와 핵심 변수에 모두 관련된 정보를 수집 때 남겨라. 나중에 응답자와 비응답자를 비교하는 유일한 길이다.<Ref n={16} />
+- 해라: 점검은 외부 데이터와 비교, 접촉 횟수별 차이, 가정을 달리한 보정 추정으로 하고, 지표마다 따로 본다.<Ref n={16} />
+- 하지 마라: 표본을 늘려 해결하기. 편향은 표본 크기의 함수가 아니다.<Ref n={18} /> 가중치 보정은 오차를 키우고 유효 표본을 줄인다.<Ref n={16} />
+
+<Callout kind="warn">
+근사식과 점검법은 설문 방법론의 것이다. 행동 로그에는 같은 구조로 적용하되 수치 기준은 없다.
+</Callout>
+
+## 개인정보를 어디까지 모을지 정할 때
+
+규칙: 속성마다 "왜 필요한가"를 적고 근거가 없으면 뺀다. 법률 자문이 아니라 점검 기준이다.
+
+개인정보 보호법(2026년 9월 11일 시행본, 국가법령정보센터 원문 확인) 중 수집 설계와 닿는 조문이다.<Ref n={19} />
+
+| 조문 | 내용 | 설계에 쓰는 법 |
+|---|---|---|
+| 제3조 제1항 | 목적을 명확히 하고 필요한 최소한만 적법하게 수집 | 속성마다 필요 근거 칸을 둔다 |
+| 제3조 제7항 | 익명으로 가능하면 익명, 아니면 가명으로 처리 | 분석용에는 이름·연락처 대신 내부 번호를 쓴다 |
+| 제15조 제2항 | 동의 때 목적, 항목, 보유·이용 기간, 거부권과 불이익을 알린다 | 동의 문구가 네 가지를 담는지 본다 |
+| 제16조 | 최소 수집의 입증 책임은 처리자. 필요 외 정보는 거부해도 서비스를 거절하지 않는다 | 선택 수집을 가입 필수 조건에 묶지 않는다 |
+| 제2조 제1호 나목 | 다른 정보와 쉽게 결합해 알아볼 수 있으면 개인정보 | 기기 ID와 회원번호도 해당할 수 있다(적용은 확인 필요) |
+
+- 하지 마라: 이메일이나 전화번호를 URL, 이벤트 속성에 싣기. 도구 여러 곳에 퍼진다.
+- 동의 외 수집 근거(계약 이행 등)도 있다(제15조 제1항). 근거는 법무 담당에게 확인해라.
+
+## 수집을 켜기 전과 직후에 확인할 때
+
+판단 순서: 1) 이벤트마다 "이 동작이면 이 이름과 속성이 나온다"는 기대값을 적는다. 2) 테스트 기기에서 해 보고 실시간 도구로 본다. 3) 켠 직후 첫 데이터를 아래 표로 본다.
+
+GA4 DebugView는 테스트 기기의 이벤트를 실시간으로 보여 주지만 동의 모드 같은 설정이 걸리면 안 보일 수 있다.<Ref n={20} /> Segment Source Debugger는 최대 500건 표본이고 순서가 실제와 다를 수 있다. 전체 기록은 웨어하우스나 S3로 받는다.<Ref n={21} /> 계획에 없는 이벤트, 자료형 오류, 필수 누락은 Segment에서 위반으로 잡힌다. 차단은 데이터를 영구히 버리니 처음에는 통과시키고 위반을 보며 조여라.<Ref n={22} />
+
+| 확인 | 기대 | 이상 신호 |
+|---|---|---|
+| 이벤트 이름 | 계획서와 글자까지 같다 | 철자나 대소문자가 다른 이름이 나온다 |
+| 속성 형태 | 자료형, 단위, 허용값이 맞다 | 숫자 자리에 문자, 단위 혼재 |
+| 식별자 | 로그인 뒤 두 ID가 함께 온다 | 공통 값에 이벤트가 몰린다 |
+| 시각 | UTC이고 발생이 수신보다 늦지 않다 | 미래 시각이 있다 |
+| 중복 | 사건 하나에 기록 하나 | 클라이언트와 서버 양쪽에 있다 |
+
+GA4 맞춤 측정기준은 보고서에 나오기까지 24시간에서 48시간이 걸린다.<Ref n={23} /> 첫날 보고서가 비어도 실패로 단정하지 말고 실시간 확인부터 해라.
+
+## 수집 정의를 바꿀 때
+
+규칙: 이름, 속성의 뜻과 단위, 발생 시점을 바꾸면 그날부터 다른 데이터로 보고 변경 이력에 남긴다. 이 절은 이 글의 운영 제안이다.
+
+도구는 철자까지 같아야 같은 이벤트로 본다. 이름을 바꾸면 옛 이벤트와 새 이벤트가 따로 쌓인다.<Ref n={1} />
+
+- 이름만 바뀜: 옛 이름과 새 이름을 이어 세는 규칙을 이력에 적는다.
+- 발생 시점이나 단위가 바뀜: 변경일 전후를 단순 비교 불가로 표시하고, 단위는 새 이름의 속성으로 만든다.
+
+이력은 날짜, 대상, 바뀐 내용, 이유, 전후 비교 가능 여부, 담당을 한 줄로 적는다. 추이가 갑자기 꺾이면 이 이력부터 본다.
+
+## 증상으로 찾기
+
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| 같은 사건이 두 이름으로 갈려 있다 | 이름 규칙이 없거나 대소문자가 섞였다 | 규칙을 문서화하고 옛 이름을 이어 센다 |
+| 방문자 수가 실제보다 많다 | 기기마다, 쿠키 삭제마다 새 익명 ID | 사람 수가 아니라 ID 수로 표시하고 로그인 연결을 점검한다 |
+| 결제 건수가 서버 집계와 안 맞는다 | 양쪽이 모두 기록하거나 한쪽이 빠졌다 | 확정 사건은 서버 한 곳에서만 기록한다 |
+| 설문 결과가 현실과 다르다 | 응답자가 한쪽으로 쏠렸다 | 응답 여부와 대상자 정보를 남겨 비교한다 |
+
+## 수집 점검표
+
+- 이벤트마다 질문, 이름, 발생 시점, 속성, 기록 위치, 담당이 적혀 있고 이름 규칙을 따르는가.
+- 행 하나의 뜻(grain)이 정해져 있는가.
+- 회원번호가 바뀌지 않는 값이고, 로그인 전후를 잇는 규칙이 있으며, 공통 값을 ID로 쓰지 않았는가.
+- 시각이 UTC이고 발생 시각과 받은 시각이 구분되는가.
+- 한 사건이 클라이언트나 서버 한 곳에서만 기록되는가.
+- 응답 여부와 대상자 정보가 남아 응답자와 비응답자를 비교할 수 있는가.
+- 속성마다 필요 근거가 있고 동의 문구가 알릴 사항 네 가지를 담는가.
+- 테스트 기기에서 기대값대로 나오는 것을 확인했고, 켠 직후 첫 데이터를 봤는가.
+- 정의를 바꿀 때 변경 이력에 날짜와 이유를 남기는가.
+
+## 관련 글
+
+<Related>
+  <Rel to="d01" note="질문과 지표가 이벤트 목록의 출발점" />
+  <Rel to="d02" note="행동 기록, 거래, 설문, 외부 데이터 중 무엇을 모을지" />
+  <Rel to="d04" note="수집한 뒤 빠짐·중복·정의 불일치 점검" />
+  <Rel to="d06" note="추이가 꺾일 때 원인 후보 좁히기" />
+  <Rel to="d10" note="노출 집단 기록이 A/B 테스트의 전제" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>Twilio Segment 문서, "Create a Tracking Plan". twilio.com/docs/segment/protocols/tracking-plan/create (2026년 10월 열람). segment.com/docs 는 접속이 막혀 같은 문서의 twilio.com 판을 읽었다.</Source>
+  <Source n={2}>Twilio Segment 문서, "Tracking Plan Best Practices". twilio.com/docs/segment/protocols/tracking-plan/best-practices</Source>
+  <Source n={3}>Amplitude 문서, "Data planning playbook"(이벤트 이름, 속성, 이벤트 수 권장). amplitude.com/docs/data/data-planning-playbook</Source>
+  <Source n={4}>Google Analytics 도움말, 이벤트 이름과 매개변수 이름 규칙. support.google.com/analytics/answer/13316687 (문서 제목은 확인 필요)</Source>
+  <Source n={5}>Google Analytics 도움말, 이벤트 수집 한도(표준 속성). support.google.com/analytics/answer/9267744 (2026년 10월 열람, 한도는 바뀔 수 있다)</Source>
+  <Source n={6}>Twilio Segment 문서, Track 호출 명세. twilio.com/docs/segment/connections/spec/track</Source>
+  <Source n={7}>Google Analytics 도움말, 이벤트 유형과 권장 이벤트. support.google.com/analytics/answer/9267735</Source>
+  <Source n={8}>Kimball Group, Dimensional Modeling Techniques, "Grain". kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/grain/</Source>
+  <Source n={9}>Twilio Segment 문서, Identify 모범 사례. twilio.com/docs/segment/connections/spec/best-practices-identify</Source>
+  <Source n={10}>Twilio Segment 문서, Identify 호출 명세. twilio.com/docs/segment/connections/spec/identify</Source>
+  <Source n={11}>Amplitude 문서, 사용자 식별. amplitude.com/docs/get-started/identify-users</Source>
+  <Source n={12}>Google Analytics 도움말, User-ID. support.google.com/analytics/answer/9213390</Source>
+  <Source n={13}>Google Analytics 개발자 문서, Measurement Protocol 이벤트 전송(client_id, 72시간, 이벤트 25개). developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events</Source>
+  <Source n={14}>Twilio Segment 문서, 공통 필드(timestamp, originalTimestamp, sentAt, receivedAt). twilio.com/docs/segment/connections/spec/common</Source>
+  <Source n={15}>Google Analytics 개발자 문서, Measurement Protocol 개요(세션 ID 24시간, 태그 보완용). developers.google.com/analytics/devguides/collection/protocol/ga4</Source>
+  <Source n={16}>AAPOR (2016), "Evaluating Survey Quality in Today's Complex Environment"(문항 7~10, 응답률과 무응답 편향, 점검법, 가중치의 비용). aapor.org/wp-content/uploads/2022/11/AAPOR_Reassessing_Survey_Methods_Report_Final.pdf</Source>
+  <Source n={17}>Wikipedia, "Survivorship bias"(정의, 2차 자료). en.wikipedia.org/wiki/Survivorship_bias</Source>
+  <Source n={18}>AAPOR Task Force (2013), "Report of the AAPOR Task Force on Non-probability Sampling". aapor.org/wp-content/uploads/2022/11/NPS_TF_Report_Final_7_revised_FNL_6_22_13-2.pdf</Source>
+  <Source n={19}>개인정보 보호법(법률 제21445호, 2026년 3월 10일 공포, 2026년 9월 11일 시행). 국가법령정보센터(law.go.kr) 법령 원문에서 제2조, 제3조, 제15조, 제16조 조문을 확인했다(2026년 10월 2일). 법률 자문이 아니라 점검 기준이다.</Source>
+  <Source n={20}>Google Analytics 도움말, DebugView. support.google.com/analytics/answer/7201382</Source>
+  <Source n={21}>Twilio Segment 문서, Source Debugger. twilio.com/docs/segment/connections/sources/debugger</Source>
+  <Source n={22}>Twilio Segment 문서, Protocols 위반과 차단 설정. twilio.com/docs/segment/protocols/enforce/schema-configuration</Source>
+  <Source n={23}>Google Analytics 도움말, 맞춤 측정기준과 측정항목. support.google.com/analytics/answer/14239696</Source>
+</Sources>
