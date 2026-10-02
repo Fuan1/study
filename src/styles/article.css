@@ -98,3 +98,8 @@
 .sources li:target { color: var(--strong); }
 .related { margin: 0 0 1em; }
 .related li { padding: 6px 0; font-size: 16px; }
+
+/* 코드: 인라인 코드와 코드 블록(SQL 등). 블록은 가로로 스크롤되고 줄은 짧게 쓴다. */
+.article-body code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: .88em; background: var(--raise); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; color: var(--strong); word-break: break-all; }
+.article-body pre { margin: 0 0 1.2em; padding: 14px 16px; background: var(--sunk); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 13px; line-height: 1.65; tab-size: 2; }
+.article-body pre code { background: none; border: 0; border-radius: 0; padding: 0; font-size: inherit; color: var(--ink); white-space: pre; word-break: normal; }

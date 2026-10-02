@@ -1,0 +1,444 @@
+import ExecOrder from './ExecOrder';
+import FilterFunnel from './FilterFunnel';
+import CountKinds from './CountKinds';
+import RangeMatrix from './RangeMatrix';
+
+<Overview>
+
+- 해라: 쿼리를 FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY, LIMIT 순으로 평가한다고 생각하고 써라. 행 조건은 WHERE, 집계 결과 조건은 HAVING에 둔다.
+- 하지 마라: NULL에 `=` 나 `<>` 를 쓰지 마라. `IS NULL` 을 쓰고, `NOT IN` 의 목록에 NULL이 섞이는지 확인해라.
+- 기준값: 기간은 반열린 구간 `>= 시작 AND < 끝` 으로 쓴다. 시각 열에 BETWEEN은 쓰지 않는다.
+- 해라: 비율은 분자를 소수로 바꿔서 나누고, 분모는 `NULLIF(분모, 0)` 으로 막아라.
+- 하지 마라: 분석 쿼리에 `SELECT *` 와 습관적인 `UNION` 을 쓰지 마라. 열을 적고, 중복 제거가 필요 없으면 `UNION ALL` 을 쓴다.
+
+</Overview>
+
+<Toc />
+
+예제 테이블 `orders` 는 가정한 10행이다. 열은 order_id, user_id, channel(web, app), status(paid, refund, cancel), amount(NULL 가능), coupon(NULL 가능), ordered_at(timestamp)이다. 결과 표는 이 데이터를 SQLite와 DuckDB에서 돌려 얻었다. 문법은 PostgreSQL 기준이다.
+
+## 쿼리가 의도와 다른 결과를 낼 때: 실행 순서
+
+규칙: 쓴 순서가 아니라 논리적 실행 순서로 읽어라. 엔진이 내부에서 순서를 바꿔도 결과는 이 순서대로 평가한 것과 같다.<Ref n={1} />
+
+<Figure caption="별칭은 SELECT 단계에서 생긴다. 그래서 그 앞의 WHERE는 별칭을 못 보고, 그 뒤의 ORDER BY는 본다.">
+  <ExecOrder />
+</Figure>
+
+- 별칭은 SELECT에서 생기므로 WHERE에서 쓰지 마라. 식을 다시 쓰거나 서브쿼리로 감싼다.
+- 집계 함수는 WHERE에 쓰지 마라. 그룹이 아직 없다. 집계 결과 조건은 HAVING에 쓴다.
+- GROUP BY를 쓰면 SELECT에는 그룹 열과 집계 함수만 쓴다.
+- LIMIT은 ORDER BY와 함께 써라. ORDER BY가 없으면 결과 순서가 정해지지 않는다.<Ref n={2} />
+- DISTINCT는 SELECT 목록을 계산한 뒤, ORDER BY 앞에서 처리된다.<Ref n={1} /><Ref n={2} />
+
+별칭을 어디서 쓸 수 있는지는 방언마다 다르다.<Ref n={1} /><Ref n={2} /><Ref n={3} />
+
+| 위치 | PostgreSQL | BigQuery | MySQL |
+|---|---|---|---|
+| WHERE | 불가 | 불가 | 불가 |
+| GROUP BY | 가능 | 가능 | 가능 |
+| HAVING | 불가 | 가능 | 가능 |
+| ORDER BY | 가능, 별칭 단독만 | 가능 | 가능 |
+
+이식하려면 WHERE와 HAVING에서는 별칭 대신 식을 다시 쓴다.
+
+나쁜 쿼리: 별칭을 WHERE에서 쓴다. PostgreSQL은 `column "revenue" does not exist` 로 멈춘다.
+
+```sql
+SELECT channel, SUM(amount) AS revenue
+FROM orders
+WHERE status = 'paid'
+  AND revenue > 50000
+GROUP BY channel;
+```
+
+고친 쿼리: 집계 조건을 HAVING으로 옮긴다.
+
+```sql
+SELECT channel, SUM(amount) AS revenue
+FROM orders
+WHERE status = 'paid'
+GROUP BY channel
+HAVING SUM(amount) > 50000;
+```
+
+| channel | revenue |
+|---|---|
+| app | 136000 |
+
+## 행 조건과 집계 조건을 나눌 때
+
+규칙: 집계에 넣을 행은 WHERE에서 줄이고, 집계한 값은 HAVING에서 거른다.
+
+| 구분 | WHERE | HAVING |
+|---|---|---|
+| 거르는 대상 | 행 | 그룹 |
+| 평가 시점 | GROUP BY 앞 | GROUP BY 뒤 |
+| 집계 함수 | 못 쓴다 | 쓴다 |
+| 둘 조건 | 상태, 기간, 채널 | 합계, 건수, 평균 |
+
+<Figure caption="WHERE는 행 수를 줄이고 HAVING은 그룹 수를 줄인다. 가정한 예제 데이터를 계산한 값이다.">
+  <FilterFunnel />
+</Figure>
+
+```sql
+SELECT channel,
+       COUNT(*) AS orders,
+       SUM(amount) AS revenue
+FROM orders
+WHERE status = 'paid'
+GROUP BY channel
+HAVING SUM(amount) >= 50000
+ORDER BY revenue DESC
+LIMIT 5;
+```
+
+| channel | orders | revenue |
+|---|---|---|
+| app | 4 | 136000 |
+
+web은 합계가 47000이라 HAVING에서 빠진다.
+
+## NULL이 결과를 틀어 놓을 때
+
+규칙: NULL은 "모름"이다. 비교하면 TRUE도 FALSE도 아닌 UNKNOWN이 되고, WHERE는 TRUE인 행만 남긴다.<Ref n={4} />
+
+| 식 | 결과 |
+|---|---|
+| `NULL = NULL` | NULL |
+| `NULL <> 1` | NULL |
+| `NULL AND FALSE` | FALSE |
+| `NULL OR TRUE` | TRUE |
+| `NOT NULL` | NULL |
+| `NULL IS NULL` | TRUE |
+
+### 같지 않음 조건에서 행이 사라질 때
+
+나쁜 쿼리: VIP가 아닌 주문을 센다. coupon이 NULL인 7건이 빠진다.
+
+```sql
+SELECT COUNT(*) AS n FROM orders
+WHERE coupon <> 'VIP';
+```
+
+| n |
+|---|
+| 2 |
+
+고친 쿼리: NULL을 따로 포함한다. PostgreSQL은 `coupon IS DISTINCT FROM 'VIP'` 도 된다.<Ref n={4} />
+
+```sql
+SELECT COUNT(*) AS n FROM orders
+WHERE coupon <> 'VIP'
+   OR coupon IS NULL;
+```
+
+| n |
+|---|
+| 9 |
+
+### 센 값이 서로 다를 때
+
+규칙: `COUNT(*)` 는 행 수, `COUNT(열)` 은 NULL이 아닌 값의 수, `COUNT(DISTINCT 열)` 은 NULL이 아닌 서로 다른 값의 수다.<Ref n={5} />
+
+```sql
+SELECT COUNT(*) AS all_rows,
+       COUNT(coupon) AS has_coupon,
+       COUNT(DISTINCT coupon) AS kinds,
+       COUNT(amount) AS has_amount
+FROM orders;
+```
+
+| all_rows | has_coupon | kinds | has_amount |
+|---|---|---|---|
+| 10 | 3 | 2 | 9 |
+
+<Figure caption="같은 10행도 세는 방식에 따라 10, 9, 3, 2가 된다. 무엇을 세는지 정하고 쓴다.">
+  <CountKinds />
+</Figure>
+
+### NOT IN이 아무것도 돌려주지 않을 때
+
+나쁜 쿼리: 차단 목록 `banned` 에 NULL이 한 행 있다. 같지 않은 값이어도 결과가 NULL이 되어 모든 행이 버려진다.<Ref n={6} />
+
+```sql
+SELECT user_id FROM orders
+WHERE user_id NOT IN (
+  SELECT user_id FROM banned);
+```
+
+결과는 0행이다. 고친 쿼리는 NOT EXISTS다(조인 형태는 d05).
+
+```sql
+SELECT DISTINCT o.user_id
+FROM orders o
+WHERE NOT EXISTS (
+  SELECT 1 FROM banned b
+  WHERE b.user_id = o.user_id)
+ORDER BY 1;
+```
+
+| user_id |
+|---|
+| 101 |
+| 103 |
+| 104 |
+| 105 |
+| 106 |
+
+### NULL을 채우거나 만들 때
+
+- `COALESCE(a, b)` 는 NULL이 아닌 첫 값을 준다. 0으로 채우면 평균과 건수가 달라지므로 결측의 뜻을 정한 뒤 채운다(d03).
+- `NULLIF(a, b)` 는 두 값이 같으면 NULL을 준다. 빈 문자열을 NULL로, 분모 0을 NULL로 바꿀 때 쓴다.
+
+```sql
+SELECT
+  ROUND(AVG(amount), 1) AS avg_skip,
+  ROUND(AVG(COALESCE(amount, 0)), 1)
+    AS avg_zero
+FROM orders;
+```
+
+| avg_skip | avg_zero |
+|---|---|
+| 25333.3 | 22800.0 |
+
+- 정렬: ASC에서 NULL은 PostgreSQL이 마지막<Ref n={7} />, BigQuery가 처음<Ref n={2} />, MySQL이 처음<Ref n={8} /> 에 온다.
+
+## 조건별로 나눠 한 번에 집계할 때
+
+규칙: 열을 나눠 보려면 집계 함수 안에 CASE를 넣는다(조건부 집계, 피벗).
+
+```sql
+SELECT channel,
+  SUM(CASE WHEN status = 'paid'
+      THEN amount ELSE 0 END) AS paid,
+  SUM(CASE WHEN status = 'refund'
+      THEN amount ELSE 0 END) AS refund,
+  COUNT(CASE WHEN status = 'cancel'
+      THEN 1 END) AS cancels
+FROM orders
+GROUP BY channel
+ORDER BY channel;
+```
+
+| channel | paid | refund | cancels |
+|---|---|---|---|
+| app | 136000 | 30000 | 0 |
+| web | 47000 | 0 | 1 |
+
+- 건수는 `COUNT(CASE WHEN 조건 THEN 1 END)` 로 센다. ELSE를 쓰지 않아야 NULL이 되어 빠진다.
+- `COUNT(CASE WHEN 조건 THEN 1 ELSE 0 END)` 는 0도 세므로 전체 행 수(여기서는 채널당 5)가 나온다.
+- PostgreSQL은 `COUNT(*) FILTER (WHERE 조건)` 도 된다.<Ref n={5} /> 다른 방언은 CASE를 기본으로 쓴다.
+
+## 날짜와 기간을 다룰 때
+
+### 월 단위로 집계할 때
+
+규칙: 날짜를 월 첫날로 잘라 그 값으로 GROUP BY한다.
+
+```sql
+SELECT
+  date_trunc('month', ordered_at) AS m,
+  COUNT(*) AS orders,
+  SUM(amount) AS revenue
+FROM orders
+WHERE status = 'paid'
+GROUP BY m
+ORDER BY m;
+```
+
+| m | orders | revenue |
+|---|---|---|
+| 2024-03-01 00:00:00 | 3 | 75000 |
+| 2024-04-01 00:00:00 | 3 | 72000 |
+| 2024-05-01 00:00:00 | 2 | 36000 |
+
+날짜 함수는 방언마다 다르다.<Ref n={9} /><Ref n={10} /><Ref n={11} />
+
+| 하려는 일 | PostgreSQL | BigQuery | MySQL |
+|---|---|---|---|
+| 월 첫날로 자르기 | `date_trunc('month', ts)` | `DATE_TRUNC(d, MONTH)`, 시각은 `TIMESTAMP_TRUNC(ts, MONTH)` | 함수 없음. `DATE_FORMAT(d, '%Y-%m-01')` 은 문자열을 준다 |
+| 일수 차이 | `end_d - start_d` (date끼리, 정수) | `DATE_DIFF(end_d, start_d, DAY)` | `DATEDIFF(end_d, start_d)` |
+| 날짜 더하기 | `d + 7`, `d + INTERVAL '1 month'` | `DATE_ADD(d, INTERVAL 7 DAY)` | `DATE_ADD(d, INTERVAL 7 DAY)` |
+
+BigQuery의 `DATE_DIFF` 는 단위 경계를 센다. 1월 31일과 2월 1일의 MONTH 차이는 1이다.<Ref n={10} /> 월 차이는 "경계 수"인지 "꽉 찬 개월 수"인지 방언별로 확인하고 쓴다. MySQL `DATEDIFF` 는 시간 부분을 무시한다.<Ref n={11} />
+
+시간대가 있는 열은 자르기 전에 기준 시간대를 정한다. 방언별 처리는 확인 필요.
+
+### 기간 경계를 정할 때
+
+규칙: 기간은 `>= 시작 AND < 끝` 으로 쓴다. 끝은 포함할 마지막 날의 다음 날 0시다.
+
+BETWEEN은 양 끝을 포함한다(`a >= x AND a <= y`).<Ref n={4} /> timestamp 열과 비교하는 날짜 문자열은 그날 0시로 읽히므로, 3월 31일 0시 이후 주문이 모두 빠진다.
+
+나쁜 쿼리: 3월 주문을 BETWEEN으로 뽑는다.
+
+```sql
+SELECT order_id, ordered_at
+FROM orders
+WHERE ordered_at BETWEEN '2024-03-01'
+                     AND '2024-03-31';
+```
+
+| order_id | ordered_at |
+|---|---|
+| 1 | 2024-03-01 09:10:00 |
+| 2 | 2024-03-05 14:30:00 |
+
+고친 쿼리: 반열린 구간이다. 3월 31일 두 건이 들어온다.
+
+```sql
+SELECT order_id, ordered_at
+FROM orders
+WHERE ordered_at >= '2024-03-01'
+  AND ordered_at <  '2024-04-01';
+```
+
+| order_id | ordered_at |
+|---|---|
+| 1 | 2024-03-01 09:10:00 |
+| 2 | 2024-03-05 14:30:00 |
+| 3 | 2024-03-31 18:20:00 |
+| 4 | 2024-03-31 23:50:00 |
+
+끝을 `'2024-04-01'` 로 두고 BETWEEN을 쓰면 반대로 4월 1일 0시 정각 주문(5번)이 3월에 들어온다. 끝을 `23:59:59` 로 잡는 방법은 소수 초 값을 놓친다.
+
+<Figure caption="반열린 구간만 3월 4건을 모두 담고 4월 1일 0시 주문은 뺀다. BETWEEN은 어느 쪽 끝을 잡아도 틀린다.">
+  <RangeMatrix />
+</Figure>
+
+### 날짜가 문자열로 저장돼 있을 때
+
+규칙: 날짜 열은 date나 timestamp로 쓴다. 문자열이면 `YYYY-MM-DD` 로 0을 채워 통일한다. 문자열은 사전순으로 비교한다.
+
+| 저장값 | `day < '2024-03-08'` |
+|---|---|
+| `2024-3-5` | 걸리지 않는다. 3월 5일인데 문자 `3` 이 `0` 보다 크다 |
+| `2024-03-05` | 걸린다 |
+
+## 비율을 계산할 때
+
+규칙: 비율은 분자나 분모를 소수로 바꿔서 나눈다. 정수끼리 나누면 PostgreSQL은 소수점을 버린다.<Ref n={12} />
+
+나쁜 쿼리와 고친 쿼리를 한 번에 본다. `bad` 는 정수끼리, `ok` 는 `* 1.0` 으로 소수로 바꾼 값이다.
+
+```sql
+SELECT channel,
+       COUNT(*) AS n,
+       COUNT(amount) AS has_amt,
+       COUNT(amount) / COUNT(*) AS bad,
+       ROUND(COUNT(amount) * 1.0
+             / COUNT(*), 2) AS ok
+FROM orders
+GROUP BY channel
+ORDER BY channel;
+```
+
+| channel | n | has_amt | bad | ok |
+|---|---|---|---|---|
+| app | 5 | 5 | 1 | 1.00 |
+| web | 5 | 4 | 0 | 0.80 |
+
+web의 `bad` 는 0.8이 아니라 0이다. `ok` 의 자릿수 표기는 DB마다 다를 수 있다.
+
+| 방언 | 정수 / 정수 | 소수로 만들기 | 0으로 나누면 |
+|---|---|---|---|
+| PostgreSQL | 소수점을 버린다 | `a * 1.0 / b`, `a::numeric / b` | 오류 |
+| BigQuery | FLOAT64를 준다. 정수 나눗셈은 `DIV(a, b)` | 필요 없음 | 오류. `SAFE_DIVIDE(a, b)` 는 NULL<Ref n={13} /> |
+| MySQL | DECIMAL을 준다(`3/5` 는 `0.60`). 정수 나눗셈은 `DIV` | 필요 없음 | NULL<Ref n={14} /> |
+
+- 분모 0이 올 수 있으면 `a * 1.0 / NULLIF(b, 0)` 으로 쓴다. 결과는 NULL이다.
+- 채널별 비율을 평균내지 말고 합계끼리 나눠라. 분모가 다르면 평균의 평균은 틀린다.
+
+## 결과를 합칠 때
+
+규칙: 중복 제거가 필요 없으면 `UNION ALL` 을 쓴다. `UNION` 은 중복을 지우므로 행이 줄고 더 느리다.<Ref n={1} /> BigQuery는 `UNION` 만 쓰지 못하고 `ALL` 이나 `DISTINCT` 를 적어야 한다.<Ref n={2} />
+
+```sql
+SELECT user_id FROM orders
+WHERE channel = 'web'
+UNION
+SELECT user_id FROM orders
+WHERE channel = 'app'
+ORDER BY user_id;
+```
+
+| user_id |
+|---|
+| 101 |
+| 102 |
+| 103 |
+| 104 |
+| 105 |
+| 106 |
+
+`UNION ALL` 로 바꾸면 같은 쿼리가 10행이다. 열은 이름이 아니라 위치로 짝지으므로, 열 수와 순서와 타입을 맞춘다.
+
+## 쿼리를 읽기 쉽게 쓸 때
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| `SELECT * FROM orders` | 필요한 열만 적는다 | 열이 추가되면 결과와 UNION 짝이 조용히 바뀐다 |
+| `GROUP BY 1, 2` | `GROUP BY channel, m` | SELECT 순서가 바뀌면 조용히 틀린다 |
+| `FROM orders o, users u` | `ord`, `usr` 처럼 뜻 있는 별칭 | 열 앞에 `ord.channel` 로 출처를 적는다 |
+| 한 줄에 절 여러 개 | 절마다 줄을 나눈다 | 어느 절 조건인지 보인다 |
+| 상태값 `3` | `status = 'paid'` 와 주석 | 숫자 코드는 의미를 모른다 |
+
+- 쉼표 위치와 키워드 대소문자는 팀에서 하나로 정한다. 이 글은 줄 끝 쉼표와 대문자 키워드다.
+- 열 별칭은 `AS` 를 쓴다. 쿼리가 길어지면 CTE로 나눈다(d06).
+
+## 자주 나는 오류 증상
+
+| 증상 | 원인 | 고침 |
+|---|---|---|
+| `column "revenue" does not exist` | SELECT 별칭을 WHERE에 썼다 | 식을 다시 쓰거나 HAVING, 서브쿼리 |
+| `aggregate functions are not allowed in WHERE` | 집계를 그룹 전에 썼다 | HAVING으로 옮긴다 |
+| `column "o.channel" must appear in the GROUP BY clause or be used in an aggregate function` | SELECT 열이 그룹에도 집계에도 없다 | GROUP BY에 넣거나 집계한다 |
+| `NOT IN` 이 0행이다 | 목록에 NULL이 있다 | `NOT EXISTS` 나 `IS NOT NULL` 조건 |
+| `<>` 조건인데 건수가 적다 | NULL 행이 UNKNOWN으로 버려졌다 | `OR 열 IS NULL` 추가 |
+| 비율이 0 또는 1이다 | 정수 나눗셈이다 | `* 1.0` 으로 소수 변환 |
+| `division by zero` | 분모가 0이다 | `NULLIF(분모, 0)` |
+| 월말 주문이 빠진다 | BETWEEN과 날짜 문자열이다 | `>= 시작 AND < 다음 날 0시` |
+| 조건부 건수가 전체 행 수다 | `COUNT(CASE ... ELSE 0 END)` | ELSE를 빼거나 `SUM(... 1 ELSE 0)` |
+| `each UNION query must have the same number of columns` | 위아래 열 수가 다르다 | 열 수, 순서, 타입을 맞춘다 |
+| `UNION` 뒤에 행이 줄었다 | 중복 제거가 일어났다 | `UNION ALL` |
+| LIMIT 결과가 실행마다 다르다 | ORDER BY가 없거나 동률이다 | 유일한 열까지 정렬 기준에 넣는다 |
+
+## 점검 체크리스트
+
+- WHERE와 HAVING 조건에 SELECT 별칭을 쓰지 않았는가.
+- 집계 함수가 WHERE 안에 없는가.
+- NULL이 가능한 열의 `=`, `<>`, `NOT IN` 을 점검했는가.
+- `COUNT(*)`, `COUNT(열)`, `COUNT(DISTINCT 열)` 중 의도한 것을 쓰는가.
+- 기간이 `>= 시작 AND < 끝` 이고 시각 열에 BETWEEN이 없는가.
+- 분모가 정수끼리 나뉘지 않고, 0일 때 막혀 있는가.
+- UNION을 쓴 곳마다 중복 제거가 필요한지 확인했는가.
+- LIMIT 앞에 ORDER BY가 있고, SELECT에 `*` 가 없는가.
+
+## 관련 글
+
+<Related>
+  <Rel to="d03" note="NULL을 채울지 버릴지 정하는 기준" />
+  <Rel to="d05" note="JOIN 뒤 행이 늘어나는 문제와 anti-join" />
+  <Rel to="d06" note="CTE로 쿼리를 나누고 윈도우 함수로 순위와 누적을 구하는 법" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>PostgreSQL 문서, SELECT. postgresql.org/docs/current/sql-select.html. 처리 순서, 출력 열 이름의 사용 위치, UNION 중복 제거를 확인했다.</Source>
+  <Source n={2}>Google BigQuery 문서, Query syntax. docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax. 본문 확인은 GoogleSQL 문서 원본(github.com/google/zetasql, docs/query-syntax.md)으로 했다. 평가 순서, 별칭 규칙, ORDER BY의 NULL, 집합 연산자 문법.</Source>
+  <Source n={3}>MySQL 8.4 Reference Manual, Problems with Column Aliases. dev.mysql.com/doc/refman/8.4/en/problems-with-alias.html</Source>
+  <Source n={4}>PostgreSQL 문서, Comparison Functions and Operators. postgresql.org/docs/current/functions-comparison.html. NULL 비교, BETWEEN, IS DISTINCT FROM.</Source>
+  <Source n={5}>PostgreSQL 문서, Value Expressions의 Aggregate Expressions. postgresql.org/docs/current/sql-expressions.html. count 의 NULL 처리와 FILTER 절.</Source>
+  <Source n={6}>PostgreSQL 문서, Subquery Expressions. postgresql.org/docs/current/functions-subquery.html. NOT IN과 NULL.</Source>
+  <Source n={7}>PostgreSQL 문서, Sorting Rows. postgresql.org/docs/current/queries-order.html. NULLS FIRST/LAST 기본값.</Source>
+  <Source n={8}>MySQL 8.4 Reference Manual, Working with NULL Values. dev.mysql.com/doc/refman/8.4/en/working-with-null.html</Source>
+  <Source n={9}>PostgreSQL 문서, Date/Time Functions and Operators. postgresql.org/docs/current/functions-datetime.html</Source>
+  <Source n={10}>Google BigQuery 문서, Date functions. docs.cloud.google.com/bigquery/docs/reference/standard-sql/date_functions. DATE_DIFF의 경계 규칙은 GoogleSQL 문서 원본(docs/date_functions.md)으로 확인했다.</Source>
+  <Source n={11}>MySQL 8.4 Reference Manual, Date and Time Functions. dev.mysql.com/doc/refman/8.4/en/date-and-time-functions.html</Source>
+  <Source n={12}>PostgreSQL 문서, Mathematical Functions and Operators. postgresql.org/docs/current/functions-math.html. 정수 나눗셈은 0 방향으로 버린다.</Source>
+  <Source n={13}>Google BigQuery 문서, Operators와 Mathematical functions(DIV, SAFE_DIVIDE). GoogleSQL 문서 원본(docs/operators.md, docs/mathematical_functions.md)으로 확인했다.</Source>
+  <Source n={14}>MySQL 8.4 Reference Manual, Arithmetic Functions. dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html. 나눗셈 결과 형, DIV, 0으로 나눔은 NULL.</Source>
+</Sources>

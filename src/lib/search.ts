@@ -8,7 +8,7 @@ export type Entry = { slug: string; unitId: string; unitTitle: string; sectionId
 export type Hit = Entry & { snippet: string };
 
 const clean = (t: string) =>
-  t.replace(/\{\/\*[\s\S]*?\*\/\}/g, ' ').replace(/<[^>]+>/g, ' ').replace(/[|*`>]/g, ' ').replace(/^\s*[-\d.]+\s+/gm, ' ').replace(/\s+/g, ' ').trim();
+  t.replace(/^```\w*\s*$/gm, ' ').replace(/\{\/\*[\s\S]*?\*\/\}/g, ' ').replace(/<[^>]+>/g, ' ').replace(/[|*`>]/g, ' ').replace(/^\s*[-\d.]+\s+/gm, ' ').replace(/\s+/g, ' ').trim();
 
 function parse(raw: string, slug: string, unitId: string, unitTitle: string): Entry[] {
   const out: Entry[] = [];
