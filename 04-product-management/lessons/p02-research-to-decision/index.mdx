@@ -1,0 +1,206 @@
+import Pipeline from './Pipeline';
+import EvidenceLadder from './EvidenceLadder';
+import InsightRows from './InsightRows';
+import SmallSample from './SmallSample';
+import CandidateList from './CandidateList';
+
+<Overview>
+
+- 해라: 원자료, 관찰, 묶음, 통찰, 기회 순으로 올리고 단계마다 누가·몇 명·어떤 자료인지 근거를 붙여라.
+- 해라: 사용자가 말한 해결책 밑의 필요를 읽어 해결책 없는 한 문장으로 써라. 풀 방법이 둘 이상 나오는지가 시험이다.
+- 하지 마라: 인터뷰 몇 건을 비율로 말하기. 얼마나 흔한지는 로그·설문으로 맞대어 확인해라.
+- 기준값: 기회 정리는 이야기 기반 인터뷰 3에서 4건 뒤에 시작하고, 이후 3에서 4건마다 고친다. 실무 권고이며 맥락에 따라 다르다.
+- 해라: 결정 후보표에 반대 증거와 아직 모르는 것을 같이 적고, 후보마다 다음 행동(결정, 추가 확인, 보류) 하나를 정해라.
+
+</Overview>
+
+<Toc />
+
+## 자료는 쌓였는데 결정이 안 될 때
+
+규칙: 단계를 건너뛰지 않는다. 원자료에서 곧바로 "이걸 만들자"로 가면 사용자가 말한 해결책이 그대로 결정이 된다.
+
+Double Diamond는 발견 단계에서 모은 통찰로 문제를 다시 정의하는 정의 단계를 둔다.<Ref n={1} /> 이 글은 그 사이, 곧 모은 자료를 풀 문제 후보로 바꾸는 작업이다. 주제 분석은 원자료를 코드, 묶음, 주제, 통찰로 올리고,<Ref n={2} /> Torres는 인터뷰 한 건을 스냅샷 한 장으로, 여러 건을 경험 지도와 기회 트리로 합친다.<Ref n={3} /> 아래 5단계는 둘을 줄인 이 글의 정리다. 용어도 갈린다. Torres는 아직 기회가 못 된 눈에 띄는 메모를 인사이트라 부르지만,<Ref n={3} /> 이 글의 통찰은 묶음에서 끌어낸 해석 한 문장이다.
+
+| 질문 | 필요한 자료 | 방법 | 결과물 | 결정 |
+|---|---|---|---|---|
+| 어디서 왜 막히나 | 인터뷰·관찰 기록, 행동 로그 | 관찰 카드, 묶기, 해석 | 통찰 정리표 | 어떤 문제를 후보로 올리나 |
+| 얼마나 흔한가 | 로그, 설문, 문의 기록 | 정성 신호를 정량 자료와 맞대기 | 근거 강도 표시 | 후보를 믿을 만큼 확신하나 |
+| 무엇을 먼저 풀까 | 통찰, 근거 강도, 반대 증거 | 필요 문장과 후보표 작성 | 결정 후보표 | 결정, 추가 확인, 보류 |
+
+<Figure caption="자료가 결정으로 올라가는 5단계와 단계마다 남는 결과물. 단계 이름은 이 글의 정리이며 출처마다 다르다.">
+  <Pipeline />
+</Figure>
+
+<Callout title="입증과 관행">
+이 글의 단계, 묶는 절차, 스냅샷 양식, 3에서 4건 같은 숫자는 실무자 가이드의 권고다. 읽은 자료에서는 이 방법들의 효과를 비교 검증한 연구를 확인하지 못했다. 관행이며 맥락에 따라 다르다. 반면 자기 보고의 한계와 소수 표본의 한계는 뒤에서 근거와 함께 다룬다.
+</Callout>
+
+## 원자료를 관찰 카드로 바꿀 때
+
+규칙: 카드 한 장에 사실 하나, 출처 표시, 해석은 다른 칸.
+
+- 한 장에 행동 하나 또는 발언 하나. 말인지 본 행동인지 표시한다.
+- 누가, 언제, 어떤 자료(관찰, 인터뷰, 로그, 문의)인지 붙인다. 나중에 근거를 세려면 필요하다.
+- 인터뷰는 팀이 직후에 한 장으로 요약한다. 익숙하면 15에서 20분이 든다.<Ref n={3} />
+- 질문은 가장 최근에 실제로 있었던 일을 이야기하게 한다. 가정 질문, 일반 습관, 원하는 것을 물으면 자기 보고가 부풀기 쉽다.<Ref n={4} />
+
+증거의 층은 Nielsen의 세 규칙에서 나온다. 사람이 실제로 하는 것을 보고, 한다고 말한 것을 그대로 믿지 말고, 앞으로 하겠다는 예측은 더 믿지 마라.<Ref n={5} /> 113개 인터페이스 쌍 비교에서 측정한 수행과 말한 선호의 상관은 0.44(PC 응용 프로그램), 웹사이트는 0.53이었다. 선호로는 설계가 잘 작동하는지 약 4분의 1만 짐작한다고 그는 해석한다.<Ref n={5} /> 범위는 화면 설계 비교다.
+
+<Figure caption="실제로 일어난 일에 가까운 순서. 순서는 근거 강도이지 쓸모의 순서가 아니다(로그는 이유를 못 말한다). 층 배치는 Nielsen의 세 규칙을 이 글이 정리했다.">
+  <EvidenceLadder />
+</Figure>
+
+## 사용자가 해결책을 말할 때
+
+규칙: "X를 만들어 주세요"는 필요를 알려 주는 단서이지 결정이 아니다.
+
+시험은 하나다. 이 필요를 풀 방법이 둘 이상인가.<Ref n={6} /> 방법이 하나뿐이면 해결책이 기회로 위장한 것이다. "외식하고 싶다"는 해결책이고, 왜 그런지 되물으면 서로 다른 필요가 여럿 나온다.<Ref n={6} /> 필요는 머릿속에서 지어내지 않고 인터뷰에서 들은 이야기에서만 끌어낸다.<Ref n={6} />
+
+| 말한 것(가상 예시) | 필요로 고쳐 쓰기 | 확인 질문 |
+|---|---|---|
+| 내보내기 버튼을 만들어 주세요 | 주간 보고 숫자를 한곳에 모으는 데 시간이 든다 | 마지막으로 보고서를 만든 때를 말해 주세요 |
+| 알림을 더 늘려 주세요 | 중요한 변경을 놓친다 | 마지막으로 놓친 때와 알게 된 경로는 |
+| 더 간단하게 해 주세요 | 설정 중간에 다음 행동을 모르겠다 | 어느 화면에서 멈췄나 |
+
+필요를 모으는 단계에서는 노력(구현이 쉬운지)을 따지지 않는다. 한 기회에도 쉬운 해결책과 어려운 해결책이 모두 있을 수 있어서다.<Ref n={6} />
+
+## 관찰을 묶고 통찰로 올릴 때
+
+규칙: 묶기는 기억이 아니라 카드로 하고, 통찰은 여러 근거가 받쳐 줄 때만 올린다.
+
+1. 카드를 쓴다. 팀이 5에서 10분 안에, 각자 따로.<Ref n={7} />
+2. 비슷한 것끼리 묶고 이름을 붙인다. 작은 묶음과 튀는 카드를 버리지 않는다. 두 묶음에 걸치면 카드를 복제한다.<Ref n={7} />
+3. 묶음 사이의 관계, 원인, 모순을 보고 해석 문장을 쓴다.<Ref n={2} /> 하루 쉬고 다시 본다. 다른 사람이 주제를 검토한다. 분석 시간은 수집한 시간만큼 잡는다.<Ref n={2} />
+
+주제는 관련 발견이 여러 참가자 또는 자료 출처에서 되풀이될 때 나타난다.<Ref n={2} /> 몇 명부터 되풀이인지는 읽은 출처에 숫자가 없다. 아래 등급은 이 글의 정리이며 관행이다. 팀 기준을 정해 적어 둔다.
+
+| 등급 | 조건 | 쓰는 법 |
+|---|---|---|
+| 패턴 | 둘 이상의 사람 또는 둘 이상의 자료 종류에서 반복 | 통찰로 올린다 |
+| 단서 | 한 사람, 한 자료. 말뿐인 경우 포함 | 확인 질문으로 남긴다 |
+| 충돌 | 말과 행동·로그가 어긋남 | 원인을 알기 전까지 보류 |
+
+통찰 문장은 상황, 행동, 이유를 넣고 해결책은 빼서 쓴다. 묶음 이름도 "검색"이 아니라 "찾는 글을 못 믿는다"처럼 문장으로 쓴다. 정리표는 관찰(사실), 근거(몇 명, 어떤 자료), 해석(이유 가설) 세 칸이다.
+
+<Figure caption="통찰 정리표의 형태 예시(가상 값). 같은 표에서 근거에 따라 등급과 다음 행동이 갈린다. 해석 칸은 확정이 아니라 가설이다.">
+  <InsightRows />
+</Figure>
+
+## 정성 자료를 로그와 맞댈 때
+
+규칙: 인터뷰는 이유를, 로그와 설문은 얼마나를 답한다. 서로를 대신하지 못하니 맞댄다.
+
+다른 자료나 방법으로 확인하는 일을 삼각검증이라 한다. 예: 인터뷰의 놀라운 구매 동기는 설문으로 빈도를, 분석의 높은 오류율은 문의 기록으로 확인한다.<Ref n={8} /> 비용은 위험에 맞춘다. 제품 전체를 바꾸는 결정은 정성, 정량, 독립 분석을 섞고, 되돌리기 쉬운 결정은 적게 한다. 다른 자료가 받쳐 주는지 보는 데는 최소 몇 시간을 쓸 만하다.<Ref n={8} /> 이유는 두 방법의 약점이 반대이기 때문이다. 정성 연구는 무엇이 왜 문제인지 보이지만 해석과 소수 표본에 기대고, 정량 연구는 수치를 주지만 이유와 고칠 방법을 말하지 못한다.<Ref n={9} />
+
+| 정성 | 정량 | 읽는 법 | 다음 행동 |
+|---|---|---|---|
+| 신호 있음 | 같은 방향 | 후보로 믿을 만하다 | 후보표에 올린다 |
+| 신호 있음 | 못 구함 | 빈도를 모른다 | 로그·설문으로 확인 |
+| 신호 없음 | 변화 있음 | 이유를 모른다 | 인터뷰·관찰 추가 |
+| 신호 있음 | 반대 방향 | 정의·표본·측정 중 하나가 틀렸다 | 점검 뒤 판단, 그 전엔 보류 |
+
+로그의 상관을 원인으로 읽지 마라. 관찰 자료의 상관을 인과로 읽었다가 무작위 실험에서 뒤집힌 사례를 모은 목록이 있다.<Ref n={10} /> 사례 목록은 읽지 못했다. 인과는 <Rel to="d11" course="data-analysis" />, 실험은 <Rel to="p03" />에서 다룬다.
+
+## 인터뷰 몇 건으로 말할 수 있는 것을 가릴 때
+
+규칙: 소수 인터뷰는 있다, 어떤 상황이다, 왜일 수 있다까지만 말한다.
+
+탐색 인터뷰는 5에서 6명으로 시작해 분석하며 늘리고, 새 주제가 더 안 나오면 멈춘다. 범위가 넓고 대상이 다양하면 20에서 30명 이상, 좁고 비슷한 집단이면 5명으로도 가능하다. 5명이 일반 규칙은 아니다.<Ref n={11} /> 사용성 테스트의 5명은 사용자 1명이 문제의 31퍼센트를 찾는다는 모델에서 나왔고, 비슷한 사용자 집단의 질적 테스트에만 해당한다.<Ref n={12} />
+
+<Figure caption="소수 인터뷰는 존재와 이유 후보를 말하고 크기는 말하지 못한다. 크기 질문은 정량 자료의 일이다.">
+  <SmallSample />
+</Figure>
+
+## 편향을 점검할 때
+
+규칙: 묶기 전에 기대를 적어 두고, 묶은 뒤 반대 증거와 못 만난 사람을 센다.
+
+| 편향 | 합성에서 나타나는 모습 | 점검 |
+|---|---|---|
+| 확증 편향 | 기대에 맞는 자료만 눈에 들어온다<Ref n={13} /> | 반대 증거 칸을 둔다. 다른 사람이 따로 묶는다<Ref n={2} /> |
+| 선택 편향 | 모으기 쉬운 사람만 만났거나, 로그에 남은 사람만 본다 | 못 만난 집단(이탈자, 신규, 비사용자)을 적는다 |
+| 최근 일화 쏠림 | 가장 최근 인터뷰에 계획이 흔들린다<Ref n={6} /> | 3에서 4건 단위로 갱신한다<Ref n={6} /> |
+| 큰 목소리 | 말 많은 사람이 묶음을 정한다<Ref n={7} /> | 카드를 각자 따로 쓴다<Ref n={7} /> |
+
+선택 편향 항목은 일반적으로 알려진 분류를 정리한 것이며 1차 출처는 확인 필요다. 더 깊은 편향 점검은 <Rel to="u08" course="ux" />에 있다.
+
+## 팀에 공유하고 결정으로 이을 때
+
+규칙: 결론만 보내지 말고 통찰 문장, 근거 표, 반대 증거, 모르는 것을 한 묶음으로 보낸다. 나쁜 소식도 전한다.<Ref n={14} /> 이해관계자는 결과만 받지 말고 관찰과 메모에 참여시킨다.<Ref n={14} />
+
+| 항목 | 쓰는 법 | 나쁜 예 |
+|---|---|---|
+| 통찰 문장 | 상황, 행동, 이유. 해결책은 없음 | 검색 개선 필요 |
+| 근거 표 | 사람 수, 자료 종류, 말인지 행동인지 | 많은 사용자가 말함 |
+| 반대 증거 | 어긋난 자료, 못 만난 집단 | 적지 않음 |
+| 모르는 것 | 다음에 확인할 질문 | 적지 않음 |
+| 다음 행동 | 결정, 추가 확인, 보류 중 하나 | 검토 예정 |
+
+후보를 고를 때 Torres는 네 가지를 본다. 기회의 크기(몇 명이 얼마나 자주), 시장 요인, 회사 전략과의 정합, 고객에게 얼마나 중요하고 기존 해결책에 얼마나 만족하는가.<Ref n={6} /> 고른 기회마다 해결책을 3개 내어 비교하는 것을 권한다.<Ref n={6} /> 점수화와 순위는 <Rel to="p05" />, 해결책 검증은 <Rel to="p03" />로 넘긴다.
+
+<Figure caption="결정 후보표의 형태 예시(가상 값). 근거가 약한 후보는 결정이 아니라 확인이나 보류로 간다.">
+  <CandidateList />
+</Figure>
+
+후보를 고르면 결정 기록 한 줄을 남긴다. 무엇을 골랐나, 근거가 된 통찰, 남은 반대 증거, 다시 볼 조건이다. 이 형식은 이 글의 정리이며 기록 방법은 <Rel to="p12" />에서 다룬다.
+
+## 흔한 실수와 증상
+
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| 회의에서 "한 명 의견 아니냐"는 반박이 나온다 | 근거 수와 자료가 안 보인다 | 근거 표에 사람 수와 종류를 적는다 |
+| 기능 요청 목록이 그대로 로드맵이 된다 | 해결책을 기회로 적었다 | 필요 문장으로 다시 쓰고 방법이 둘 이상인지 본다 |
+| 인터뷰는 문제라는데 지표는 그대로다 | 빈도를 확인하지 않았다 | 로그·설문으로 맞댄다 |
+| 통찰이 많아 고르지 못한다 | 묶음 이름이 주제어이고 고를 기준이 없다 | 이름을 문장으로, 네 가지 기준으로 비교한다 |
+| 분석할수록 처음 가설이 맞다 | 확증 편향 | 반대 증거 칸, 다른 사람의 검토 |
+| 최근 인터뷰가 계획을 뒤집는다 | 한 건에 과잉 반응 | 3에서 4건마다 갱신한다 |
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| 인터뷰 5명 중 4명이 불만, 즉 80퍼센트 | 5명 중 4명이 말했고 빈도는 미확인 | 소수 표본은 비율을 못 준다 |
+| 말한 선호로 우선순위를 정한다 | 행동 자료로 확인하고 선호는 단서로 쓴다 | 말과 행동이 어긋난다 |
+| 마음에 드는 인용만 슬라이드에 둔다 | 반대 인용을 같은 비중으로 둔다 | 확증 편향 |
+
+## 점검 체크리스트
+
+- 관찰 카드에 사실과 해석이 섞이지 않았고 출처(누가, 어떤 자료)가 있는가.
+- 근거를 행동, 로그, 이야기, 의견, 예측으로 나눠 표시했는가.
+- 모든 기회 문장이 해결책 없이 쓰였고, 풀 방법이 둘 이상인가.
+- 통찰마다 사람 수와 자료 종류가 적혀 있고, 단서와 패턴이 구분되는가.
+- 인터뷰 결과에 비율을 붙이지 않았고, 빈도는 정량 자료로 확인했는가.
+- 정성과 정량이 어긋나는 곳을 보류로 표시했는가.
+- 반대 증거와 못 만난 집단을 적었는가.
+- 후보마다 다음 행동 하나와 결정 기록이 있는가.
+
+## 관련 글
+
+<Related>
+  <Rel to="p01" note="어떤 문제가 풀 가치가 있는지 가리는 질문" />
+  <Rel to="p03" note="고른 기회의 해결책을 가설로 검증" />
+  <Rel to="p05" note="후보를 점수와 순위로 비교하는 방법" />
+  <Rel to="p12" note="결정 기록과 반대 의견 다루기" />
+  <Rel to="u08" course="ux" note="인터뷰 질문, 편향, 어피니티 절차" />
+  <Rel to="d02" course="data-analysis" note="말한 것과 한 것이 다를 때 쓸 데이터" />
+  <Rel to="d11" course="data-analysis" note="상관을 원인으로 읽지 않는 법" />
+  <Rel to="m03" course="business-marketing" note="설문으로 빈도를 확인할 때" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>Design Council, "The Double Diamond"(designcouncil.org.uk/our-resources/the-double-diamond)와 "Framework for Innovation"(designcouncil.org.uk/our-resources/framework-for-innovation). 네 단계와 정의 단계의 역할을 두 페이지에서 확인했다.</Source>
+  <Source n={2}>"Analyze Qualitative Data: Thematic Analysis", Nielsen Norman Group. nngroup.com/articles/thematic-analysis 원문으로 확인했다.</Source>
+  <Source n={3}>Teresa Torres, "The Interview Snapshot", Product Talk (2017). producttalk.org/2017/10/interview-snapshot 원문으로 확인했다. 실무자 가이드이며 효과 검증 연구는 아니다.</Source>
+  <Source n={4}>Teresa Torres, "Customer Interviews: How to Recruit, What to Ask, and How to Synthesize What You Learn", Product Talk. producttalk.org/2017/10/customer-interviews 원문으로 확인했다.</Source>
+  <Source n={5}>Jakob Nielsen, "First Rule of Usability? Don't Listen to Users", Nielsen Norman Group. nngroup.com/articles/first-rule-of-usability-dont-listen-to-users 원문으로 확인했다. 0.44는 Nielsen과 Levy의 113개 쌍 비교, 0.53은 웹사이트 후속 연구로 글에 적혀 있고 원 논문은 읽지 못했다.</Source>
+  <Source n={6}>Teresa Torres, "Opportunity Solution Trees: Visualize Your Discovery to Stay Aligned and Drive Outcomes", Product Talk. producttalk.org/opportunity-solution-tree 원문으로 확인했다. 3에서 4건, 해결책 3개, 선택 기준 네 가지는 저자의 권고다.</Source>
+  <Source n={7}>Rachel Krause, Kara Pernice, "Affinity Diagramming", Nielsen Norman Group (2024). nngroup.com/articles/affinity-diagram 원문으로 확인했다.</Source>
+  <Source n={8}>"Triangulation: Get Better Research Results by Using Multiple UX Methods", Nielsen Norman Group. nngroup.com/articles/triangulation-better-research-results-using-multiple-ux-methods 원문으로 확인했다.</Source>
+  <Source n={9}>"Quantitative vs. Qualitative Usability Testing", Nielsen Norman Group. nngroup.com/articles/quant-vs-qual 원문으로 확인했다.</Source>
+  <Source n={10}>Ron Kohavi, Diane Tang, Ya Xu (2020), Trustworthy Online Controlled Experiments, Cambridge University Press. experimentguide.com/refuted_observational_studies 소개 페이지만 확인했고 사례 목록 문서는 읽지 못했다.</Source>
+  <Source n={11}>"How Many Participants for a UX Interview?", Nielsen Norman Group. nngroup.com/articles/interview-sample-size 원문으로 확인했다. Griffin & Hauser, Guest 외의 원 논문은 읽지 못했다.</Source>
+  <Source n={12}>Jakob Nielsen, "Why You Only Need to Test with 5 Users", Nielsen Norman Group (2000). nngroup.com/articles/why-you-only-need-to-test-with-5-users 원문으로 확인했다.</Source>
+  <Source n={13}>Alita Kendrick, "Confirmation Bias in UX Work"(영상), Nielsen Norman Group (2022). nngroup.com/videos/confirmation-bias-ux-work 정의가 담긴 소개문만 확인했다.</Source>
+  <Source n={14}>"UX Research Cheat Sheet", Nielsen Norman Group. nngroup.com/articles/ux-research-cheat-sheet 이해관계자 참여와 나쁜 소식 전달 대목만 확인했다.</Source>
+</Sources>
