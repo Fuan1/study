@@ -1,0 +1,215 @@
+import PickDictionary from './PickDictionary';
+import EntryAnatomy from './EntryAnatomy';
+import PickSense from './PickSense';
+import GrammarCodes from './GrammarCodes';
+import LookupNote from './LookupNote';
+
+<Overview>
+
+- 해라: 뜻만 빨리 알 때는 번역이 붙은 항목, 뜻이 문장에 안 맞거나 쓰는 법이 궁금할 때는 학습자용 사전의 영어 정의와 예문을 봐라. 영영 정의가 안 읽히면 번역이 붙은 항목에서 시작해도 된다.
+- 해라: 항목을 위에서 아래로 다 읽지 말고 품사, 뜻 묶음 이름과 수준 표시, 뜻, 예문 순으로 훑어 문장에 맞는 뜻 하나를 골라라.
+- 해라: 명사는 [C]와 [U], 동사는 [T]와 [I]를 보고, 예문의 모양(a, 복수형, 전치사)을 그대로 따라 써라.
+- 하지 마라: 첫 번째 뜻만 보고 끝내지 마라. 뜻 순서는 보통 빈도 순이지만 예외가 있다고 Oxford 가 밝힌다.
+- 기준값: 수준 표시는 A1에서 C2까지 여섯 단계다. 입문은 A1과 A2가 붙은 뜻부터 본다. 한 번 찾으면 뜻, 예문, 같이 쓰는 말을 한 줄씩만 남긴다.
+
+</Overview>
+
+<Toc />
+
+예문은 직접 작성했고 Cambridge Dictionary 와 Oxford Learner's Dictionaries 항목으로 용법을 확인했다. 사전 사이트의 화면과 기능은 바뀔 수 있어서 2026년 10월 4일에 직접 연 항목을 기준으로 썼고, 화면 배치와 메뉴 이름, 무료로 보이는 범위는 확인 필요다. 출처 번호가 없는 문장은 입증된 연구가 아니라 이 글의 정리(교육 현장 관행 수준)다.
+
+| 막힌 상황 | 규칙 | 예문 | 흔한 오류 | 대처 |
+|---|---|---|---|---|
+| 뜻이 둘 이상이다 | 품사를 먼저 거르고 예문으로 고른다 | I booked a table for two. 나는 두 명 자리를 예약했다. | 첫 번째 뜻만 쓴다 | 같은 품사 구획에서 예문이 가장 닮은 뜻을 고른다 |
+| 셀 수 있는지 모르겠다 | [C]인지 [U]인지 본다 | Can I give you a piece of advice? 조언 하나 해도 될까? | advices 처럼 복수로 쓴다 | a piece of 로 센다 |
+| 동사 뒤에 무엇을 붙일지 모르겠다 | [T]는 목적어가 있고 [I]는 없다 | We arrived at the station. 우리는 역에 도착했다. | arrived the station | 예문의 전치사까지 같이 옮긴다 |
+| 영어 정의가 안 읽힌다 | 번역이 붙은 항목에서 뜻을 잡는다 | book 은 번역 항목에서 책, 예약하다 | 조회가 꼬리를 문다 | 뜻은 번역으로, 쓰임은 예문으로 |
+| 소리를 모른다 | 소리 아이콘과 기호를 확인한다 | 철자가 같은 lead 의 소리가 뜻마다 다르다 | 철자대로 읽는다 | 뜻을 고른 뒤 그 구획의 소리를 듣는다 |
+
+이 표의 흔한 오류 칸은 이 글의 정리이며 한국어 화자를 조사한 연구로 확인한 것이 아니다.
+
+## 영한과 영영 중 무엇을 볼지 모를 때
+
+규칙: 무엇이 막혔는지로 고른다. 이 구분은 이 글의 정리다.
+
+| 막힌 것 | 볼 곳 | 이유 |
+|---|---|---|
+| 뜻만 빨리 알고 싶다 | 영한 또는 번역이 붙은 항목 | 한국어 뜻이 바로 나온다 |
+| 번역한 뜻이 문장에 안 맞는다 | 학습자용 영어 정의와 예문 | 한 단어 번역으로는 쓰이는 범위가 안 보인다 |
+| 전치사나 셀 수 있는지가 궁금하다 | 문법 표시와 예문 | 쓰는 모양이 항목에 적혀 있다 |
+| 영어 정의가 어렵다 | 번역이 붙은 항목 | 정의를 읽느라 시간을 쓰지 않는다 |
+
+Cambridge Dictionary 의 English–Korean 항목은 뜻마다 영어 정의, 한국어 번역, 예문을 함께 보여 준다. book 항목에서는 명사 A1 뜻이 책, 동사 A2 뜻이 예약하다로 나뉘어 있었다.<Ref n={1} /> 학습자용 영영 사전은 정의를 쉬운 어휘로 쓴다. Oxford 는 Oxford Advanced Learner's Dictionary 의 모든 정의를 Oxford 3000 단어로 쓴다고 밝히고, 이 목록은 A1에서 B2 수준의 단어를 담는다.<Ref n={2} /> 그래서 입문(A1과 A2) 독자에게는 정의 속 단어가 B1이나 B2일 수 있다(이 글의 정리). 정의가 안 읽히는 것은 정상이다.
+
+<Figure caption="막힌 것에 따라 보는 곳이 다르다. 모두 해당하지 않으면 사전을 닫고 읽기로 돌아간다(이 글의 정리).">
+  <PickDictionary />
+</Figure>
+
+<Callout kind="warn" title="근거의 수준">
+
+영한, 영영, 번역 병기 중 어느 쪽이 입문 학습자에게 낫다고 일반화할 근거는 읽은 범위에서 확인하지 못했다. Laufer와 Hadar(1997)는 영어를 외국어로 배우는 학습자가 새 단어를 이해하고 문장에 쓰는 과제에서 단일 언어, 이중 언어, 번역 병기 사전을 비교했다. 확인한 것은 ERIC 초록의 설계까지이고 결과는 읽지 못했다(확인 필요).<Ref n={3} /> 위 표는 현장 관행에 가까운 정리다.
+
+</Callout>
+
+## 항목이 길어서 어디부터 읽을지 모를 때
+
+규칙: 한 칸에서 답 하나씩만 얻는다. 아래 순서로 훑고, 필요한 뜻을 찾으면 멈춘다.
+
+<Figure caption="형태 예시(가상 값). 항목의 칸 구성이고 번호는 이 글이 권하는 훑는 순서다. 칸의 이름과 위치는 사이트마다 다르다.">
+  <EntryAnatomy />
+</Figure>
+
+| 칸 | 적혀 있는 것 | 입문자가 할 일 |
+|---|---|---|
+| 품사 | noun, verb 같은 구획. 품사가 다르면 항목이 따로 나뉜다 | 문장에서 쓰인 품사와 같은 구획만 본다 |
+| 안내어 · 수준 | 뜻 묶음 이름과 A1 같은 수준 표시 | A1과 A2가 붙은 뜻부터 읽는다 |
+| 문법 표시 | [C] [U] [T] [I] 등 | 다음 절에서 쓴다 |
+| 뜻 | 영어 정의, 번역 항목은 한국어도 | 한 줄만 이해한다 |
+| 예문 | 정의 아래 문장 | 내 문장과 가장 닮은 것을 고른다 |
+| 같이 쓰는 말 | 전치사 패턴, 구 동사 | 쓰고 싶은 덩어리 하나를 옮긴다 |
+| 발음 | IPA 기호와 소리 아이콘 | 소리를 듣고 따라 읽는다 |
+
+- book 항목에서 Cambridge 는 명사와 동사를 따로 나누고 뜻 묶음 이름을 괄호 안 대문자로 붙였다. Oxford 도 뜻 묶음에 짧은 표제를 붙였다.<Ref n={1} /><Ref n={4} />
+- Cambridge 는 대부분의 항목에 영국식과 미국식 소리 아이콘 두 개가 있고, 모든 항목에 IPA 표기가 있다고 안내한다.<Ref n={5} /> 기호 읽는 법은 e02 와 e03 에서 다룬다.
+- sb 는 somebody, sth 는 something 이다.<Ref n={5} />
+
+수준 표시는 Cambridge 가 단어, 구, 뜻에 붙이는 English Profile 수준이고 A1 Beginner, A2 Elementary, B1 Intermediate, B2 Upper-Intermediate, C1 Advanced, C2 Proficiency 여섯 단계다. B1 단어는 중급 학습자가 보통 아는 단어라는 설명이 붙는다.<Ref n={5} /> 수준은 단어가 아니라 뜻에 붙는다. book 에서 책 뜻은 A1, 예약하다 뜻은 A2, 같은 종류 낱장 묶음 뜻은 C2 였고, 수준이 없는 뜻도 있었다.<Ref n={1} /> 그래서 내가 만난 문장의 뜻에 붙은 수준을 본다.
+
+Oxford 는 CEFR 이 학습자의 능력을 기술할 뿐 개별 문법이나 어휘를 등급화하지 않으며, 자사 어휘 목록을 CEFR 수준에 맞춰 놓은 것이라고 밝힌다.<Ref n={6} /> 수준 표시는 사전이 정리한 길잡이이고 시험 기준이 아니다.
+
+## 뜻이 여러 개라 고르지 못할 때
+
+규칙: 품사로 줄이고, 예문으로 정하고, 한 줄만 적는다.
+
+| 문장 | 품사 | 고른 뜻 |
+|---|---|---|
+| I read a good book. 나는 좋은 책을 읽었다. | 명사 | 책 (A1) |
+| I booked a table for two. 나는 두 명 자리를 예약했다. | 동사 | 예약하다 (A2) |
+
+<Figure caption="예문은 직접 작성했다. 품사로 구획을 줄이고, 예문으로 뜻을 정하고, 한 줄만 남긴다.">
+  <PickSense />
+</Figure>
+
+- 첫 뜻은 후보 하나다. Oxford 는 뜻을 보통 빈도 순으로 싣지만 예외가 있다고 쓴다. 낮은 단계 학습자가 먼저 아는 뜻을 앞에 두거나(mouse 를 한 예로 든다), 가까운 뜻을 묶느라 순서를 바꾼다(bank).<Ref n={7} />
+- 맞는 뜻이 없고 동사 뒤에 전치사가 붙어 있으면 구 동사나 관용구 구획을 본다. Cambridge 는 phrasal verb 를 동사 뒤에 부사나 전치사가 붙은 것으로 설명한다.<Ref n={8} /> 예: This road leads to the station. 이 길은 역으로 이어진다. Cambridge 의 lead 항목에 lead to something 이 구 동사로 올라 있다.<Ref n={1} />
+- 같은 철자의 소리가 뜻마다 다를 수 있다. 동사 lead(앞장서다, 안내하다. B1)는 /liːd/, 명사 lead(납, 연필심)는 /led/ 였다.<Ref n={1} /> 뜻을 고른 뒤 그 구획의 소리를 듣는다.
+
+## [C], [U], [T], [I] 가 보일 때
+
+규칙: 표시를 보고 문장 모양을 예문에서 그대로 옮긴다.
+
+<Figure caption="Cambridge 의 문법 표시와 문장 모양. Oxford 는 같은 뜻을 countable, uncountable, transitive, intransitive 로 풀어 쓴다.">
+  <GrammarCodes />
+</Figure>
+
+| 표시 | 뜻 | 예문 | 쓸 때 |
+|---|---|---|---|
+| [C] | 셀 수 있는 명사. 복수형이 있다 | I bought two books. 나는 책 두 권을 샀다. | a 나 복수형을 붙인다 |
+| [U] | 셀 수 없거나 단수인 명사. 복수형이 없다 | Can I give you a piece of advice? 조언 하나 해도 될까? | 단위 표현으로 센다 |
+| [T] | 목적어가 있는 동사 | I enjoyed the movie. 나는 그 영화를 즐겁게 봤다. | 목적어를 붙인다 |
+| [I] | 목적어가 없는 동사 | We arrived at the station. 우리는 역에 도착했다. | 예문의 전치사를 같이 본다 |
+
+정의는 Cambridge 의 부호 설명에서 확인했다.<Ref n={8} /> advice 는 [U], arrive 는 [I], enjoy 는 [T] 로 표시돼 있었다.<Ref n={1} /> Oxford 의 arrive 항목은 arrive in 과 arrive at 두 패턴을 예문으로 보여 준다.<Ref n={4} />
+
+- 한 뜻에 [ T or I ] 가 같이 붙을 수 있다. book 의 예약하다 뜻이 그렇다.<Ref n={1} />
+- 같은 단어도 뜻마다 표시가 달라진다. book 은 대부분 [C] 지만 장부 뜻은 books [plural] 로 표시됐다.<Ref n={1} />
+- 동사 뒤 패턴 표시도 있다. [+ -ing verb] 는 뒤에 -ing 형이 오는 동사다.<Ref n={8} /> 예: I enjoy learning English. 나는 영어 배우는 것이 즐겁다.
+- 한국어 화자가 [U] 를 놓치기 쉽다는 것은 이 글의 정리이고 확인한 조사는 없다. 셀 수 있는 명사는 e07 에서 다룬다.
+
+## 사전으로 해결되는 것과 안 되는 것을 가를 때
+
+| 얻는 것 | 어디에 | 주의 |
+|---|---|---|
+| 발음 | IPA 기호와 소리 아이콘 | 문장 속 연결은 단어 항목에서 안 보인다. e03 과 e15 에서 다룬다 |
+| 예문 | 정의 바로 아래 문장 | 아래쪽 코퍼스 예문은 어려울 수 있다 |
+| 같이 쓰는 말 | 전치사 패턴, Oxford 의 Collocations 상자 | 입문은 한 덩어리만 옮긴다. e11 로 이어진다 |
+| 격식 정도 | Oxford 의 formal, informal, slang 같은 라벨 | offensive 와 taboo 는 쓰지 않는다 |
+| 문법과 쓰임 | Oxford 의 Usage Notes | 항목마다 있는 것은 아니다 |
+
+- Cambridge 아래쪽 예문 목록은 코퍼스와 웹에서 가져왔다고 표시된다. lead 항목에서 길고 어려운 문장이 보였다. 정의 바로 옆의 짧은 예문을 먼저 본다.<Ref n={1} />
+- Oxford 는 offensive 와 taboo 라벨이 붙은 표현을 쓰지 말라고 안내한다.<Ref n={9} /> Oxford 에는 Usage Notes 가 있고 문법이나 같이 쓰는 말 정보를 담는다.<Ref n={7} />
+- Cambridge 의 SMART Vocabulary 는 관련 단어 목록이다.<Ref n={5} /> book 항목에서는 annotation, manuscript 처럼 입문을 넘는 단어가 나열됐다. 입문에서는 접어 둔다(이 글의 정리).
+- 사전은 내가 쓴 문장이 맞는지 판정해 주지 않는다. 판정은 예문과 비교해서 내가 한다(이 글의 정리).
+
+<Callout kind="warn" title="화면은 바뀐다">
+
+아이콘, 칸 이름, 항목 순서, 무료 범위는 바뀔 수 있다. 이 글의 화면 설명은 2026년 10월 4일 기준이고 확인 필요다. 칸의 이름이 달라도 품사, 뜻, 예문, 문법 표시를 찾는 순서는 같다(이 글의 정리).
+
+</Callout>
+
+## 찾는 데 시간이 너무 걸릴 때
+
+규칙: 찾을 단어를 줄이고 한 번에 한 줄만 남긴다. 아래 기준은 현장 관행이며 시간 기준은 따로 확인한 값이 없다. 읽는 중의 처리는 e13 에서 다룬다.
+
+| 상황 | 사전을 보나 | 대처 |
+|---|---|---|
+| 이름, 지명, 숫자 | 보지 않는다 | 대문자로 시작하는 이름은 넘어간다 |
+| 한 문장의 뜻이 막힌다 | 본다 | 품사, 뜻 하나, 예문 하나 |
+| 같은 단어가 또 나온다 | 본다 | 메모 세 칸에 남긴다 |
+| 뜻을 문맥으로 짐작했다 | 읽은 뒤에 본다 | 짐작이 맞는지만 확인한다 |
+
+<Figure caption="형태 예시(가상 값). 한 번 찾은 뒤 남기는 세 칸. 값은 book 동사 항목에서 확인한 용법으로 직접 썼다.">
+  <LookupNote />
+</Figure>
+
+- Oxford 는 Oxford 3000 목록을 CEFR 수준으로 거를 수 있다고 안내하고, 글에서 만난 새 단어가 목록에 있는지 확인한 뒤 뜻을 찾으라고 권한다.<Ref n={2} /> 목록은 내 수준 단어를 미리 외울지 정하는 데 쓴다. 외울 단어는 e10 에서 다룬다.
+- Oxford 의 Text Checker 는 글에 나온 단어의 CEFR 수준을 확인하는 도구로 소개된다.<Ref n={7} /> 읽을 글이 너무 어려운지 판단할 때 쓸 수 있다. 사용법은 확인 필요다.
+
+## 흔한 실수
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| 첫 번째 뜻만 보고 끝낸다 | 같은 품사 구획에서 예문을 비교한다 | 순서는 보통 빈도 순이지만 예외가 있다 |
+| 한 단어 번역을 그대로 끼운다 | 예문의 모양을 옮긴다 | 번역은 쓰이는 범위를 담지 않는다(이 글의 정리) |
+| 영어 정의가 안 읽혀 포기한다 | 번역이 붙은 항목에서 시작한다 | 정의는 B2 단어를 쓸 수 있다 |
+| advices 로 쓴다 | a piece of advice | [U] 는 복수형이 없다 |
+| 항목 전체를 읽는다 | 품사와 예문만 훑는다 | 읽다가 문장을 잊는다(이 글의 정리) |
+| 철자대로 읽는다 | 소리 아이콘을 누른다 | lead 처럼 소리가 뜻마다 다르다 |
+
+## 증상으로 찾기
+
+원인과 처방 중 출처가 없는 것은 이 글의 정리다.
+
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| 찾은 뜻을 넣으니 문장이 이상하다 | 품사나 뜻 구획이 다르다 | 문장 속 품사를 확인하고 예문을 비교한다 |
+| 영어 정의 속에도 모르는 단어가 있다 | 정의가 내 수준보다 높다 | 번역 항목으로 가고 정의 속 단어는 찾지 않는다 |
+| 동사 뒤에 전치사가 필요한지 모른다 | [T]와 [I]를 안 봤다 | 표시와 예문의 전치사를 본다 |
+| 같은 철자인데 소리가 다르다 | 뜻마다 발음이 다른 단어다 | 뜻 구획 옆의 소리를 듣는다 |
+| 단어 하나에 시간이 오래 걸린다 | 항목 전체를 읽거나 조회가 이어진다 | 메모 세 칸만 남기고 돌아간다 |
+| 예문이 너무 어렵다 | 코퍼스 예문을 읽고 있다 | 정의 바로 아래 예문으로 한정한다 |
+
+## 점검 체크리스트
+
+- 막힌 것이 뜻인지, 쓰는 법인지, 소리인지 먼저 정했는가.
+- 문장 속 품사와 같은 구획을 열었는가.
+- 수준 표시가 A1이나 A2인 뜻부터 읽었는가.
+- 첫 뜻이 아니라 예문이 가장 닮은 뜻을 골랐는가.
+- 명사는 [C]와 [U], 동사는 [T]와 [I]를 확인했는가.
+- 예문의 전치사와 관사를 같이 옮겨 적었는가.
+- 한 번 찾고 뜻, 예문, 같이 쓰는 말을 한 줄씩만 남겼는가.
+- 이름과 지나가는 단어는 건너뛰었는가.
+
+## 관련 글
+
+<Related>
+  <Rel to="e03" note="IPA 기호와 소리를 읽는 법" />
+  <Rel to="e07" note="[C]와 [U]가 문장에서 만드는 차이" />
+  <Rel to="e10" note="찾기 전에 외울 단어" />
+  <Rel to="e11" note="사전에서 옮긴 덩어리를 외우는 법" />
+  <Rel to="e13" note="읽다가 모르는 단어를 만났을 때" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>Cambridge Dictionary(dictionary.cambridge.org) 항목을 2026년 10월 4일에 직접 열어 읽었다. english 의 book, advice, arrive, enjoy 와 english-korean 의 book, lead. 품사별 구획, 안내어, 수준 표시, 문법 표시, 번역 병기, 구 동사, 코퍼스 예문 표시를 확인했다. 화면은 바뀔 수 있어 확인 필요.</Source>
+  <Source n={2}>Oxford Learner's Dictionaries, About the Oxford 3000 word list(oxfordlearnersdictionaries.com/about/oxford3000)와 About the Oxford 3000 and 5000 word lists(/about/wordlists/oxford3000-5000). 2026년 10월 4일에 전문을 읽었다. 정의가 Oxford 3000 단어로 쓰인다는 설명, A1에서 B2 수준, 목록 활용 안내를 확인했다. 앞의 페이지는 2019년 개정 전 서술이 남아 있어 현재 페이지의 설명을 따랐다.</Source>
+  <Source n={3}>Batia Laufer, Linor Hadar (1997), Assessing the Effectiveness of Monolingual, Bilingual, and Bilingualised Dictionaries in the Comprehension and Production of New Words, The Modern Language Journal 81(2), 189-196. ERIC 기록(eric.ed.gov, EJ546080)의 서지와 초록만 읽었다. 논문 본문과 결과는 읽지 못했다(확인 필요).</Source>
+  <Source n={4}>Oxford Learner's Dictionaries 항목 book, arrive, advice(oxfordlearnersdictionaries.com/definition/english/). 2026년 10월 4일에 열어 읽었다. 뜻 묶음 표제, 문법 라벨, 패턴 예문, Collocations 상자를 확인했다. 화면은 바뀔 수 있어 확인 필요.</Source>
+  <Source n={5}>Cambridge Dictionary, Help(dictionary.cambridge.org/help/). 2026년 10월 4일에 전문을 읽었다. 발음 아이콘과 IPA, sb 와 sth, A1에서 C2 수준 표시, SMART Vocabulary 설명을 확인했다.</Source>
+  <Source n={6}>Oxford Learner's Dictionaries, CEFR 설명 페이지(/about/wordlists/cefr). 2026년 10월 4일에 전문을 읽었다. CEFR 은 능력을 기술하고 개별 어휘를 등급화하지 않는다는 서술과, Oxford 가 어휘 목록을 CEFR 에 맞춘다는 서술을 확인했다.</Source>
+  <Source n={7}>Oxford Learner's Dictionaries, Frequently Asked Questions(/faq/). 2026년 10월 4일에 읽었다. 뜻 순서(빈도 순과 예외: mouse, bank, review), Usage Notes, Text Checker 서술을 확인했다. 무료와 유료 범위 항목은 읽지 않았다(확인 필요).</Source>
+  <Source n={8}>Cambridge Dictionary, Labels and Codes(dictionary.cambridge.org/help/codes.html). 2026년 10월 4일에 전문을 읽었다. [C], [U], [T], [I], phrasal verb, [+ -ing verb] 설명을 확인했다.</Source>
+  <Source n={9}>Oxford Learner's Dictionaries, Guide to Symbols and Labels(/about/english/labels). 2026년 10월 4일에 읽었다. formal, informal, slang, offensive, taboo 라벨 설명을 확인했다.</Source>
+</Sources>

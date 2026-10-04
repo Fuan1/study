@@ -8,6 +8,7 @@
 | 02-data-analysis | 데이터 분석 실무 (질문·수집 설계, 분석 유형별 결과물, 실험·인과, 보고. 코드 없음) |
 | 03-business-marketing | 비즈니스·마케팅 실무 (시장·고객, 가격·단위 경제성, 채널·광고, 측정, 법규) |
 | 04-product-management | 제품 기획·관리 실무 (문제 정의, 명세, 우선순위, 로드맵, 출시, 평가. 코드 없음) |
+| 05-english | 영어 입문 (A1~A2. 발음, 문장, 단어, 읽기·듣기, 말하기·쓰기, 공부 방법) |
 
 각 분야 폴더 구성: `course.json`(글 목록), `lessons/`(글 MDX), `notes/`(정리 노트), `resources/`(자료·링크), `practice/`(실습·예제). 노트 양식은 `_templates/note.md`, 글 양식은 `_templates/lesson.mdx`.
 

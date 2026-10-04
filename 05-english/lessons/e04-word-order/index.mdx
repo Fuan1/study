@@ -1,0 +1,221 @@
+import WordOrderBlocks from './WordOrderBlocks';
+import SubjectCheck from './SubjectCheck';
+import SentenceFrames from './SentenceFrames';
+import AdverbSlots from './AdverbSlots';
+
+<Overview>
+
+- 해라: 영어 문장은 주어, 동사, 나머지 순서로 만들어라. 한국어처럼 동사를 끝에 두지 말고, 목적어는 동사 바로 뒤에 둬라.
+- 해라: 명령문이 아니면 주어를 써라. 날씨와 시간은 it, 있다는 뜻은 there 로 시작한다.
+- 해라: 형용사로 설명하는 문장에는 be 를 넣어라. 한국어의 푸르다 하나가 영어에서는 is blue 둘이다.
+- 하지 마라: 동사와 목적어 사이에 부사를 끼우지 마라. 부사는 목적어 뒤로 보낸다.
+- 기준값: 빈도부사(always, never)는 일반동사 앞이고 be 뒤다. 끝자리에 부사가 여럿이면 방법, 장소, 시간 순서가 기본이다.
+
+</Overview>
+
+<Toc />
+
+예문은 직접 작성했고 사전·문법서로 확인했다. Cambridge 문법서의 예문은 출처 번호를 붙였다. 한국어 화자가 어떤 오류를 자주 내는지 조사한 연구는 읽지 못했다. 그래서 오류 목록은 한국어와 영어의 차이에서 이 글이 정리한 것이다(확인 필요).
+
+| 막힌 상황 | 규칙 | 예문 | 흔한 오류 | 대처 |
+|---|---|---|---|---|
+| 동사를 끝에 놓고 싶다 | 주어 바로 뒤에 동사 | I eat rice. 나는 밥을 먹는다. | I rice eat. | 문장 끝 말을 먼저 동사로 바꾼다 |
+| 주어가 떠오르지 않는다 | 명령문 빼고 주어 필수 | It is raining. 비가 온다. | Is raining. | 날씨는 it, 있다는 there |
+| be 를 빼먹는다 | 형용사 앞에 be | The sky is blue. 하늘이 푸르다. | The sky blue. | 주어 다음에 be 를 넣는다 |
+| 부사를 끼우고 싶다 | 부사는 목적어 뒤 | I like music very much. 나는 음악을 매우 좋아한다. | I like very much music. | 부사를 문장 끝으로 보낸다 |
+| 장소와 시간이 같이 나온다 | 방법, 장소, 시간 순서 | We met in the park yesterday. 우리는 어제 공원에서 만났다. | We met yesterday in the park. | 끝에 방법, 장소, 시간 순서로 붙인다 |
+
+## 한국어 순서대로 단어를 늘어놓게 될 때
+
+규칙: 한국어는 동사가 문장 끝에 오는 언어다.<Ref n={1} /> 영어 서술문의 기본 순서는 주어, 동사, 나머지이고 부정문도 같다.<Ref n={2} /> 목적어는 보통 동사 뒤에 온다.<Ref n={3} /> 한국어에서는 조사가 명사의 역할(주어, 목적어)을 표시한다.<Ref n={1} /> 영어 명사에는 이런 표지가 없어서 자리가 역할을 정한다(이 글의 정리).
+
+<Figure caption="한국어는 동사가 맨 끝이고 영어는 주어 바로 뒤다. 같은 역할의 상자를 선으로 이었다. 형태 예시이고 문장은 이 글이 만들었다.">
+  <WordOrderBlocks />
+</Figure>
+
+한국어 문장을 영어로 옮기는 순서는 세 단계다.
+
+1. 주어를 정한다. 한국어에서 빠져 있어도 찾아서 쓴다.
+2. 한국어 문장의 맨 끝 말을 영어 동사로 바꿔 주어 바로 뒤에 놓는다.
+3. 남은 말을 목적어, 장소, 시간 순서로 뒤에 붙인다.
+
+| 한국어 | 한국어 순서로 옮긴 영어 | 고친 영어 |
+|---|---|---|
+| 그는 영어를 공부한다. | He English studies. | He studies English. |
+| 우리는 영화를 봤다. | We a film watched. | We watched a film. |
+| 그녀는 매일 커피를 마신다. | She every day coffee drinks. | She drinks coffee every day. |
+
+## 주어가 떠오르지 않을 때
+
+규칙: 명령문이 아닌 영어 문장에는 주어가 있어야 한다.<Ref n={4} /> 명령문은 동사로 시작하고 주어를 쓰지 않는다. Come on. Hurry up!<Ref n={2} /> 한국어에서는 주어를 생략해도 문장이 된다.<Ref n={1} /> 이 차이 때문에 한국어 문장을 그대로 옮기면 주어가 빠지기 쉽다(이 글의 정리).
+
+<Figure caption="문장을 쓰기 전에 위에서부터 묻는다. 명령이 아니면 어떤 주어로 시작할지 정해야 한다.">
+  <SubjectCheck />
+</Figure>
+
+| 한국어 | 주어가 빠진 영어 | 고친 영어 |
+|---|---|---|
+| 피곤해요. | Am tired. | I am tired. |
+| 곧 비가 올 거예요. | Is going to rain. | It is going to rain. |
+| 헬멧을 쓰는 것이 중요하다. | Is important to wear a helmet. | It is important to wear a helmet. |
+| 마을에 가게가 두 개 있다. | Are two shops in the village. | There are two shops in the village. |
+
+- 말하는 사람이나 대화 상대가 주어이면 I, you 를 쓴다. 대화에서 한국어로는 생략해도 영어에서는 쓴다. A1, A2 단계에서는 이 규칙을 예외 없이 따르는 쪽이 안전하다(이 글의 정리).
+- it 은 날씨나 시간에서 뜻 없는 주어로 쓴다. 형용사 뒤에 to 동사가 오는 문장에서도 it 로 시작한다.<Ref n={4} /><Ref n={5} />
+- 처음 존재를 말할 때는 there is, there are 를 쓴다. There is a letter on your desk. 편지가 책상 위에 있다. It is a letter on your desk 라고 하지 않는다.<Ref n={6} />
+
+## 문장을 처음 만들 때 어떤 틀을 쓸지
+
+규칙: 처음에는 틀 네 개로 거의 모든 문장을 만든다. 동사가 목적어를 필요로 하는지가 틀 1과 틀 2를 가른다. 목적어가 필요 없는 동사에는 arrive, come, wait, work 가 있고, 꼭 필요한 동사에는 enjoy, find, need, want 가 있다.<Ref n={7} /> 이런 동사는 목적어를 바로 받는다. 사이에 전치사를 끼우지 않는다. The book emphasises the role of the arts 이지 emphasises on the role 이 아니다.<Ref n={7} />
+
+<Figure caption="네 틀은 모두 주어가 맨 앞이고 동사가 두 번째다. 형태 예시이고 문장은 이 글이 만들었다. 틀 4는 틀 2 뒤에 장소와 시간을 붙인 것이다.">
+  <SentenceFrames />
+</Figure>
+
+| 틀 | 쓰는 때 | 예문 |
+|---|---|---|
+| 주어 + 동사 | 동작만 말한다 | The bus arrived. 버스가 도착했다. |
+| 주어 + 동사 + 목적어 | 동작이 누구 또는 무엇에게 미친다 | Nobody writes letters these days. 요즘은 아무도 편지를 쓰지 않는다.<Ref n={3} /> |
+| 주어 + be + 설명 | 상태, 직업, 나이, 장소를 말한다 | She is a nurse. 그녀는 간호사다. |
+| 틀 2 + 장소 + 시간 | 어디서 언제까지 말한다 | We met Ana at school today. 우리는 오늘 학교에서 아나를 만났다. |
+
+be 는 동작이 아니라 상태, 직업, 나이, 장소를 말할 때 쓴다. He is a firefighter 에서 직업 이름 앞에는 a 를 쓴다. Her house is on the edge of the lake 는 장소 표현이 be 뒤에 온 문장이다.<Ref n={8} /> 관사는 이 과정의 명사·관사·복수 글에서 다룬다. be 뒤에는 목적어가 아니라 형용사, 명사, 장소 표현이 온다.<Ref n={3} />
+
+<Callout kind="warn" title="일반동사 앞에 be 를 붙이지 않는다">
+
+현재형 질문에는 be 가 아니라 do 를 쓴다. Do you accept credit cards? 이지 Are you accept 가 아니다.<Ref n={8} /> 질문과 부정문 만들기는 이 과정의 다음 글에서 다룬다.
+
+</Callout>
+
+## 동사와 목적어 사이에 부사를 끼우고 싶을 때
+
+규칙: 동사와 목적어 사이에는 부사를 넣지 않는다.<Ref n={9} /> 방법, 장소, 시간 부사는 보통 문장 끝에 오고, 목적어가 있으면 목적어 뒤에 온다.<Ref n={9} />
+
+| 한국어 | 어색한 영어 | 고친 영어 |
+|---|---|---|
+| 그녀는 피아노를 아주 잘 친다. | She plays really well the piano. | She plays the piano really well.<Ref n={9} /> |
+| 영국에서의 체류가 매우 즐거웠다. | I enjoyed very much my stay in England. | I enjoyed my stay in England very much.<Ref n={10} /> |
+| 나는 고양이도 좋아한다. | I like also cats. | I also like cats.<Ref n={10} /> |
+
+very much 는 동사 앞에 두는 문장도 가능하다. I very much enjoyed my stay in England.<Ref n={10} /> 처음에는 문장 끝에 두는 쪽만 익혀도 충분하다(이 글의 정리).
+
+## always, never 의 자리가 헷갈릴 때
+
+규칙: 빈도부사는 보통 주어와 일반동사 사이에 온다. be 가 주동사일 때는 be 뒤에 온다.<Ref n={9} /> 조동사나 have 가 있으면 그 뒤, 본동사 앞이다.<Ref n={9} /><Ref n={11} />
+
+<Figure caption="빈도부사는 일반동사 앞, be 뒤. 방법, 장소, 시간 부사는 끝자리에서 이 순서로 놓는다. 형태 예시이고 문장은 이 글이 만들었다.">
+  <AdverbSlots />
+</Figure>
+
+| 한국어 | 어색한 영어 | 고친 영어 |
+|---|---|---|
+| 나는 항상 전화번호를 잊어버린다. | I forget always my phone number. | I always forget my phone number.<Ref n={10} /> |
+| 그녀는 회의에 항상 늦는다. | She always is late for meetings. | She is always late for meetings.<Ref n={10} /> |
+| 나는 늘 일본에 가기를 꿈꿔 왔다. | I always have dreamed of going to Japan. | I have always dreamed of going to Japan.<Ref n={10} /> |
+
+- sometimes, often, usually 는 문장 앞에도 올 수 있다. Sometimes she wore a woollen hat.<Ref n={9} />
+- always, never, ever 는 보통 문장 앞에 오지 않는다. Never I could swim fast 는 틀렸고 I could never swim fast 가 맞다.<Ref n={9} />
+- often 은 끝자리에도 온다. We don't see them very often.<Ref n={9} />
+- British Council 학습 페이지는 빈도 단어를 always, usually 또는 normally, often, sometimes, occasionally, hardly ever, never 순서로 정리한다.<Ref n={11} />
+
+## 장소와 시간을 같이 쓸 때
+
+규칙: 끝자리에 부사가 둘 이상이면 보통 방법, 장소, 시간 순서다.<Ref n={9} /> 한국어 문장에서는 시간과 장소를 앞쪽에 쓰는 문장이 흔하다(이 글의 정리). 영어는 앞에서부터가 아니라 뒤에서부터 정리한다고 생각하면 쉽다.
+
+| 한국어 | 한국어 순서로 옮긴 영어 | 고친 영어 |
+|---|---|---|
+| 우리는 어제 공원에서 만났다. | We yesterday in the park met. | We met in the park yesterday. |
+| 그는 토요일에 경기에서 훌륭하게 뛰었다. | He on Saturday in the match played brilliantly. | He played brilliantly in the match on Saturday.<Ref n={9} /> |
+
+- 시간을 강조하려면 문장 앞에 둘 수 있다. Today, I'm going to clean the house.<Ref n={9} />
+- 장소를 문장 앞에 두는 용법은 특히 글에서 쓴다. Outside, there was a small pond.<Ref n={9} /> 말할 때는 끝에 두는 틀 4를 먼저 쓴다(이 글의 정리).
+- 시간을 장소 앞에 두면 틀린 문장은 아니지만 덜 자연스럽다. Cambridge 는 James played brilliantly in the match on Saturday 쪽을 선호 형태로 든다.<Ref n={9} />
+
+## 형용사를 쓸 때
+
+규칙: 형용사는 명사 앞이나 be 뒤에 둔다. 한국어에서는 형용사가 서술어로 쓰여서 푸르다 하나로 문장이 끝난다. 영어에서는 be 를 넣어 The sky is blue 로 쓴다. 한국어 쪽 문법은 하늘이 푸르다를 형용사 하나가 주어 하나를 받는 문장으로 설명한다.<Ref n={1} /> 영어에서 형용사 앞의 be 는 상태 문장의 동사다.<Ref n={8} />
+
+| 상황 | 영어 | 한국어 |
+|---|---|---|
+| be 뒤 | He is very rich. | 그는 매우 부자다.<Ref n={8} /> |
+| 느낌 | I felt really tired. | 나는 정말 피곤했다.<Ref n={3} /> |
+| 명사 앞 | She was wearing an amazing red coat. | 그녀는 멋진 빨간 코트를 입고 있었다.<Ref n={12} /> |
+
+형용사가 두세 개 겹치면 순서가 있다. 의견, 크기, 모양, 나이, 색, 출신, 재료 순이 일반적이다. 의견을 말하는 형용사가 사실을 말하는 색보다 앞에 오므로 amazing red coat 이고 red amazing coat 가 아니다.<Ref n={12} /> 형용사를 네 개 이상 쌓는 문장은 매우 드물다고 한다.<Ref n={12} /> 처음에는 하나나 둘만 쓴다(이 글의 정리).
+
+## 질문 안에 질문이 들어갈 때
+
+규칙: what, where 로 직접 묻는 문장에서는 동사가 주어 앞에 온다. 문장 안에 들어간 질문에서는 주어가 먼저 온다.<Ref n={10} />
+
+| 직접 묻기 | 안에 넣기 |
+|---|---|
+| Where is the nearest hospital? 가장 가까운 병원이 어디예요? | I don't know where the nearest hospital is. 가장 가까운 병원이 어디인지 모르겠어요. |
+| What are you doing this summer? 이번 여름에 뭐 해요? | I'm writing to ask you what you are doing this summer. 이번 여름에 뭐 하는지 물어보려고 씁니다. |
+
+안에 넣은 질문에서 I don't know where is the nearest hospital 은 틀린 문장이다.<Ref n={10} /> 질문 만들기는 이 과정의 다음 글에서 이어진다.
+
+## 흔한 실수
+
+| 실수 | 고친 문장 | 이유 |
+|---|---|---|
+| He English studies. | He studies English. | 동사는 주어 바로 뒤 |
+| Is raining. | It is raining. | 명령문이 아니면 주어 필요 |
+| The sky blue. | The sky is blue. | 형용사 앞에 be |
+| I like very much music. | I like music very much. | 동사와 목적어 사이에 부사 금지 |
+| She always is late. | She is always late. | 빈도부사는 be 뒤 |
+| We yesterday met in the park. | We met in the park yesterday. | 시간 부사는 끝자리 |
+| Are you live near here? | Do you live near here? | 질문의 일반동사에는 do |
+
+## 증상으로 찾기
+
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| 영어 문장이 한국어와 같은 순서로 나온다 | 단어를 한국어 순서로 옮겼다 | 맨 끝 말을 먼저 동사로 바꾸고 주어 뒤에 둔다 |
+| 문장이 동사로 시작한다 | 한국어에서 주어를 생략하는 습관 | 명령이 아니면 I, it, there 중 하나로 시작한다 |
+| 형용사 문장에 동사가 없다 | 한국어는 형용사 하나로 문장이 끝난다 | 주어와 형용사 사이에 be 를 넣는다 |
+| 문장 가운데에 very much 가 낀다 | 한국어 부사는 동사 앞에 온다 | 부사를 목적어 뒤로 보낸다 |
+| 시간과 장소를 어디에 둘지 모르겠다 | 앞에서부터 쌓아서 만들었다 | 끝에 방법, 장소, 시간 순서로 붙인다 |
+| 질문 안의 질문이 질문처럼 된다 | 직접 묻는 어순을 그대로 썼다 | 안에 넣으면 주어를 동사 앞에 둔다 |
+
+## 점검 체크리스트
+
+- 명령문이 아닌 문장에 주어가 있는가.
+- 동사가 주어 바로 뒤에 왔는가.
+- 목적어가 동사 바로 뒤에 왔는가.
+- 형용사로 끝나는 문장에 be 가 있는가.
+- 빈도부사가 일반동사 앞, be 뒤에 있는가.
+- 동사와 목적어 사이에 부사가 끼지 않았는가.
+- 끝자리에 부사가 여럿이면 방법, 장소, 시간 순서인가.
+- 안에 넣은 질문에서 주어가 동사 앞에 있는가.
+
+<Callout kind="note" title="근거의 수준">
+
+이 글의 규칙은 Cambridge 문법서와 British Council 문법 해설이 기술한 영어의 일반 규칙이다. 한국어 어순은 위키백과의 한국어 문법 항목으로 확인했다. 한국어 화자의 오류 빈도와 어떤 연습이 효과가 큰지는 연구를 읽지 못했다(확인 필요). 오류 표와 증상 표의 원인은 이 글의 정리이다. 학습자 말뭉치로 A1, A2 학습자가 쓰는 문법 항목을 정리한 English Grammar Profile 은 접속하지 못해 읽지 못했다(확인 필요).
+
+</Callout>
+
+## 관련 글
+
+<Related>
+  <Rel to="e05" note="부정문과 질문 만들기" />
+  <Rel to="e06" note="동사 시제 고르기" />
+  <Rel to="e07" note="a, the 와 복수" />
+  <Rel to="e08" note="장소·시간 표현의 전치사" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>Wikipedia, Korean grammar(en.wikipedia.org/wiki/Korean_grammar). Sentence structure(동사가 끝에 오는 어순), Case clitics(이/가, 을/를), Valency(주어는 생략될 수 있다는 서술, 하늘이 푸르다 예)를 읽었다. 위키백과이므로 일반 참고용이다. 인용 문헌 원문은 읽지 못했다(확인 필요).</Source>
+  <Source n={2}>Cambridge Dictionary, English Grammar Today, Clause types(dictionary.cambridge.org/grammar/british-grammar/clause-types). 서술문, 질문, 명령문 절을 읽었다.</Source>
+  <Source n={3}>Cambridge Dictionary, English Grammar Today, Objects(dictionary.cambridge.org/grammar/british-grammar/verbs-and-objects). 목적어의 위치, 연결동사에 목적어가 없다는 규칙을 읽었다.</Source>
+  <Source n={4}>Cambridge Dictionary, English Grammar Today, Dummy subjects(dictionary.cambridge.org/grammar/british-grammar/it-as-subject). 전문을 읽었다.</Source>
+  <Source n={5}>Cambridge Dictionary, English Grammar Today, It(dictionary.cambridge.org/grammar/british-grammar/it). It as an empty subject 절을 읽었다.</Source>
+  <Source n={6}>Cambridge Dictionary, English Grammar Today, There is, there's and there are(dictionary.cambridge.org/grammar/british-grammar/there-is-there-s-and-there-are). 첫 두 절을 읽었다.</Source>
+  <Source n={7}>Cambridge Dictionary, English Grammar Today, Verb patterns: with and without objects(dictionary.cambridge.org/grammar/british-grammar/verbs-transitive-and-intransitive). 목적어가 필요한 동사와 없는 동사 목록을 읽었다.</Source>
+  <Source n={8}>Cambridge Dictionary, English Grammar Today, Be(dictionary.cambridge.org/grammar/british-grammar/be-as-a-main-verb). 주동사 be 의 용법과 typical errors 를 읽었다.</Source>
+  <Source n={9}>Cambridge Dictionary, English Grammar Today, Adverbs and adverb phrases: position(dictionary.cambridge.org/grammar/british-grammar/adverbs-and-adverb-phrases-position). 전문을 읽었다.</Source>
+  <Source n={10}>Cambridge Dictionary, English Grammar Today, Common mistakes in English 의 Word order 항목(dictionary.cambridge.org/grammar/british-grammar/word-order). always, also, very much, what, where 페이지를 읽었다.</Source>
+  <Source n={11}>British Council, LearnEnglish Teens, Adverbs of frequency(learnenglishteens.britishcouncil.org/grammar/a1-a2-grammar/adverbs-frequency). 요약본을 읽었고 빈도 단어의 순서와 위치 규칙을 확인했다. LearnEnglish 성인용 어순 페이지는 열리지 않았다(확인 필요).</Source>
+  <Source n={12}>Cambridge Dictionary, English Grammar Today, Adjectives: order(dictionary.cambridge.org/grammar/british-grammar/adjectives-order). 전문을 읽었다.</Source>
+</Sources>

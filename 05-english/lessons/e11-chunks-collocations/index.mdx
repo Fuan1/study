@@ -1,0 +1,225 @@
+import KoreanVerbFan from './KoreanVerbFan';
+import DoMakeSort from './DoMakeSort';
+import FindFlow from './FindFlow';
+import SlotTemplate from './SlotTemplate';
+import FluencyShare from './FluencyShare';
+
+<Overview>
+
+- 해라: 단어를 외울 때 뜻 하나만 적지 말고 같이 쓰는 짝까지 한 줄로 적어라. make a decision, have lunch, take a shower 처럼 동사와 명사를 한 덩어리로 외운다.
+- 해라: 한국어 동사를 영어 동사 하나로 옮기지 말고, 명사를 먼저 정한 뒤 그 명사와 쓰는 동사를 사전 예문에서 확인해라.
+- 하지 마라: 한 단어씩 번역해 이어 붙이지 마라. 뜻은 통해도 make a question 같은 어색한 문장이 된다.
+- 기준값: 같이 쓰는 짝에는 예측할 수 있는 규칙이 없고 언어마다 다르다는 것이 Cambridge 의 설명이다. 외울 때는 규칙을 찾지 말고 사전의 짝 목록과 예문을 따른다.
+- 하지 마라: 덩어리 학습이 말하기를 크게 올려 준다고 믿지 마라. 읽어 확인한 연구에서 효과는 작은 규모이거나 작게 보고된다.
+
+</Overview>
+
+<Toc />
+
+점검 기준이다. 예문은 직접 작성했고 사전·문법서로 확인했다. 출처는 2026년 10월에 읽었고 읽은 범위는 출처 란에 적었다. 출처 번호가 없는 문장은 이 글의 정리이거나 교육 현장의 관행이다.
+
+| 막힌 상황 | 규칙 | 예문 | 흔한 오류 | 대처 |
+|---|---|---|---|---|
+| 일·실수·숙제의 동사가 안 나온다 | 명사마다 짝 동사가 정해져 있다 | I do my homework. 나는 숙제를 한다. | do a mistake | 사전 예문에서 동사를 확인한다 |
+| 질문·연설·뉴스 직역이 어색하다 | 한국어 동사를 그대로 옮기지 않는다 | She asked me a question. 그녀는 내게 질문을 했다. | make a question | ask a question 을 한 덩어리로 외운다 |
+| 식사·음료에 take 를 쓴다 | 식사와 음료는 have 를 쓴다 | Let's have lunch. 점심 먹자. | take lunch | have 로 바꾼다 |
+| 짝을 어디서 찾는지 모른다 | 영영 사전 예문, 짝 목록, 코퍼스 | I made the right decision. 나는 옳은 결정을 했다. | 영한 뜻 하나만 본다 | 예문의 동사에 밑줄을 긋는다 |
+| 인사·부탁이 안 나온다 | 틀 하나를 통째로 외우고 칸만 바꾼다 | Would you like some rice? 밥 좀 드실래요? | 단어를 하나씩 조립한다 | 틀 다섯 개부터 외운다 |
+
+## 단어는 아는데 문장이 안 나올 때
+
+규칙: 단어의 뜻만 알면 문장이 안 나온다. 그 단어와 같이 자주 쓰는 말까지 알아야 한다. 연어(collocation)는 둘 이상의 단어가 우연보다 훨씬 자주 같이 쓰이는 조합이다. Oxford 의 예는 resounding success 이다.<Ref n={1} />
+
+- 연어에는 예측할 수 있는 규칙이 없고 언어마다 다르다. 그래서 틀리기 쉽다.<Ref n={2} /> 이유를 찾으려 하지 말고 짝을 통째로 외운다.
+- 한국어 화자에게 어려운 쪽은 한국어와 영어가 어긋나는 짝이다. 한국 고등학생 163명에게 동사와 명사 연어 40개(한국어와 일치 20, 불일치 20)를 시험한 학위논문은 불일치 연어와 직접 만들어 쓰는 쪽이 더 어렵다고 보고했다.<Ref n={3} />
+- 한국과 중국 학습자의 글을 영어 원어민 글과 비교한 연구는, 학습자들이 do, get, give, have, make, take 와 명사의 한정된 조합만 되풀이해 쓴다고 보고했다.<Ref n={4} />
+
+<Figure caption="한국어 동사 하다 하나가 영어에서는 명사에 따라 do, make, have, take 로 갈라진다. 이 대응은 이 글의 정리이며, 영어 짝은 사전으로 확인했다.">
+  <KoreanVerbFan />
+</Figure>
+
+- 노트에 mistake 실수 라고 적지 말고 make a mistake 실수하다 라고 적는다.
+
+## do, make, have, take 중 무엇을 쓸지 모를 때
+
+규칙: 명사를 먼저 정하고 그 명사의 짝 동사를 외운다. do 와 make 의 명사는 Cambridge 문법의 목록에서 뽑았다.<Ref n={5} />
+
+| 동사 | 같이 쓰는 명사 | 예문 |
+|---|---|---|
+| do | homework, the shopping, the laundry, the cooking, exercise | I do the shopping on Saturdays. 나는 토요일마다 장을 본다. |
+| make | a mistake, a plan, a phone call, a list, friends, breakfast | I make a phone call every morning. 나는 아침마다 전화를 한 통 건다. |
+| have | lunch, a shower, a rest, a chat, a party, an accident | I had a shower and went to bed. 나는 샤워하고 잤다. |
+| take | a bus, a break, a walk, a photograph, an exam, a risk | Take a break. 좀 쉬어라. |
+
+have 의 짝은 Cambridge 문법의 have 항목,<Ref n={6} /> take 의 짝은 take 항목에서 확인했다.<Ref n={7} />
+
+<Figure caption="Cambridge 는 do 가 하는 일 자체에, make 는 만들어지는 결과에 초점이 있다고 설명한다. 예외가 많아 외울 때는 명사와 묶어 외운다.">
+  <DoMakeSort />
+</Figure>
+
+- do 와 make 의 구분 기준은 출처의 설명이다. do 는 행위나 수행 과정, make 는 결과물을 강조한다.<Ref n={5} /> 다만 make a mistake, make a phone call 처럼 결과물이라 하기 어려운 짝도 목록에 있으므로 이 기준으로 추측하지 말고 목록을 외운다.
+- 식사와 음료에는 take 를 쓰지 않는다. 출처가 오류 예로 든 문장이 Why don't we take a coffee together tomorrow? 이고, have 로 고쳐 쓴다.<Ref n={7} />
+- take 는 시간이 걸린다는 뜻에도 쓴다. It took me an hour to clean my room. 내 방을 치우는 데 한 시간 걸렸다.<Ref n={7} />
+- 샤워는 영국과 미국이 다르다. Oxford 는 have a shower 를 영국 영어에, take a shower 를 북미 영어에 특히 많이 쓴다고 적는다.<Ref n={8} /> 둘 다 맞고, 노트에 어느 쪽인지 표시한다.
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| I do a mistake. | I make a mistake. 나는 실수를 한다. | mistake 의 짝은 make |
+| Let's take lunch. | Let's have lunch. 점심 먹자. | 식사는 have |
+| I make my homework. | I do my homework. 나는 숙제를 한다. | homework 의 짝은 do |
+| I will do a phone call. | I will make a phone call. 전화할게. | phone call 의 짝은 make |
+
+## 직역한 문장이 어색할 때
+
+규칙: 한국어 동사를 영어 단어 하나로 바꾸지 마라. 한국어 한 동사가 영어에서는 명사에 따라 여러 동사로 갈라진다.
+
+Cambridge 문법은 흔한 연어 오류를 한 짝씩 정리해 둔다. 아래 짝은 모두 그 항목에서 확인했다.<Ref n={9} />
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| I want to make a question. | I want to ask a question. 질문하고 싶다. | 질문은 ask |
+| He says the truth. | He tells the truth. 그는 진실을 말한다. | 진실, 거짓말, 농담, 소식은 tell |
+| She talks French. | She speaks French. 그녀는 프랑스어를 한다. | 언어는 speak |
+| I look television at night. | I watch television at night. 나는 밤에 텔레비전을 본다. | 텔레비전은 watch |
+| He did a speech. | He gave a speech. 그는 연설을 했다. | 연설은 make 나 give |
+| It is of big importance. | It is of great importance. 매우 중요하다. | 추상적인 말에는 great |
+
+<Callout kind="warn" title="한 단어씩 번역하는 위험">
+
+한국어 문장을 단어 순서대로 영어 단어에 대응시키면 문법은 맞아도 짝이 틀린다. 이 틀림은 읽는 사람이 뜻을 짐작해 주기 때문에 눈에 띄지 않고, 고치지 않으면 계속 남는다(이 글의 정리). 문장을 만든 뒤 동사와 명사 쌍마다 사전 예문에 같은 짝이 있는지 확인한다.
+
+</Callout>
+
+- 한국어의 하다, 보다, 말하다, 치다 같은 넓은 동사는 특히 위험하다. 동사가 아니라 명사부터 영어로 바꾼다.
+
+## 짝을 사전에서 찾을 때
+
+규칙: 영영 사전의 예문에서 같이 쓴 동사와 형용사를 읽는다. 짝 표시가 있으면 그 표시를 근거로 덩어리째 적는다. 코퍼스는 사전 예문이 모자랄 때만 쓴다.
+
+<Figure caption="짝은 사전 예문, 짝 표시, 코퍼스 순으로 확인하고 덩어리째 적는다. 순서는 이 글의 정리다.">
+  <FindFlow />
+</Figure>
+
+- Cambridge Dictionary 의 make a decision 항목에는 collocation 이라는 표시가 붙고, 예문으로 Before we make a decision, does anyone want to say anything else? 가 있다. Oxford 의 decision 항목은 make a decision 과 함께 come to a decision, reach a decision 을 보여 주고, 영국 영어에서는 take 도 쓴다고 표시한다.<Ref n={10} />
+- Oxford 의 shower 항목 아래에는 Oxford Collocations Dictionary 발췌가 붙는다. 동사 + shower 로 grab, have, take 를 보여 준다.<Ref n={8} />
+- Oxford Collocations Dictionary 는 명사, 동사, 형용사 9,000개에 250,000개의 조합을 담았다고 소개한다. 단어를 찾으면 품사별로 같이 쓰는 말이 모여 있어 글을 쓸 때 쓸모 있다고 한다. 전체 이용은 코드가 필요한 것으로 안내되어 있다(조건은 확인 필요).<Ref n={11} />
+- 코퍼스는 실제 글을 모은 자료다. COCA 는 10억 단어가 넘는 미국 영어 자료이고 웹에서 무료로 쓸 수 있다고 한 대학 도서관 안내가 설명한다.<Ref n={12} /> 공식 사이트가 읽히지 않아 검색 기능과 이용 한도는 확인 필요다.
+
+## 인사·부탁 같은 일상 덩어리를 외울 때
+
+규칙: 일상 말하기는 단어 조립이 아니라 덩어리 꺼내기로 한다. 아래 덩어리와 수준 표시는 Cambridge Dictionary 항목에서 확인했다.<Ref n={13} />
+
+| 상황 | 덩어리 | 뜻 | 쓸 때 |
+|---|---|---|---|
+| 낯선 사람을 부를 때 | Excuse me, does this bus go to the station? | 실례합니다, 이 버스는 역에 가나요? | 사전 표시 A1 |
+| 안부를 물을 때 | How are you? | 잘 지내요? | A1. 답은 Fine, thanks, how are you? |
+| 처음 만났을 때 | Pleased to meet you. | 만나서 반갑습니다. | A2. 정중한 첫인사 |
+| 헤어질 때 | See you later. | 나중에 봐요. | A1. 격식 없는 말 |
+| 부탁을 받았을 때 | No problem. | 문제없어요. | A2. 해 주겠다는 뜻이나 감사 인사에 대한 답 |
+| 사과할 때 | I'm sorry, I didn't see you there. | 미안해요, 거기 계신 줄 몰랐어요. | A1 |
+
+<Callout kind="warn" title="Thanks a lot 은 비꼬는 말이 될 수 있다">
+
+Cambridge 에는 Thanks a lot 을 상대가 한 일이 못마땅할 때 쓰는 표현으로 올린 항목이 있다.<Ref n={13} /> 감사할 때는 Thanks for the lift. 처럼 무엇에 대한 감사인지 붙인 예문을 따라 쓴다.
+
+</Callout>
+
+부탁과 권유는 would like 틀이 기본이다. Cambridge 문법은 would like 를 제안과 부탁에서 정중하게 원하는 것을 말하는 데 쓴다고 설명하고, Do you like 는 제안과 부탁에 쓰지 않는다고 한다.<Ref n={14} /> Can I have a cake as well? 는 have 항목의 예문이다.<Ref n={6} />
+
+<Figure caption="틀의 앞부분은 그대로 외우고 바뀌는 칸에만 단어를 넣는다. 세 예문은 Cambridge 문법의 would like 예문을 바탕으로 했다.">
+  <SlotTemplate />
+</Figure>
+
+- 틀 하나를 입에 붙인 뒤에 칸을 바꿔 보는 순서로 익힌다. 한 번에 틀을 여러 개 외우지 않는다(교육 현장의 관행).
+- 덩어리는 한국어 뜻으로 외우지 말고 상황으로 외운다. 누구에게 어떤 때 쓰는지 한 줄 적는다.
+
+## 덩어리 학습이 말하기에 도움이 되는지 알고 싶을 때
+
+입증된 것은 작은 범위다. 아래 두 연구가 읽어서 확인한 전부이고, 입문 수준 학습자를 직접 대상으로 한 연구는 읽지 못했다.
+
+- Boers 외의 2006 년 실험은 영어를 전공하는 대학생 32명을 실험 17명과 통제 15명으로 나눴다. 22시간 동안 실제 듣기·읽기 자료를 접하게 하되 실험군에게는 표준화된 단어 조합을 알아차리게 했다. 뒤에 면접을 본 눈가림 평가자 둘 다 실험군을 더 능숙하다고 평가했다. 저자들은 이것을 작은 규모의 실험이라 부르고, 덩어리를 쌓도록 돕는 일이 말하기 향상에 보탬이 될 수 있다는 정도로만 말한다.<Ref n={15} />
+- Takizawa 와 Suzuki 의 2025 년 연구는 일본인 영어 학습자 102명의 논증 말하기를 10명의 평가자가 유창성으로 채점한 것을 분석했다. 속도·중단·수정 지표로 만든 모형이 채점 변동의 61%를 설명했고, 두 단어 연쇄 비율이 거기에 0.8%를 더했다. 작지만 일관된 영향이라고 결론 내렸다.<Ref n={16} />
+
+<Figure caption="출처의 값이다. 말하기 유창성 평가에서 덩어리 사용이 더한 설명량은 작았다. 0.8% 는 초록의 표현 그대로이고 해석은 원문을 확인해야 한다.">
+  <FluencyShare />
+</Figure>
+
+- 이 글은 덩어리 외우기가 유창성을 올린다고 단정하지 않는다. 덩어리를 알면 직역으로 생기는 어색한 짝을 피한다는 것이 이 글의 이유이고, 이것은 이 글의 정리다.
+- 두 연구 모두 입문 수준이 아니다. 효과 크기를 입문 학습자에게 그대로 적용하지 않는다.
+
+## 덩어리를 노트에 적을 때
+
+규칙: 노트에는 낱말이 아니라 쓰는 모양을 적는다. 교육 현장의 관행이며 효과를 입증한 연구는 읽지 못했다.
+
+| 나쁜 노트 | 고친 노트 | 이유 |
+|---|---|---|
+| decision 결정 | make a decision 결정하다 | 동사까지 외운다 |
+| shower 샤워 | have a shower(영) / take a shower(미) | 지역 차이를 표시한다 |
+| lunch 점심 | have lunch 점심을 먹다 | 식사는 have |
+| question 질문 | ask a question 질문하다 | 짝 동사를 같이 적는다 |
+
+- 카드 앞면에는 한국어 상황을, 뒷면에는 영어 덩어리와 예문 한 줄을 적는다. 복습 간격은 <Rel to="e18" /> 에서 다룬다.
+- 전치사가 붙는 덩어리는 전치사까지 적는다. take part in 처럼 take part 만 외우면 다음 문장에서 막힌다.
+
+## 흔한 실수
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| 단어장에 뜻만 적음 | 동사와 명사를 한 줄로 | 연어에는 규칙이 없다<Ref n={2} /> |
+| 한국어 동사를 영어 동사로 1대1 | 명사를 먼저 영어로 | 동사가 갈라진다<Ref n={5} /> |
+| 규칙을 찾으려 함 | 사전 목록과 예문을 따름 | 예측 규칙이 없다<Ref n={2} /> |
+| 미국식과 영국식을 섞어 적음 | 지역 표시를 단다 | have a shower, take a shower<Ref n={8} /> |
+| Thanks a lot 을 모든 감사에 씀 | Thanks for 와 이유를 붙임 | 불만 뜻도 있다<Ref n={13} /> |
+
+## 증상으로 찾기
+
+원인과 처방 중 출처가 없는 것은 이 글의 정리다.
+
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| 단어는 아는데 문장이 안 나온다 | 짝을 모르고 단어만 안다 | 쓰려는 명사의 짝 동사를 사전에서 확인한다 |
+| 말은 통하는데 상대가 고쳐 준다 | 동사와 명사의 짝이 어긋남 | 고친 짝을 덩어리째 노트에 적는다 |
+| 동사 하나로 모든 문장을 만든다 | do, make, have 중 하나만 씀 | 명사별 짝 목록을 만든다<Ref n={4} /> |
+| 한국어 문장이 먼저 떠올라 막힌다 | 단어 단위 번역 | 상황별 덩어리 틀로 시작한다 |
+| 외웠는데 말할 때 안 나온다 | 뜻으로만 외웠다 | 상황과 예문 한 줄을 같이 입으로 말한다 |
+| 사전마다 다른 동사가 나온다 | 영국과 미국의 차이 | 지역 표시를 확인한다<Ref n={8} /> |
+
+## 점검 체크리스트
+
+- 새 단어의 노트에 같이 쓰는 동사나 형용사가 적혀 있는가.
+- 한국어 동사를 영어 동사 하나로 옮기지 않고 명사를 먼저 영어로 바꿨는가.
+- 동사와 명사 쌍마다 사전 예문에서 같은 짝을 확인했는가.
+- 식사와 음료에 take 대신 have 를 썼는가.
+- 영국식과 미국식이 다른 짝에 지역 표시를 달았는가.
+- 인사·부탁 틀 다섯 개를 상황과 함께 입으로 말할 수 있는가.
+- 덩어리의 효과를 확인된 것보다 크게 기대하고 있지 않은가.
+
+## 관련 글
+
+<Related>
+  <Rel to="e10" note="어떤 단어부터 외울지" />
+  <Rel to="e12" note="영영 사전의 예문에서 짝을 보는 법" />
+  <Rel to="e16" note="인사·부탁 같은 일상 대화 패턴" />
+  <Rel to="e18" note="덩어리 카드의 복습 간격" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>Oxford Learner's Dictionaries, collocation 항목(oxfordlearnersdictionaries.com/definition/english/collocation). 뜻풀이와 예문만 읽었다.</Source>
+  <Source n={2}>Cambridge Dictionary, English Grammar Today, Common mistakes in English 의 Collocation 안내 쪽(dictionary.cambridge.org/grammar/british-grammar/collocation). 도입 두 문장을 읽었다.</Source>
+  <Source n={3}>박민주 (2022), Korean EFL Learners' Knowledge of Verb-Noun Collocations: L2 Proficiency, Receptive-Productive Dimension, and Congruency, 전남대학교 학위논문(dbpia.co.kr, 국문·영문 초록). 초록만 읽었다. 본문과 학위 종류는 확인 필요.</Source>
+  <Source n={4}>Nuan Liu, Xiumin Liu, 백순도 (2022), The Use of Delexical Verb + Noun Collocations by the Korean and Chinese EFL Learners: A Corpus-Based Study, 교과교육학연구 26(6), 545-555(kci.go.kr). 초록만 읽었다.</Source>
+  <Source n={5}>Cambridge Dictionary, English Grammar Today, Do or make?(dictionary.cambridge.org/grammar/british-grammar/do-or-make). 전문을 읽었다. do 와 make 의 구분 설명과 명사 목록을 확인했다.</Source>
+  <Source n={6}>Cambridge Dictionary, English Grammar Today, Have(dictionary.cambridge.org/grammar/british-grammar/have-as-a-main-verb). 주 동사 have 의 쓰임과 예문 목록을 읽었다.</Source>
+  <Source n={7}>Cambridge Dictionary, English Grammar Today, Take(dictionary.cambridge.org/grammar/british-grammar/take). 전문을 읽었다. 식사·음료에 쓰지 않는다는 경고, 시간이 걸린다는 용법, 구 목록을 확인했다.</Source>
+  <Source n={8}>Oxford Learner's Dictionaries, shower 항목(oxfordlearnersdictionaries.com/definition/english/shower_1). have a shower(영국), take a shower(북미) 표시와 Collocations Dictionary 발췌를 읽었다.</Source>
+  <Source n={9}>Cambridge Dictionary, English Grammar Today, Common mistakes in English 의 Collocation 하위 쪽 일곱 개: ask a question, say or tell, speak or talk, watch television, make/give a speech, big or great, take/sit an exam. 모두 읽었다.</Source>
+  <Source n={10}>Cambridge Dictionary, make a decision 항목, Oxford Learner's Dictionaries, decision 항목. 각 항목의 뜻풀이, 예문, collocation 표시, 영국 영어 표시를 읽었다.</Source>
+  <Source n={11}>Oxford Learner's Dictionaries, Oxford Collocations Dictionary 소개 쪽(oxfordlearnersdictionaries.com/about/collocations). 소개 문구와 규모를 읽었다. 이용 조건은 확인 필요.</Source>
+  <Source n={12}>University of Michigan Library, Corpora - Linguistics Resources 안내(guides.lib.umich.edu/c.php?g=282869&p=1884909). COCA 의 규모와 무료 제공 설명만 확인했다. english-corpora.org 공식 사이트는 읽히지 않았다(확인 필요).</Source>
+  <Source n={13}>Cambridge Dictionary 항목: how are you?, excuse me, (I'm) pleased to meet you, see you (later), no problem, sorry, thanks for nothing(thanks a lot 포함). 각 항목의 뜻풀이, 예문, 수준 표시를 읽었다.</Source>
+  <Source n={14}>Cambridge Dictionary, English Grammar Today, Would like(dictionary.cambridge.org/grammar/british-grammar/would-like). 서두의 설명과 예문을 읽었다.</Source>
+  <Source n={15}>Frank Boers 외 4인 (2006), Formulaic sequences and perceived oral proficiency: putting a Lexical Approach to the test, Language Teaching Research 10(3), 245-261(doi 10.1191/1362168806lr195oa). Crossref 에 실린 초록만 읽었다. 본문은 읽지 못했다.</Source>
+  <Source n={16}>Kotaro Takizawa, Shungo Suzuki (2025), The role of multiword sequences in fluent speech, Studies in Second Language Acquisition 47(2), 512-532(doi 10.1017/S0272263125000051). Crossref 와 Cambridge Core 의 초록만 읽었다. 같은 호에 보충문(Addendum)이 있으나 읽지 못했다.</Source>
+</Sources>

@@ -1,0 +1,234 @@
+import ConversationLoop from './ConversationLoop';
+import ClarifyLadder from './ClarifyLadder';
+import RequestPicker from './RequestPicker';
+import CafeOrder from './CafeOrder';
+import LevelRange from './LevelRange';
+
+<Overview>
+
+- 해라: 대답에 되묻기를 붙여라. 한 바퀴는 말 → 대답 → 되묻기다. Fine, thanks. How are you? 처럼 공을 돌려주면 대화가 이어진다.
+- 해라: 못 알아들었으면 바로 되물어라. Sorry? 하나만 입에 붙여도 시작이다. 안 들리는데 Yes 라고 답하지 마라.
+- 해라: 부탁은 Could you ...?, 허락은 Could I ...?, 주문은 I'd like ..., please 로 시작해라.
+- 하지 마라: 한 번에 질문을 여러 개 던지지 마라. 한 번에 하나만 묻고 답을 들어라.
+- 기준값: CEFR 로 A1 은 상대가 천천히·반복해 줘야 성립하고, A2 는 예측되는 일상 상황의 짧은 대화까지다. 이 글은 A2 까지만 다룬다.
+
+</Overview>
+
+<Toc />
+
+예문은 직접 작성했고 사전·문법서로 확인했다. 출처 번호가 붙은 문장은 읽어서 확인한 것이고, 번호가 없는 문장은 이 글의 정리다. 인사 습관 같은 문화 규범은 출처가 없어 단정하지 않는다.
+
+| 막힌 상황 | 규칙 | 예문 | 흔한 오류 | 대처 |
+|---|---|---|---|---|
+| 인사 뒤에 말이 끊긴다 | 대답에 되묻기를 붙인다 | Fine, thanks. How are you? | 대답만 하고 멈춘다 | What about you? |
+| 못 알아들었다 | 바로 되묻는다 | Sorry? Could you say that again, please? | 침묵하거나 Yes 라고 한다 | 천천히 부탁한다 |
+| 부탁·허락이 필요하다 | 상대 행동은 Could you, 내 행동은 Could I | Could I borrow your pen? | 단어만 던진다 | 틀 + please |
+| 주문한다 | I'd like 나 Can I have 로 시작한다 | I'd like the soup, please. | 점원 질문을 못 듣는다 | 질문 순서를 미리 안다 |
+| 길을 듣는다 | 방향 단어를 따라 말해 확인한다 | Turn left at the lights? | 한 번 듣고 지나간다 | 되묻고 확인한다 |
+| 말이 막힌다 | 짧은 덩어리로 시간을 번다 | Well ... / Let me see. | 길게 침묵한다 | 아는 말로 돌려 말한다 |
+
+## 인사하고 안부를 물을 때
+
+규칙: 인사 → 안부 → 되돌려 묻기를 한 세트로 외운다. 사전은 How are you? 에 Fine, thanks, how are you? 로 답하는 예문을 싣는다.<Ref n={1} />
+
+| 말 | 대답 | 메모 |
+|---|---|---|
+| Hello. | Hello. | 만나거나 인사할 때. A1 표시<Ref n={1} /> |
+| How are you? | Fine, thanks. How are you? | 대답 뒤에 되묻는다<Ref n={1} /> |
+| Nice to meet you. | You too. | British Council A1 대화의 첫 만남 인사<Ref n={2} /> |
+| Excuse me, ... | 용건을 말한다 | 모르는 사람의 주의를 끌 때. A1 표시<Ref n={1} /> |
+| Thank you. | You're welcome. | 답하는 말은 A2 표시<Ref n={1} /> |
+
+- How do you do? 는 사전이 격식 있는 첫 만남 인사(formal, A2)로 표시한다. 사전 예문은 이름을 소개받고 How do you do? 로 답하는 모양이다.<Ref n={1} />
+- (I'm) pleased to meet you 는 첫 만남에서 쓰는 정중한 인사로 A2 표시다.<Ref n={1} />
+
+## 자기소개를 할 때
+
+규칙: 이름 → 출신·사는 곳 → 하는 일 → 취미 순으로 문장 하나씩 말하고, 마지막에 상대에게 되묻는다. 아래 틀은 British Council 대화와 사전 예문에서 가져왔다.<Ref n={2} />
+
+| 묻는 말 | 답하는 틀 | 예문 |
+|---|---|---|
+| Where are you from? | I'm from + 장소 | I'm from Istanbul. (이스탄불 출신이에요.) |
+| 사는 곳 | I was born in A, but I live in B. | I was born in Cambridge, but I live in Glasgow. (케임브리지에서 태어났지만 글래스고에 살아요.) |
+| What do you do? | I + 하는 일 동사 | I teach high school math. (고등학교 수학을 가르쳐요.)<Ref n={1} /> |
+| How often do you ...? | I normally + 동사 + 빈도 | I normally meditate once or twice a week. (보통 일주일에 한두 번 명상해요.) |
+
+- What do you do for a living? 는 직업을 묻는 말이고, What do you do when you're not working? 는 일 밖의 시간을 묻는 말이다.<Ref n={1} /><Ref n={2} />
+- 직접 쓴 한 세트 예: Hi, I'm Mina. I'm from Busan. I live in Seoul now. What about you? (안녕하세요, 미나예요. 부산 출신이고 지금은 서울에 살아요. 당신은요?) 구조는 위 British Council 문장과 같다.
+
+## 대답만 하고 말이 끊길 때
+
+규칙: 답한 뒤 What about you? 로 넘기고, 상대 대답에는 한 마디로 반응한다. 한 번에 질문 하나만 던진다(이 글의 정리).
+
+<Figure caption="대화는 말 → 대답 + 되묻기 → 짧은 반응의 한 바퀴로 돈다. 못 알아들으면 어느 단계에서든 되묻는다.">
+  <ConversationLoop />
+</Figure>
+
+| 상대가 한 말 | 반응 | 쓰임 |
+|---|---|---|
+| I live in Glasgow now. | What's it like? | 더 묻고 싶을 때. British Council 대화에 나온다<Ref n={2} /> |
+| 좋은 소식 | Really? / That's brilliant! | 관심을 보일 때<Ref n={2} /> |
+| 나쁜 소식 | I'm sorry to hear that. | 안타까움을 보일 때<Ref n={2} /> |
+| 같은 취미 | I do too! | 같다고 말할 때<Ref n={2} /> |
+
+- 질문 둘을 한꺼번에 하면 상대가 어느 쪽에 답할지 모른다. 하나를 묻고 답을 들은 뒤 다음 것을 묻는다.
+- 한 마디 반응은 문장이 아니어도 된다. Really? 한 단어로 충분하다.
+
+## 부탁하거나 허락을 구할 때
+
+규칙: 내가 하려면 Can I / Could I, 상대에게 시키려면 Can you / Could you 로 시작하고 끝에 please 를 붙인다. Cambridge 문법서는 허락 구하기에 can, could, may 를 모두 쓰고, 부탁에는 can 이나 could 를 쓰며 may 는 쓰지 않는다고 한다. could 가 can 보다 정중하다.<Ref n={3} />
+
+<Figure caption="허락은 Can I / Could I, 부탁은 Can you / Could you 다. could 쪽이 더 정중하다. may 는 허락 구하기에만 쓴다.">
+  <RequestPicker />
+</Figure>
+
+- 허락을 줄 때는 can 이나 may 를 쓰고 could 는 쓰지 않는다.<Ref n={3} />
+- 사전은 부탁의 could 를 A2, 허락의 could 를 B1, can 의 부탁과 허락을 A1 으로 표시한다.<Ref n={1} />
+- Do you mind if I ...? 는 mind 가 싫어하는지를 묻는 말이다. 사전 예문의 대답은 Well, actually, I'd rather you didn't. 로, 거절의 모양이다.<Ref n={1} /> 그래서 괜찮으면 No 로 답하는 것이 말의 논리다(이 글의 정리).
+- 거절은 Sorry, you can't go in there. 처럼 Sorry 로 시작한다. 사전이 정중한 거절로 싣는 모양이다.<Ref n={1} />
+
+## 식당·카페에서 주문할 때
+
+규칙: 먹고 싶은 것은 I'd like ..., please 나 Can I have ..., please? 로 말한다. 사전은 would like 를 무언가를 정중하게 원한다고 말하는 틀로 설명한다.<Ref n={3} /> 점원의 질문은 순서가 비슷해서 미리 들어 두면 알아듣기 쉽다.
+
+<Figure caption="British Council A1 대화 한 편의 순서다. 가게마다 같다는 뜻이 아니다.">
+  <CafeOrder />
+</Figure>
+
+| 말 | 뜻 | 출처 |
+|---|---|---|
+| Can I have an orange juice, please? | 주스 주세요. | A1 카페 대화<Ref n={4} /> |
+| What teas do you have? | 차는 뭐가 있어요? | A1 카페 대화<Ref n={4} /> |
+| I'd like French onion soup, please. | 양파 수프 주세요. | A2 식당 대화<Ref n={5} /> |
+| And I'll have a tomato salad, please. | 저는 토마토 샐러드요. | A2 식당 대화<Ref n={5} /> |
+| Could we have the bill, please? | 계산서 부탁해요. | 사전 예문. bill 은 A2 표시<Ref n={1} /> |
+
+- 점원 쪽 질문의 예: Regular or large? / Would you like a drink with that? (카페)<Ref n={4} />, Are you ready to order? / What would you like for your starter? (식당)<Ref n={5} />
+- 값은 숫자라 놓치기 쉽다. 못 들었으면 Sorry? 로 되묻는다. 값을 물을 때는 How much does this cost? 를 쓴다.<Ref n={1} />
+
+## 길을 묻고 안내를 들을 때
+
+규칙: 묻기는 쉽다. 어려운 쪽은 듣기이므로 방향 단어를 덩어리로 알아듣는다. British Council A2 대화의 안내는 go straight on, take the first left, go past, next to, opposite 같은 말로 이루어진다.<Ref n={6} />
+
+| 들리는 말 | 뜻 | 확인하는 말 |
+|---|---|---|
+| Go straight on. | 계속 직진하세요. | Straight on? |
+| Take the first left. | 첫 번째 길에서 왼쪽이요. | The first left? |
+| Go past the traffic lights. | 신호등을 지나가세요. | Past the lights? |
+| It's next to the library. | 도서관 옆이에요. | Next to the library? |
+
+- 묻는 말은 Excuse me 로 불러서 시작한다. 사전 예문은 Excuse me, does this bus go to Oxford Street? 다.<Ref n={1} /> 직접 쓴 예: Excuse me, where is the station? (실례합니다, 역이 어디예요?)
+- 확인하는 말은 들은 말의 끝을 올려 따라 하는 것이다(이 글의 정리). 사전은 straight 와 turn 을 A2 어휘로 두고 Go straight along this road and turn left at the traffic lights. 를 예문으로 싣는다.<Ref n={1} />
+- 안내를 못 따라가면 Could you say that again, please? 를 쓴다. 다음 절의 말들이다.
+
+## 못 알아들었을 때
+
+규칙: 침묵하지 말고 되묻는다. 전부 못 들었으면 앞쪽 말, 한 단어만 모르면 아래쪽 말을 쓴다(이 글의 정리).
+
+<Figure caption="되묻는 말은 가벼운 것에서 구체적인 것 순이다. 순서는 이 글의 정리다.">
+  <ClarifyLadder />
+</Figure>
+
+| 말 | 근거 |
+|---|---|
+| Sorry? / Pardon? | 사전은 둘 다 정중하게 반복을 부탁하는 말로 싣는다. pardon 은 A2 표시<Ref n={1} /> |
+| Could you say that again, please? | British Council A1 대화에 나온다<Ref n={2} /> |
+| Could you speak more slowly? | 사전 예문. slowly 는 A2 표시<Ref n={1} /> |
+| What does X mean? / How do you spell X? | 사전 예문. mean 과 spell 은 A2 표시<Ref n={1} /> |
+| I don't understand. / Do you mean ...? | British Council A1 대화. Do you mean 으로 짐작한 뜻을 확인한다<Ref n={2} /> |
+
+- 미국식으로는 Excuse me 도 반복을 부탁하는 데 쓴다. 사전이 US 용법으로 표시한다.<Ref n={1} />
+- 같은 말을 두 번 들어도 모르면 이번에는 Could you speak more slowly? 로 바꾼다. 같은 문장을 반복해서 되묻지 않는다(이 글의 정리).
+
+## 말이 막혀 시간을 벌고 싶을 때
+
+규칙: 침묵 대신 짧은 덩어리를 하나 넣고, 이어서 아는 말로 짧게 답한다.
+
+| 말 | 쓰임 | 출처 |
+|---|---|---|
+| Well, ... | 생각하고 있다는 신호. 말 첫머리에 쓴다 | 사전 well 항목의 말하기 설명<Ref n={1} /> |
+| Let me see. | 잠깐 생각할 때 | 사전 idiom<Ref n={1} /> |
+| Um, ... | 멈추거나 다음 말을 정할 때 나는 소리 | 사전<Ref n={1} /> |
+| Just a moment. | 잠깐 기다려 달라고 할 때 | 사전<Ref n={1} /> |
+| I'm not sure. | 확신이 없을 때. 뒤에 아는 말을 잇는다 | British Council A2 식당 대화<Ref n={5} /> |
+
+- Cambridge 문법서는 like 도 생각할 시간을 벌 때 쓰는 군말(filler)로 설명한다. 다만 비격식 말하기용이고 격식 글에서는 쓰지 말라고 한다.<Ref n={3} /> 입문 단계에서는 Well 이나 Let me see 가 안전하다(이 글의 정리).
+- 단어가 모자랄 때는 CEFR A2 기술자처럼 이미 아는 단어와 몸짓을 쓴다. 물건을 가리키며 I'd like this, please 라고 해도 된다.<Ref n={7} />
+
+## 어디까지가 입문 수준인지
+
+규칙: A1 이면 상대가 천천히 반복해 줄 때 간단히 묻고 답하는 것이 목표고, A2 이면 예측되는 일상 상황에서 짧게 주고받는 것이 목표다. 아래는 CEFR 기술자를 이 글이 줄여 쓴 것이다.<Ref n={7} />
+
+<Figure caption="A1 은 상대가 맞춰 줘야 성립하고, A2 는 짧은 일상 교환까지다. 대화를 스스로 이어 가는 것은 A2 에서도 어렵다고 기술된다.">
+  <LevelRange />
+</Figure>
+
+| 기술 | A1 | A2 |
+|---|---|---|
+| 전체 말하기 | 천천히 말하고 반복·바꿔 말해 줘야 성립. 간단한 질문을 묻고 답한다 | 구조가 있는 상황의 짧은 대화. 상대가 도우면 일상 교환을 한다 |
+| 사회적 대화 | 소개하고 인사·작별을 쓴다. 안부를 묻고 소식에 반응한다 | 인사·소개·감사. 아주 짧은 사교 교환은 하되 스스로 잇기는 어렵다 |
+| 물건과 서비스 | 물건을 달라고 하고 건넨다. 숫자·양·값·시간을 다룬다 | 식사 주문, 원하는 것을 말하고 값 묻기, 길 묻기 |
+| 되묻기 | 이 칸에 기술자가 없다 | 반복을 아주 단순하게 요청하고, 핵심어를 정형구로 되묻는다 |
+
+- 시간을 버는 정형구 기술자는 읽은 사본에서 A1·A2 칸이 아니라 B1 보다 위 칸에 있다. 입문에서는 되묻기가 먼저다.<Ref n={7} />
+
+<Callout kind="warn">
+
+읽은 CEFR 문서는 Council of Europe 저작권의 구판 척도 사본(Macmillan English 호스팅)이다. 공식 사이트가 자동 접근을 막아 2018·2020 Companion Volume 원문은 읽지 못했다. 문구가 다를 수 있어 확인 필요.
+
+</Callout>
+
+## 흔한 실수
+
+| 나쁜 예 | 고친 예 | 이유 |
+|---|---|---|
+| Fine. (끝) | Fine, thanks. How are you? | 사전 예문이 되묻기까지 한 모양이다<Ref n={1} /> |
+| 안 들렸는데 Yes. | Sorry? | A2 기술자는 반복을 요청하는 것을 기준으로 한다<Ref n={7} /> |
+| Could you to say that again? | Could you say that again? | could 뒤에는 동사 원형이 온다. 사전 예문 모두 그렇다<Ref n={1} /> |
+| Coffee. (단어만) | Can I have a coffee, please? | 자료의 주문 문장은 틀과 please 를 쓴다<Ref n={4} /> |
+| 길 안내를 듣고 그냥 고개만 끄덕임 | Turn left at the lights? | 따라 말해 확인한다(이 글의 정리) |
+| Do you mind ...? 에 Yes 로 허락 | No, go ahead. | mind 는 싫은지 묻는 말이다(이 글의 정리) |
+
+## 증상으로 찾기
+
+| 증상 | 원인 | 처방 |
+|---|---|---|
+| 상대 말이 끝나면 머리가 하얘진다 | 대답 틀이 입에 안 붙었다 | 인사·자기소개를 한 세트로 소리 내어 외운다 |
+| 못 알아들었는데 Yes 라고 한다 | 되묻는 말이 입에 없다 | Sorry? 하나부터 외운다 |
+| 점원 질문이 안 들린다 | 질문 순서를 모른다 | 주문 대화의 점원 질문을 미리 듣는다 |
+| 길 안내 단어를 놓친다 | 방향 단어가 덩어리로 안 들린다 | go straight, turn left 를 덩어리로 듣고 확인 질문을 한다 |
+| 말이 너무 빨라 따라가지 못한다 | 속도가 내 듣기 수준보다 높다 | Could you speak more slowly? 를 쓴다 |
+| 단어가 떠오르지 않는다 | 어휘가 아직 모자란다 | 아는 단어와 몸짓, 가리키기를 쓴다 |
+
+## 점검 체크리스트
+
+- 인사에 답하고 한 번 되묻는다: Fine, thanks. How are you?
+- 이름, 출신, 사는 곳, 하는 일을 문장 하나씩 말한다.
+- Sorry? / Could you say that again, please? / Could you speak more slowly? 가 바로 나온다.
+- 허락은 Could I ...?, 부탁은 Could you ...? 로 시작한다.
+- I'd like ..., please 로 주문하고 점원의 질문 두세 개를 알아듣는다.
+- go straight, turn left, next to, opposite 를 듣고 의미를 안다.
+- How much does this cost? 로 값을 묻는다.
+- 말이 막히면 Well, Let me see, Just a moment 중 하나를 넣는다.
+
+## 관련 글
+
+<Related>
+  <Rel to="e05" note="질문 만들기. Where, What, How much 의 어순" />
+  <Rel to="e09" note="can, could, would 로 허락과 부탁, 정중함" />
+  <Rel to="e11" note="Could you ...? 같은 덩어리로 외우기" />
+  <Rel to="e15" note="점원·안내 말이 안 들릴 때" />
+  <Rel to="e03" note="문장 강세와 억양으로 말이 통하게" />
+</Related>
+
+## 출처
+
+<Sources>
+  <Source n={1}>Cambridge University Press and Assessment, Cambridge Dictionary (dictionary.cambridge.org), 2026년 10월 열람. 읽은 항목: well, hello, how are you?, (I'm) pleased to meet you, how do you do?, you're welcome, excuse, sorry, pardon, slowly, mean, spell, from, do, can, could, like, mind, straight, turn, much, cost, order, bill, let me see, um, just a moment. A1·A2·B1 표시와 예문은 사전의 것이다.</Source>
+  <Source n={2}>British Council, LearnEnglish, Speaking 자료(learnenglish.britishcouncil.org). 읽은 범위: A1 Checking understanding, Meeting new people, Talking about where you're from의 언어 초점 문구와 대화 전문, A2 Showing interest 대화 전문, Talking about personal interests의 언어 초점 문구와 요약. 2026년 10월 열람.</Source>
+  <Source n={3}>Cambridge University Press and Assessment, English Grammar Today(Cambridge Dictionary 문법), Can, could or may? 와 Like 항목의 Would like in offers and requests, Like in spoken English 절. 2026년 10월 열람.</Source>
+  <Source n={4}>British Council, LearnEnglish, Listening A1 Ordering in a café(learnenglish.britishcouncil.org/free-resources/listening/a1/ordering-cafe). 대화 전문. 2026년 10월 열람.</Source>
+  <Source n={5}>British Council, LearnEnglish Teens, Listening A2 Eating out(learnenglishteens.britishcouncil.org). 대화 전문. 2026년 10월 열람.</Source>
+  <Source n={6}>British Council, LearnEnglish Teens, Listening A2 Giving directions(learnenglishteens.britishcouncil.org). 안내문 전문. 2026년 10월 열람.</Source>
+  <Source n={7}>Council of Europe, Common European Framework of Reference for Languages, Structured overview of all CEFR scales(Macmillan English 호스팅 사본). 읽은 범위: Overall spoken interaction, Understanding a native speaker interlocutor, Conversation, Goal-oriented co-operation, Transactions to obtain goods and services, Information exchange, Taking the floor, Asking for clarification, Compensating. Companion Volume 원문은 접근이 막혀 확인 필요.</Source>
+</Sources>
